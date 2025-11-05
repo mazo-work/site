@@ -11,8 +11,7 @@ const Hero = () => {
           Hi, I'm Jonathan Mazo
         </h1>
         <p className="text-gray-700 dark:text-gray-300 text-lg sm:text-xl mb-6">
-          Bilingual Customer Success Manager with a passion for strategy,
-          cross-functional collaboration, and data-driven optimization.
+          I’m passionate about connecting data to decisions — turning complexity into clarity through curiosity, creative problem-solving, and insight-driven strategy.
         </p>
         <a
           href="#contact"
