@@ -35,9 +35,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
           <div className="text-left w-full mt-4">
             <h3 className="text-lg font-semibold mb-2">Key Strengths</h3>
             <ul className="list-disc list-inside text-sm space-y-1">
-              <li>Strategic Client Management</li>
-              <li>Cross-Functional Communication</li>
-              <li>Data-Driven Optimization</li>
+              <li>Customer Success Management</li>
+              <li>Strategic Growth & Retention</li>
+              <li>Cross-Functional Collaboration</li>
+              <li>Data-Driven Strategy</li>
               <li>AdTech & Programmatic Expertise</li>
               <li>Bilingual: English & Spanish</li>
             </ul>
@@ -47,9 +48,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
           <div className="text-left w-full mt-6">
             <h3 className="text-lg font-semibold mb-2">Technologies</h3>
             <ul className="list-disc list-inside text-sm space-y-1">
-              <li>SQL / Tableau / Excel</li>
-              <li>CRM & Marketing Tools</li>
-              <li>React / Vite / Tailwind</li>
+              <li>SQL / Excel/ JavaScript</li>
+              <li>Microsoft 365 / Google Workspace</li>
+              <li>Slack / Zendesk / AI Tools (ChatGPT, Gemini, NotebookLM)</li>
             </ul>
           </div>
         </div>
