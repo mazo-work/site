@@ -619,25 +619,26 @@ function moveStage(y, o, ms, done) {   // a CSS transition, run by the browser's
   stageEl.style.transform = y ? `translate3d(0, ${y}%, 0)` : ''; stageEl.style.opacity = o === 1 ? '' : String(o);
   stageEl.addEventListener('transitionend', end); setTimeout(end, ms + 300);
 }
+const CURTAIN_FADE = false;     // the curtain rises for everyone, Reduce Motion included (owner's choice); true gives a 0.45 s fade
 function liftCurtain() {
   phase = 'lift';
   Promise.race([ensureSite(), new Promise(r => setTimeout(r, 3000))]).then(() => {
-    $('top').style.visibility = 'hidden'; snapshot(); paused = true; dlog(RM ? 'curtain: fade (reduced motion)' : 'curtain: rising');
+    $('top').style.visibility = 'hidden'; snapshot(); paused = true; dlog(CURTAIN_FADE ? 'curtain: fade' : 'curtain: rising');
     const opened = () => {
       phase = 'site'; stageEl.style.visibility = 'hidden';
       siteEl.inert = false; siteEl.removeAttribute('aria-hidden'); siteEl.removeAttribute('tabindex');
       $('reintro').hidden = false; try { siteEl.focus({ preventScroll: true }); } catch (e) {}
       say('The site is open.'); dlog('curtain up');
     };
-    if (RM) moveStage(0, 0, 450, opened); else moveStage(-100, 1, 1400, opened);
+    if (CURTAIN_FADE) moveStage(0, 0, 450, opened); else moveStage(-100, 1, 1400, opened);
   });
 }
 $('reintro').onclick = () => {   // brings the curtain back down on a fresh puzzle
   $('reintro').hidden = true; siteEl.inert = true; siteEl.setAttribute('aria-hidden', 'true'); siteEl.setAttribute('tabindex', '-1');
   load(design); puzzle.rotation.set(pitch, yaw, 0); snapshot();
-  stageEl.style.transition = ''; stageEl.style.transform = RM ? '' : 'translate3d(0, -100%, 0)'; stageEl.style.opacity = RM ? '0' : '';
+  stageEl.style.transition = ''; stageEl.style.transform = CURTAIN_FADE ? '' : 'translate3d(0, -100%, 0)'; stageEl.style.opacity = CURTAIN_FADE ? '0' : '';
   stageEl.style.visibility = ''; $('top').style.visibility = '';
-  moveStage(0, 1, RM ? 300 : 800, () => { liveAgain(); paused = false; if (!rafId) rafId = requestAnimationFrame(frame); });
+  moveStage(0, 1, CURTAIN_FADE ? 300 : 800, () => { liveAgain(); paused = false; if (!rafId) rafId = requestAnimationFrame(frame); });
 };
 function jumpToEnd() {          // Skip: straight to the finished state from anywhere
   tweens.length = 0; clearTimeout(holdTimer);
