@@ -130,6 +130,7 @@ Testers use a public page on the site's domain, published with GitHub Pages. Beh
 ## Next
 
 - **P1, feel.** Tune the numbers above with three to five testers on the test page, without tracking on the site. A per-run summary card for testers comes later. The target is unlocking in 20 to 45 seconds for a first-time visitor, with 9 in 10 under 90 seconds.
+- **Next iteration.** Skip plays the solve at speed (every pull in order, then the finale) instead of jumping to the end; Skip pressed again, or reduced motion, still jumps straight there. A loading indicator, and on the public page the no-3D fallback opens the site. Then the sound rework, including the Z stutter after a wrong-direction pull.
 - **P2, looks.** Two or three materials side by side, then one is chosen.
 - **P3, finish.** The handoff into the site, once the fonts are set: after the blocks fall, the MAZO word shrinks into the centre of the new site's header as a logo. The curtain rises past it, and as it passes the logo it reveals the name beside it. The falling blocks may later morph into one solid line; not before the other transitions are settled. Also the recruiter link, remembering that a visitor already unlocked it, and performance on mid-range phones.
 - **Themes.** Light and dark mode first, and what each colourway holds. To be discussed before the looks are built.
