@@ -126,6 +126,8 @@ Testers use a public page on the site's domain, published with GitHub Pages. Beh
 - Every build carries `<meta name="robots" content="noindex, nofollow">`. That asks search engines not to list the page; it does not hide it from anyone who has the link.
 - The public copy also carries a strict Content-Security-Policy. It allows only the page's own files and its three inline blocks, each matched by hash, frames from itself, and no network requests. A tampered copy was blocked, so the policy is enforced.
 - The site under `site/` gets its own noindex tag and policy: its own files only, no inline code, and its contact form may post only to Formspree.
+- Live since 2026-11-21 on a subdomain of the owner's domain, HTTPS enforced. Checked on desktop and on an iPhone: every phase plays, the curtain rises, sound starts after a tap.
+- Opening the page with `#debug` shows a short event log on screen (phase changes, sound state, the site loading, errors), for phones without developer tools.
 
 ## Next
 
@@ -134,6 +136,7 @@ Testers use a public page on the site's domain, published with GitHub Pages. Beh
 - **P2, looks.** Two or three materials side by side, then one is chosen.
 - **P3, finish.** The handoff into the site, once the fonts are set: after the blocks fall, the MAZO word shrinks into the centre of the new site's header as a logo. The curtain rises past it, and as it passes the logo it reveals the name beside it. The falling blocks may later morph into one solid line; not before the other transitions are settled. Also the recruiter link, remembering that a visitor already unlocked it, and performance on mid-range phones.
 - **Themes.** Light and dark mode first, and what each colourway holds. To be discussed before the looks are built.
+- **Load budget.** Today about 190 KB compressed loads before the puzzle can draw, 90% of it the 3D library; the current site adds about 105 KB in the background, and the resume PDF loads only on click. Rules for an interactive site: load the 3D library once and share it, load each section's interactive code when the visitor reaches it, keep the first screen under about 200 KB compressed, and test on a throttled mid-range phone in P1, where drawing speed is the larger risk.
 - **Stack.** P0 is plain three.js. The v2 site is planned as React with react-three-fiber. Decide this before P1.
 
 ## Files
