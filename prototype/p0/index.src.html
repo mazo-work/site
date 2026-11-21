@@ -42,7 +42,8 @@
   .card p { color: #b9b4a8; margin: 0 0 12px; }
   .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   #debug { right: 16px; top: calc(max(12px, env(safe-area-inset-top)) + 40px); font: 12px/1.45 ui-monospace, Menlo, monospace;
-    color: #9a968c; white-space: pre; text-align: right; display: none; pointer-events: none; }
+    color: #d8d3c7; white-space: pre; text-align: right; display: none; pointer-events: none;
+    background: rgba(12,13,16,0.78); padding: 6px 8px; border-radius: 6px; z-index: 5; }
   #fallback { inset: 0; display: none; align-items: center; justify-content: center; }
 </style>
 <script type="importmap">{"imports":{"three":"./lib/three.module.min.js","three/addons/":"./lib/addons/"}}</script>
@@ -82,6 +83,17 @@ const BASE = '#d6d0c2', COLORS = { M: '#e07a52', A: '#3fb08a', Z: '#8f87e6', O: 
 const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const $ = id => document.getElementById(id);
 const stageEl = $('stage'), hintEl = $('hint'), arrowEl = $('arrow'), liveEl = $('live'), dbgEl = $('debug');
+const SITE = __SITE__;          // the site's page (the public build only); null in the private preview
+const siteEl = $('site');
+function openSiteNow() {        // no 3D, or 3D was lost: show the site straight away, without the curtain
+  $('fallback').style.display = 'none';
+  if (!SITE) { $('done').classList.add('on'); return; }
+  if (!siteEl.getAttribute('src')) siteEl.src = SITE;
+  siteEl.style.display = 'block'; stageEl.style.visibility = 'hidden'; $('top').style.visibility = 'hidden';
+  $('bottom').style.visibility = 'hidden'; hintEl.style.display = 'none';
+  siteEl.inert = false; siteEl.removeAttribute('aria-hidden'); siteEl.removeAttribute('tabindex');
+}
+$('fbskip').onclick = openSiteNow;
 
 // ---------- renderer ----------
 let renderer;
@@ -90,7 +102,6 @@ try {
   if (!renderer.getContext()) throw new Error('no context');
 } catch (e) {
   $('fallback').style.display = 'flex'; $('top').style.display = 'none'; $('bottom').style.display = 'none'; hintEl.style.display = 'none';
-  $('fbskip').onclick = () => { $('fallback').style.display = 'none'; $('done').classList.add('on'); };
   throw e;
 }
 renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
@@ -98,7 +109,7 @@ renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.localClippingEnabled = true;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 stageEl.appendChild(renderer.domElement);
-renderer.domElement.addEventListener('webglcontextlost', e => { e.preventDefault(); $('fallback').style.display = 'flex'; });
+renderer.domElement.addEventListener('webglcontextlost', e => { e.preventDefault(); dlog('3D context lost'); paused = true; $('fallback').style.display = 'flex'; });
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color('#0e1014');
@@ -123,7 +134,14 @@ const orbLight = new THREE.PointLight(0xffc47a, 14, 0, 2);
 orb.add(orbCore, orbHalo, orbLight);
 
 // ---------- state ----------
-let design = 0, D, pieces = {}, stage = 0, busy = false, colors = true, debug = false;
+let design = 0, D, pieces = {}, stage = 0, busy = false, colors = true, debug = location.hash === '#debug';
+const dlogLines = []; let dbgLive = '';
+function renderDbg() { dbgEl.textContent = dbgLive + (dlogLines.length ? (dbgLive ? '\n' : '') + dlogLines.join('\n') : ''); }
+function dlog(m) { dlogLines.push(`${(performance.now() / 1000).toFixed(1)}s ${m}`); if (dlogLines.length > 10) dlogLines.shift(); if (debug) renderDbg(); }
+addEventListener('error', e => dlog('error: ' + (e.message || e.type)));
+addEventListener('unhandledrejection', e => dlog('rejected: ' + (e.reason && e.reason.message || e.reason)));
+document.addEventListener('visibilitychange', () => dlog('page ' + document.visibilityState));
+if (debug) { dbgEl.style.display = 'block'; $('dbg').setAttribute('aria-pressed', 'true'); dlog('debug on'); }
 let yaw = -0.62, pitch = 0.3, vyaw = 0, vpitch = 0, touched = false;
 let W = 1, H = 1, titleScale = 0.3;
 let lastProgress = performance.now(), hintLevel = 0, lockedTold = 0;
@@ -143,8 +161,12 @@ function wakeAudio() {
       const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
       audio = new AC(); master = audio.createGain(); master.gain.value = 0.7; master.connect(audio.destination);
     }
-    if (audio.state === 'suspended') audio.resume();
-  } catch (e) { audio = null; }
+    if (audio.state !== 'running') {
+      // iOS only starts audio inside a tap's touchend or click, and wants a sound started in the same moment
+      const b = audio.createBufferSource(); b.buffer = audio.createBuffer(1, 1, 22050); b.connect(audio.destination); b.start(0);
+      const r = audio.resume(); if (r && r.then) r.then(() => dlog('sound ' + audio.state), err => dlog('sound blocked: ' + (err && err.name)));
+    }
+  } catch (e) { audio = null; dlog('sound failed: ' + e.message); }
 }
 function envGain(t, a, d, peak) {
   const g = audio.createGain();
@@ -174,8 +196,7 @@ const SFX = {
   pip: () => tone(2300 + Math.random() * 1000, null, 0.035, 'triangle', 0.014),            // a block lands in the line
 };
 function sfx(name, arg) { if (!soundOn || !audio || audio.state !== 'running') return; try { SFX[name](arg); } catch (e) {} }
-addEventListener('pointerdown', wakeAudio, true);
-addEventListener('keydown', wakeAudio, true);
+['pointerdown', 'pointerup', 'touchend', 'click', 'keydown'].forEach(t => addEventListener(t, wakeAudio, { capture: true, passive: true }));
 
 function glyphPixels(rows) {
   const out = [];
@@ -574,13 +595,12 @@ function finishUp() {
   setTimeout(() => { if (phase === 'done') { $('done').classList.add('on'); $('replay').focus({ preventScroll: true }); } }, 500);
 }
 // ---------- the curtain: the line is its hem; it rises and the current site is underneath ----------
-const SITE = __SITE__;          // the site's page (the public build only); null in the private preview
-const siteEl = $('site');
 let siteReady = null, paused = false, rafId = 0;
 function ensureSite() {         // loads the site behind the puzzle well before it is needed
   if (!SITE) return Promise.resolve(false);
   if (siteReady) return siteReady;
-  siteReady = new Promise(res => { siteEl.addEventListener('load', () => res(true), { once: true }); setTimeout(() => res(false), 10000); });
+  siteReady = new Promise(res => { siteEl.addEventListener('load', () => { dlog('site loaded'); res(true); }, { once: true }); setTimeout(() => res(false), 10000); });
+  dlog('site loading');
   siteEl.style.display = 'block'; siteEl.src = SITE;
   return siteReady;
 }
@@ -592,7 +612,7 @@ function liftCurtain() {
       phase = 'site'; stageEl.style.visibility = 'hidden'; paused = true;
       siteEl.inert = false; siteEl.removeAttribute('aria-hidden'); siteEl.removeAttribute('tabindex');
       $('reintro').hidden = false; try { siteEl.focus({ preventScroll: true }); } catch (e) {}
-      say('The site is open.');
+      say('The site is open.'); dlog('curtain up');
     });
   });
 }
@@ -664,7 +684,7 @@ stageEl.addEventListener('keydown', e => {
 });
 
 // ---------- loop ----------
-let tPrev = performance.now(), fps = 60;
+let tPrev = performance.now(), fps = 60, lastPhase = '';
 function frame(now) {
   if (paused) { rafId = 0; return; }
   const dt = Math.min(0.05, (now - tPrev) / 1000); tPrev = now; fps = fps * 0.95 + (1 / Math.max(dt, 1e-3)) * 0.05;
@@ -700,10 +720,12 @@ function frame(now) {
   if (debug && D) {
     const free = ORDER[stage], u = stage < 4 ? pieces[free].userData : null;
     const ax = u && u.segs.length ? axisScreen(pieces[free], u.segs[u.seg].dir) : null;
-    dbgEl.textContent = `shape ${D.name}  stage ${stage}  free ${stage < 4 ? free : '-'}\n` +
+    dbgLive = `shape ${D.name}  stage ${stage}  free ${stage < 4 ? free : '-'}\n` +
       (u ? `s ${u.s.toFixed(2)}/${u.total}  seg ${u.seg + 1}/${u.segs.length}  path ${u.segs.map(s => s.name + 'x' + s.len).join(' ')}\n` : '') +
-      (ax ? `axis on screen ${ax.ppu.toFixed(0)} px/unit\n` : '') + `mode ${ptr?.mode ?? '-'}  fps ${fps.toFixed(0)}`;
+      (ax ? `axis on screen ${ax.ppu.toFixed(0)} px/unit\n` : '') + `mode ${ptr?.mode ?? '-'}  fps ${fps.toFixed(0)}  phase ${phase}  sound ${audio ? audio.state : 'none'}`;
+    renderDbg();
   }
+  if (phase !== lastPhase) { dlog('phase ' + phase); lastPhase = phase; }
   renderer.render(scene, camera);
   rafId = requestAnimationFrame(frame);
 }
