@@ -1,23 +1,70 @@
-"""Build the P0 preview: copies three.js from node_modules into lib/ and embeds the puzzle data from
-docs/puzzle/mazo-burr.json (the same file tools/burr/check.py verifies) into index.html.
-Usage (from prototype/p0):  npm ci && python3 build.py && python3 -m http.server 8765"""
-import json, os, shutil
+"""Build the P0 preview.
+
+    python3 build.py              index.html and lib/ beside this file (the private claude.ai preview)
+    python3 build.py --site DIR   a public copy in DIR, with a strict Content-Security-Policy
+
+Both embed the puzzle data from docs/puzzle/mazo-burr.json (the file tools/burr/check.py verifies)
+and copy three.js from node_modules (run `npm ci` first). Every build carries a robots noindex tag.
+The public copy's policy allows only this page's own files and its three inline blocks, by hash."""
+import argparse, base64, hashlib, json, os, re, shutil
+
 here = os.path.dirname(os.path.abspath(__file__))
 root = os.path.join(here, '..', '..')
-data = json.load(open(os.path.join(root, 'docs', 'puzzle', 'mazo-burr.json')))
-slim = []
-for d in data['designs']:
-    c = d['center']
-    slim.append({'name': d['name'], 'note': d['note'], 'dims': d['dims'],
-                 'core': [d['core'][a] - c[a] for a in range(3)],
-                 'pieces': {L: {'glyph': p['glyph'], 'R': p['R'], 'path': p['path'],
-                                'off': [p['off'][a] - c[a] for a in range(3)]} for L, p in d['pieces'].items()}})
-src = open(os.path.join(here, 'index.src.html')).read()
-assert src.count('__DESIGNS__') == 1
-open(os.path.join(here, 'index.html'), 'w').write(src.replace('__DESIGNS__', json.dumps(slim, separators=(',', ':'))))
-nm = os.path.join(here, 'node_modules', 'three')
-os.makedirs(os.path.join(here, 'lib', 'addons'), exist_ok=True)
-shutil.copy(os.path.join(nm, 'build', 'three.module.min.js'), os.path.join(here, 'lib'))
-for f in ('geometries/RoundedBoxGeometry.js', 'environments/RoomEnvironment.js'):
-    shutil.copy(os.path.join(nm, 'examples', 'jsm', f), os.path.join(here, 'lib', 'addons'))
-print('built index.html and lib/')
+
+
+def designs():
+    data = json.load(open(os.path.join(root, 'docs', 'puzzle', 'mazo-burr.json')))
+    slim = []
+    for d in data['designs']:
+        c = d['center']
+        slim.append({'name': d['name'], 'note': d['note'], 'dims': d['dims'],
+                     'core': [d['core'][a] - c[a] for a in range(3)],
+                     'pieces': {L: {'glyph': p['glyph'], 'R': p['R'], 'path': p['path'],
+                                    'off': [p['off'][a] - c[a] for a in range(3)]} for L, p in d['pieces'].items()}})
+    return json.dumps(slim, separators=(',', ':'))
+
+
+def sha(text):
+    return "'sha256-" + base64.b64encode(hashlib.sha256(text.encode('utf-8')).digest()).decode() + "'"
+
+
+def csp_for(html):
+    scripts = re.findall(r'<script[^>]*>(.*?)</script>', html, re.S)
+    styles = re.findall(r'<style[^>]*>(.*?)</style>', html, re.S)
+    assert len(scripts) == 2 and len(styles) == 1, (len(scripts), len(styles))
+    return ("default-src 'none'; script-src 'self' " + ' '.join(sha(s) for s in scripts) +
+            "; style-src " + ' '.join(sha(s) for s in styles) +
+            "; img-src 'self' data: blob:; connect-src 'none'; font-src 'none'; media-src 'none'; object-src 'none';"
+            " worker-src 'none'; manifest-src 'none'; base-uri 'none'; form-action 'none'")
+
+
+def copy_lib(out):
+    nm = os.path.join(here, 'node_modules', 'three')
+    os.makedirs(os.path.join(out, 'lib', 'addons'), exist_ok=True)
+    shutil.copy(os.path.join(nm, 'build', 'three.module.min.js'), os.path.join(out, 'lib'))
+    for f in ('geometries/RoundedBoxGeometry.js', 'environments/RoomEnvironment.js'):
+        shutil.copy(os.path.join(nm, 'examples', 'jsm', f), os.path.join(out, 'lib', 'addons'))
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument('--site', metavar='DIR', help='write a public copy with a Content-Security-Policy to DIR')
+    a = ap.parse_args()
+    src = open(os.path.join(here, 'index.src.html')).read()
+    assert src.count('__DESIGNS__') == 1 and src.count('<!--CSP-->') == 1
+    html = src.replace('__DESIGNS__', designs())
+    if a.site:
+        out = os.path.abspath(a.site)
+        os.makedirs(out, exist_ok=True)
+        page = html.replace('<!--CSP-->', '<meta http-equiv="Content-Security-Policy" content="' + csp_for(html.replace('<!--CSP-->', '')) + '">')
+        open(os.path.join(out, 'index.html'), 'w').write(page)
+        copy_lib(out)
+        print('built the public copy in', out)
+    else:
+        open(os.path.join(here, 'index.html'), 'w').write(html.replace('<!--CSP-->\n', ''))
+        copy_lib(here)
+        print('built index.html and lib/')
+
+
+if __name__ == '__main__':
+    main()
