@@ -102,7 +102,7 @@ During the puzzle, the pieces keep their own colours. From the sweep on, everyth
 6. **Word.** As each row lets go, MAZO in a plain bold font is uncovered behind it, from the bottom up. It is set in capitals, at the same height and in the same places as the block letters. The font is a stand-in until the looks are chosen.
 7. **Curtain.** After 0.65 s the line rises like a curtain. The whole scene lifts with it, the line as its hem, over 1.4 s. Underneath is the site. It was loaded behind the puzzle after the first letter came out, so it is ready. The curtain is a still picture of the finished scene moved by a CSS transition, which phones run smoothly. While the site shows, the 3D scene stops drawing. "Replay intro" brings the curtain back down on a fresh puzzle. The private preview has no site to reveal, so it ends on a card instead.
 
-Skip jumps straight to step 7 from anywhere. With reduced motion, the sweep and fall are instant and the hold is 1.5 s, but the curtain still rises: the owner chose the rise for everyone. A 0.45 s fade is kept in the code as the fallback (one setting).
+Skip jumps straight to step 7 from anywhere. The full intro plays for everyone, Reduce Motion included: the owner's choice, with Skip as the way out. The reduced-motion version (quicker moves, instant sweep and fall, 1.5 s hold) and a 0.45 s curtain fade stay in the code, each behind one setting.
 
 ## Sound
 
@@ -149,7 +149,7 @@ Testers use a public page on the site's domain, published with GitHub Pages. Beh
 
 ## Version history
 
-- **v0.4 (2026-11-21):** The curtain moves a still picture and rises for everyone, Reduce Motion included, with a fade kept as a one-setting fallback. On iPhone the sound starts on a tap, not a drag, and the sound button says so.
+- **v0.4 (2026-11-21):** The curtain moves a still picture and rises and the full intro plays for everyone, Reduce Motion included, with the reduced version and a fade kept as a one-setting fallback. On iPhone the sound starts on a tap, not a drag, and the sound button says so.
 - **v0.3 (2026-11-21):** The glow is smaller and fainter, and spreads from the centre of the word over 2.8 s. The logo handoff is written up under P3.
 - **v0.2 (2026-11-21):** The sweep turns the letters white, the white dims with the glow, and the line is one solid colour. The hold is 2 s. The line rises as a curtain on the current site.
 - **v0.1 (2026-11-21):** Pedestal chosen, with Upright M kept as the alternate. Finale v2, sound and the public test page added. The O glyph in the letters table corrected: its gap is second from the left, not in the middle.

@@ -81,7 +81,9 @@ const DESIGNS = __DESIGNS__;
 const ORDER = ['M', 'A', 'Z', 'O'];
 const DIR = { '+x': [1,0,0], '-x': [-1,0,0], '+y': [0,1,0], '-y': [0,-1,0], '+z': [0,0,1], '-z': [0,0,-1] };
 const BASE = '#d6d0c2', COLORS = { M: '#e07a52', A: '#3fb08a', Z: '#8f87e6', O: '#f0b24a' };
-const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const OS_RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const HONOR_RM = false;         // the full intro plays for everyone (owner's choice); true restores the reduced-motion version
+const RM = HONOR_RM && OS_RM;
 const $ = id => document.getElementById(id);
 const stageEl = $('stage'), hintEl = $('hint'), arrowEl = $('arrow'), liveEl = $('live'), dbgEl = $('debug');
 const SITE = __SITE__;          // the site's page (the public build only); null in the private preview
@@ -142,7 +144,7 @@ function dlog(m) { dlogLines.push(`${(performance.now() / 1000).toFixed(1)}s ${m
 addEventListener('error', e => dlog('error: ' + (e.message || e.type)));
 addEventListener('unhandledrejection', e => dlog('rejected: ' + (e.reason && e.reason.message || e.reason)));
 document.addEventListener('visibilitychange', () => dlog('page ' + document.visibilityState));
-if (debug) { dbgEl.style.display = 'block'; $('dbg').setAttribute('aria-pressed', 'true'); dlog('debug on' + (RM ? ', reduced motion' : '')); }
+if (debug) { dbgEl.style.display = 'block'; $('dbg').setAttribute('aria-pressed', 'true'); dlog('debug on' + (OS_RM ? ', reduce motion is on (' + (RM ? 'honoured' : 'full intro plays') + ')' : '')); }
 let yaw = -0.62, pitch = 0.3, vyaw = 0, vpitch = 0, touched = false;
 let W = 1, H = 1, titleScale = 0.3;
 let lastProgress = performance.now(), hintLevel = 0, lockedTold = 0;
