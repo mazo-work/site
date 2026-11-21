@@ -31,3 +31,4 @@ prototype/p0/shot-*.png
 tools/burr/g3sol_*.json
 __pycache__/
 prototype/p0/_site
+prototype/p0/shots-site

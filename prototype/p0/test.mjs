@@ -20,6 +20,21 @@ async function until(pred, ms, what) {
   while (Date.now() - t0 < ms) { const s = await st(); if (pred(s)) return s; await sleep(100); }
   const s = await st(); check(false, `${what} (timed out; state ${JSON.stringify(s)})`); return s;
 }
+async function finished(label) {
+  if ((await st()).hasSite) {
+    const s = await until(s => s.phase === 'site', 10000, `${label}: the curtain lifts to the site`);
+    const content = await page.evaluate(() => { const d = document.getElementById('site').contentDocument;
+      return !!d && !!d.querySelector('#hero') && d.body.innerText.includes('Jonathan Mazo'); });
+    check(content, `${label}: the site behind the curtain has its content`);
+    return s;
+  }
+  return await until(s => s.done, 6000, `${label}: the card appears`);
+}
+async function replay() {
+  if ((await st()).hasSite) await page.click('#reintro'); else await page.click('#replay');
+  await sleep(1100);
+  check((await st()).stage === 0, 'replay starts a fresh puzzle');
+}
 async function findView(L) {
   for (const yaw of [-0.6, 0.2, 1.0, 1.8, 2.6, 3.4, 4.2, 5.0]) for (const pitch of [0.3, -0.3, 0.7]) {
     await page.evaluate((y, p) => window.__mazo.setView(y, p), yaw, pitch); await sleep(60);
@@ -80,31 +95,36 @@ await sleep(80);
 check(['fall', 'done'].includes((await st()).phase), 'a tap during the hold starts the fall');
 await sleep(450);
 await page.screenshot({ path: 'shot-4-falling.png' });
-let s = await until(s => s.done, 6000, 'the card appears');
+let s = await until(s => s.phase === 'done' || s.phase === 'lift' || s.phase === 'site' || s.done, 6000, 'the line forms');
 check(s.blocks === 64 && s.landed === 64, `64 blocks in the line (${s.landed}/${s.blocks})`);
+check(s.lineColors === 1, `the line is one solid colour (${s.lineColors} colours)`);
 check(s.reveal >= 2.5, `the word is fully revealed (${s.reveal})`);
-await page.screenshot({ path: 'shot-5-end.png' });
+await page.screenshot({ path: 'shot-5-line.png' });
+if (s.hasSite) { await until(s => s.phase === 'lift', 3000, 'the curtain starts to rise'); await sleep(600); await page.screenshot({ path: 'shot-5b-curtain.png' }); }
+s = await finished('first run');
+await page.screenshot({ path: 'shot-5c-end.png' });
 // 4) the hold runs out by itself
-await page.click('#replay'); await sleep(600);
+await replay();
 for (let i = 0; i < 4; i++) { await page.evaluate(() => window.__mazo.showMe()); await until(s => s.stage === i + 1, 5000, `Show me pulls letter ${i + 1}`); }
 await until(s => s.phase === 'hold', 9000, 'the hold starts (second run)');
 const t0 = Date.now();
 await until(s => s.phase === 'fall' || s.phase === 'done', 6000, 'the hold ends by itself');
 const held = Date.now() - t0;
-check(held > 3000 && held < 5200, `the hold lasted about 4 s (${held} ms after it was first seen)`);
-s = await until(s => s.done, 6000, 'the card appears (second run)');
+check(held > 1300 && held < 3200, `the hold lasted about 2 s (${held} ms after it was first seen)`);
+s = await finished('second run');
 check(s.landed === 64, 'all 64 land (second run)');
 // 5) the other shape, a phone-sized screen, Skip
-await page.click('#replay'); await sleep(400);
+await replay();
 await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
 await sleep(1200);
 await page.click('#design'); await sleep(800);
 check((await st()).design === 'Upright M', 'the shape switch works');
 await page.screenshot({ path: 'shot-6-mobile-start.png' });
 await page.click('#skip');
-s = await until(s => s.done, 3000, 'Skip reaches the end');
-check(s.landed === 64 && s.reveal >= 2.5, 'Skip leaves the line and the word in place');
-await page.screenshot({ path: 'shot-7-mobile-end.png' });
+s = await until(s => s.landed === 64 && s.reveal >= 2.5, 3000, 'Skip leaves the line and the word in place');
+await page.screenshot({ path: 'shot-7-mobile-line.png' });
+s = await finished('after Skip');
+await page.screenshot({ path: 'shot-8-mobile-end.png' });
 const real = errors.filter(e => !/AudioContext was not allowed/.test(e));
 check(real.length === 0, 'no console errors' + (real.length ? ': ' + real.join(' | ') : ''));
 await browser.close();

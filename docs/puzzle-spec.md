@@ -1,6 +1,6 @@
 # MAZO puzzle spec
 
-**Version:** v0.1, draft for review (2026-11-21)
+**Version:** v0.2, draft for review (2026-11-21)
 
 The site's front door is a 3D puzzle made of the letters M, A, Z and O, locked together like a wooden burr puzzle. Visitors turn it and pull the letters out one at a time. Each letter flies into a title that spells MAZO, a light sweeps across the name, and the site opens. A skip control and a direct link to the recruiter section are always available.
 
@@ -15,9 +15,9 @@ The site's front door is a 3D puzzle made of the letters M, A, Z and O, locked t
 | Difficulty | A light puzzle. Order and direction matter, and hints appear for anyone stuck. |
 | Look | Decided later, from two or three prototypes. P0 uses plain pieces. |
 | Shape | Pedestal. Upright M stays verified as the alternate, one switch away in the preview. |
-| Finale | The light becomes the O's missing block, then the name falls into a line and MAZO is revealed in a plain font (see Finale). |
+| Finale | The sweep turns the letters white, and the light becomes the O's missing block. The name then falls into a solid line, MAZO is revealed in a plain font, and the line rises like a curtain on the site (see Finale). |
 | Sound | Yes, from P1 on. |
-| Testing | Three to five testers, on a public test page on the domain. |
+| Testing | Three to five testers, on a public test page on the domain. Behind the curtain is the current site, so they see real content. |
 
 ## The letters
 
@@ -92,15 +92,17 @@ Run `python3 tools/burr/check.py` after any change to the puzzle data. It must e
 
 ## Finale
 
-1. **Sweep.** The scene dims. The core leaves the O's ring, moves to the left of the M, and sweeps across the name in 1.7 s, lighting each letter as it passes.
-2. **Click-in.** The core turns into a block and clicks into the gap in the O's bottom bar (0.95 s, then a short pulse). Every letter now has 16 blocks, 64 in all.
-3. **Dim back.** The letters return to their own colour, and the new block takes the O's colour, so the O looks whole (0.85 s). A soft warm glow rises behind the word (1.2 s), so the letters stand out against it.
-4. **Hold.** 4 s, with the glow breathing slightly. A tap, click, scroll or key ends the hold at once.
-5. **Fall.** The rows let go from the bottom up, 160 ms apart. Each block drops in 0.9 s, with a downward pull that speeds up like a real fall. On the way, it shrinks into its place in one row of all 64 blocks. The row spans 96% of the screen's width and sits 12 px above the bottom edge. The blocks keep the word's left-to-right order, with M's on the left and O's on the right.
-6. **Word.** As each row lets go, MAZO in a plain bold font is uncovered behind it, from the bottom up. It is set in capitals, at the same height and in the same places as the block letters. The font is a stand-in until the looks are chosen.
-7. **End.** In P0 a card stands in for the site. The line stays until the handoff into the site is designed (P3).
+During the puzzle, the pieces keep their own colours. From the sweep on, everything is one solid colour.
 
-Skip jumps straight to step 7 from anywhere. With reduced motion, the sweep and fall are instant and the hold is 1.5 s.
+1. **Sweep.** The scene dims. The core leaves the O's ring, moves to the left of the M, and sweeps across the name in 1.7 s. Each letter turns white and glows as the light passes.
+2. **Click-in.** The core turns into a white block and clicks into the gap in the O's bottom bar (0.95 s, then a short pulse). Every letter now has 16 blocks, 64 in all.
+3. **Dim back.** The white dims slightly, on the letters and the new block alike, over 0.85 s. At the same time, a soft warm glow rises behind the word (1.2 s), so the letters stand out against it.
+4. **Hold.** 2 s, with the glow breathing slightly. A tap, click, scroll or key ends the hold at once.
+5. **Fall.** The rows let go from the bottom up, 160 ms apart. Each block drops in 0.9 s, with a downward pull that speeds up like a real fall. On the way, it shrinks into its place in one solid-coloured row of all 64 blocks. The row spans 96% of the screen's width and sits 12 px above the bottom edge.
+6. **Word.** As each row lets go, MAZO in a plain bold font is uncovered behind it, from the bottom up. It is set in capitals, at the same height and in the same places as the block letters. The font is a stand-in until the looks are chosen.
+7. **Curtain.** After 0.65 s the line rises like a curtain. The whole scene lifts with it, the line as its hem, over 1.4 s. Underneath is the site. It was loaded behind the puzzle after the first letter came out, so it is ready. While the site shows, the 3D scene stops drawing. "Replay intro" brings the curtain back down on a fresh puzzle. The private preview has no site to reveal, so it ends on a card instead.
+
+Skip jumps straight to step 7 from anywhere. With reduced motion, the sweep, fall and curtain are instant, and the hold is 1.5 s.
 
 ## Sound
 
@@ -118,11 +120,12 @@ Their character gets matched to the chosen material in P2.
 
 ## The test page
 
-Testers use a public page on the site's domain, published with GitHub Pages:
+Testers use a public page on the site's domain, published with GitHub Pages. Behind the curtain is the current site, built from its own source under `site/`; the resume link now follows the base path, so it works there:
 - A workflow builds `prototype/p0` from the `v2` branch with `python3 build.py --site _site` and deploys it. It first runs `tools/burr/check.py`, so a broken puzzle can't be published.
 - The workflow pins its actions to exact commits, not tags.
 - Every build carries `<meta name="robots" content="noindex, nofollow">`. That asks search engines not to list the page; it does not hide it from anyone who has the link.
-- The public copy also carries a strict Content-Security-Policy. It allows only the page's own files and its three inline blocks, each matched by hash, and no network requests. A tampered copy was blocked, so the policy is enforced.
+- The public copy also carries a strict Content-Security-Policy. It allows only the page's own files and its three inline blocks, each matched by hash, frames from itself, and no network requests. A tampered copy was blocked, so the policy is enforced.
+- The site under `site/` gets its own noindex tag and policy: its own files only, no inline code, and its contact form may post only to Formspree.
 
 ## Next
 
@@ -145,5 +148,6 @@ Testers use a public page on the site's domain, published with GitHub Pages:
 
 ## Version history
 
+- **v0.2 (2026-11-21):** The sweep turns the letters white, the white dims with the glow, and the line is one solid colour. The hold is 2 s. The line rises as a curtain on the current site.
 - **v0.1 (2026-11-21):** Pedestal chosen, with Upright M kept as the alternate. Finale v2, sound and the public test page added. The O glyph in the letters table corrected: its gap is second from the left, not in the middle.
 - **v0 (2026-11-21):** first draft. Form, order, title, light and difficulty decided. Two shapes shortlisted and verified. P0 preview built and tested.

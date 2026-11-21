@@ -11,7 +11,9 @@
   :root { color-scheme: dark; }
   html, body { margin: 0; height: 100%; background: #0e1014; color: #e8e4da; overflow: hidden;
     font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
-  #stage { position: fixed; inset: 0; height: 100dvh; touch-action: none; user-select: none; -webkit-user-select: none; }
+  #stage { position: fixed; inset: 0; height: 100dvh; z-index: 1; touch-action: none; user-select: none; -webkit-user-select: none; will-change: transform; }
+  #site { position: fixed; inset: 0; width: 100%; height: 100dvh; border: 0; z-index: 0; display: none; background: #fff; }
+  #reintro { right: 16px; bottom: max(14px, env(safe-area-inset-bottom)); z-index: 3; background: rgba(14,16,20,0.82); }
   #stage canvas { display: block; width: 100%; height: 100%; }
   #stage:focus-visible { outline: 2px solid #ffcf8a; outline-offset: -4px; }
   .ui { position: fixed; z-index: 2; }
@@ -47,6 +49,7 @@
 </head>
 <body>
 <h1 class="sr">MAZO puzzle preview</h1>
+<iframe id="site" title="Jonathan Mazo, the site" aria-hidden="true" tabindex="-1" inert></iframe>
 <div id="stage" tabindex="0" role="application" aria-label="MAZO puzzle. Arrow keys turn it. Enter pulls the letter that is free."></div>
 <div id="top" class="ui">
   <span id="tag">Preview P0 · shape and order, plain pieces</span>
@@ -63,6 +66,7 @@
 <svg id="arrow" viewBox="0 0 56 56" aria-hidden="true"><path d="M10 28h30" stroke="#ffcf8a" stroke-width="4" stroke-linecap="round" fill="none"/><path d="M32 18l12 10-12 10" stroke="#ffcf8a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
 <div id="done" class="ui"><div class="card"><h2>Unlocked</h2><p>The site opens here: a header with the full name, then About.</p><button id="replay">Replay</button></div></div>
 <div id="debug" class="ui"></div>
+<button id="reintro" class="ui" hidden>Replay intro</button>
 <div id="fallback" class="ui"><div class="card"><h2>3D isn't available here</h2><p>This browser can't draw the puzzle.</p><button id="fbskip">Go to the site</button></div></div>
 <div id="live" class="sr" aria-live="polite"></div>
 
@@ -400,6 +404,7 @@ function fly(p) {
   }, () => {
     slot.attach(p); p.position.set(0, 0, 0); p.quaternion.identity(); p.scale.setScalar(1);
     stage += 1; busy = false; lastProgress = performance.now(); hintLevel = 0; arrowEl.style.opacity = 0; sfx('land', idx);
+    if (stage === 1) ensureSite();
     if (stage < 4) {
       hintEl.textContent = `${u.L} is out. ${4 - stage} to go.`;
       say(`${u.L} unlocked. ${4 - stage} letters left.`);
@@ -407,7 +412,8 @@ function fly(p) {
   });
 }
 // ---------- finale: sweep, the light completes the O, a hold, the fall, the word ----------
-const HOLD_MS = 4000, ROW_GAP = 160, FALL_MS = 900;
+const HOLD_MS = 2000, ROW_GAP = 160, FALL_MS = 900;
+const WHITE = new THREE.Color('#ffffff'), DIM_WHITE = new THREE.Color('#e7e2d8'), GLOW_WHITE = new THREE.Color('#fff1da'), LIT = 0.95, DIM = 0.2;
 const FONT = 'system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
 let phase = 'none', lightBlock = null, glow = null, word = null, fallers = null, fallData = [], holdTimer = null, revealLocal = -9, lastPip = 0;
 const revealPlane = new THREE.Plane(new THREE.Vector3(0, -1, 0), -1e6);   // the word shows only below this height
@@ -451,7 +457,8 @@ function finale() {
   const slotX = slots.map(s => s.getWorldPosition(new THREE.Vector3()));
   const start = slotX[0].clone().add(new THREE.Vector3(-1.4 * titleScale * 6, 0, 1.2));
   const end = slotX[3].clone().add(new THREE.Vector3(1.4 * titleScale * 6, 0, 1.2));
-  const light = (i, ms) => { const m = pieces[ORDER[i]].userData.mat; sfx('chime', i); tween(ms, k => { m.emissiveIntensity = 1.15 * easeOut(k); }); };
+  const light = (i, ms) => { const m = pieces[ORDER[i]].userData.mat, c0 = m.color.clone(); sfx('chime', i); m.emissive.copy(GLOW_WHITE);
+    tween(ms, k => { const e = easeOut(k); m.color.copy(c0).lerp(WHITE, e); m.emissiveIntensity = LIT * e; }); };
   glow = makeGlow(); title.add(glow); word = makeWord(); title.add(word); revealLocal = -9;
   if (RM) { ORDER.forEach((L, i) => light(i, 200)); tween(300, () => {}, () => clickIn(true)); return; }
   tween(650, k => { hemi.intensity = 0.9 - 0.6 * k; key.intensity = 2.2 - 1.6 * k; scene.environmentIntensity = 0.55 - 0.35 * k; });
@@ -466,8 +473,8 @@ function finale() {
 function clickIn(instant) {     // the light turns into a block and clicks into the O's gap
   phase = 'click';
   const gl = gapLocal(), O = pieces.O;
-  lightBlock = new THREE.Mesh(voxGeo, new THREE.MeshStandardMaterial({ color: '#fff3dc', roughness: 0.4,
-    emissive: new THREE.Color('#ffc77d'), emissiveIntensity: 2.4 }));
+  lightBlock = new THREE.Mesh(voxGeo, new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: 0.4,
+    emissive: GLOW_WHITE.clone(), emissiveIntensity: 2.4 }));
   const seat = () => { O.add(lightBlock); lightBlock.position.copy(gl); lightBlock.quaternion.identity(); lightBlock.scale.setScalar(1); orb.visible = false; orbLight.intensity = 0; };
   if (instant) { seat(); sfx('click'); dimBack(true); return; }
   scene.add(lightBlock);
@@ -487,13 +494,13 @@ function clickIn(instant) {     // the light turns into a block and clicks into 
       () => { lightBlock.scale.setScalar(1); dimBack(false); });
   });
 }
-function dimBack(instant) {     // the letters dim back to their own colour, the new block takes the O's, a glow rises behind
+function dimBack(instant) {     // the white dims slightly, the O's new block with it, as a glow rises behind
   phase = 'dimback';
-  const mats = ORDER.map(L => pieces[L].userData.mat), lb = lightBlock.material;
-  const oc = new THREE.Color(colors ? COLORS.O : BASE), c0 = lb.color.clone(), e0 = lb.emissiveIntensity;
+  const mats = ORDER.map(L => pieces[L].userData.mat).concat(lightBlock.material);
+  const from = mats.map(m => ({ c: m.color.clone(), e: m.emissiveIntensity }));
+  mats.forEach(m => m.emissive.copy(GLOW_WHITE));
   tween(instant ? 1 : 850, k => { const e = easeOut(k);
-    mats.forEach(m => { m.emissiveIntensity = 1.15 * (1 - e); });
-    lb.color.copy(c0).lerp(oc, e); lb.emissiveIntensity = e0 * (1 - e); });
+    mats.forEach((m, i) => { m.color.copy(from[i].c).lerp(DIM_WHITE, e); m.emissiveIntensity = from[i].e + (DIM - from[i].e) * e; }); });
   tween(instant ? 1 : 1200, k => { glow.material.opacity = 0.55 * easeOut(k); }, () => startHold(instant));
 }
 function startHold(instant) {
@@ -519,7 +526,7 @@ function startFall(instant) {   // rows let go bottom first; every block shrinks
   const t0 = performance.now();
   blocks.forEach((b, j) => { b.j = j; b.t0 = instant ? t0 - FALL_MS - 400 : t0 + b.row * ROW_GAP + Math.random() * 70; b.landed = instant; b.landT = 0; });
   fallData = blocks;
-  fallers = new THREE.InstancedMesh(voxGeo, new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.52 }), blocks.length);
+  fallers = new THREE.InstancedMesh(voxGeo, new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.52, emissive: GLOW_WHITE, emissiveIntensity: DIM }), blocks.length);
   blocks.forEach((b, i) => fallers.setColorAt(i, b.color));
   fallers.instanceColor.needsUpdate = true; fallers.frustumCulled = false;
   camera.add(fallers);
@@ -560,8 +567,41 @@ function updateFall(now) {
 }
 function finishUp() {
   phase = 'done'; revealLocal = 2.6;
+  if (SITE) { setTimeout(() => { if (phase === 'done') liftCurtain(); }, 650); return; }
   setTimeout(() => { if (phase === 'done') { $('done').classList.add('on'); $('replay').focus({ preventScroll: true }); } }, 500);
 }
+// ---------- the curtain: the line is its hem; it rises and the current site is underneath ----------
+const SITE = __SITE__;          // the site's page (the public build only); null in the private preview
+const siteEl = $('site');
+let siteReady = null, paused = false, rafId = 0;
+function ensureSite() {         // loads the site behind the puzzle well before it is needed
+  if (!SITE) return Promise.resolve(false);
+  if (siteReady) return siteReady;
+  siteReady = new Promise(res => { siteEl.addEventListener('load', () => res(true), { once: true }); setTimeout(() => res(false), 10000); });
+  siteEl.style.display = 'block'; siteEl.src = SITE;
+  return siteReady;
+}
+function liftCurtain() {
+  phase = 'lift';
+  Promise.race([ensureSite(), new Promise(r => setTimeout(r, 3000))]).then(() => {
+    $('top').style.visibility = 'hidden';
+    tween(RM ? 1 : 1400, k => { stageEl.style.transform = `translate3d(0, ${-100 * easeIO(k)}%, 0)`; }, () => {
+      phase = 'site'; stageEl.style.visibility = 'hidden'; paused = true;
+      siteEl.inert = false; siteEl.removeAttribute('aria-hidden'); siteEl.removeAttribute('tabindex');
+      $('reintro').hidden = false; try { siteEl.focus({ preventScroll: true }); } catch (e) {}
+      say('The site is open.');
+    });
+  });
+}
+$('reintro').onclick = () => {   // brings the curtain back down on a fresh puzzle
+  $('reintro').hidden = true; siteEl.inert = true; siteEl.setAttribute('aria-hidden', 'true'); siteEl.setAttribute('tabindex', '-1');
+  stageEl.style.visibility = ''; $('top').style.visibility = '';
+  paused = false; if (!rafId) rafId = requestAnimationFrame(frame);
+  load(design);
+  stageEl.style.transform = 'translate3d(0, -100%, 0)';
+  tween(RM ? 1 : 800, k => { stageEl.style.transform = `translate3d(0, ${-100 * (1 - easeIO(k))}%, 0)`; },
+    () => { stageEl.style.transform = ''; });
+};
 function jumpToEnd() {          // Skip: straight to the finished state from anywhere
   tweens.length = 0; clearTimeout(holdTimer);
   for (let i = stage; i < 4; i++) {
@@ -569,7 +609,8 @@ function jumpToEnd() {          // Skip: straight to the finished state from any
     slots[i].attach(p); p.position.set(0, 0, 0); p.quaternion.identity(); p.scale.setScalar(1);
   }
   stage = 4; busy = true; arrowEl.style.opacity = 0; $('showme').hidden = true; hintEl.style.opacity = 0; $('bottom').style.visibility = 'hidden';
-  ORDER.forEach(L => { pieces[L].userData.mat.emissiveIntensity = 0; });
+  ORDER.forEach(L => { const m = pieces[L].userData.mat; m.color.copy(DIM_WHITE); m.emissive.copy(GLOW_WHITE); m.emissiveIntensity = DIM; });
+  ensureSite();
   hemi.intensity = 0.6; key.intensity = 1.2; scene.environmentIntensity = 0.2; orb.visible = false; orbLight.intensity = 0;
   if (!glow) { glow = makeGlow(); title.add(glow); } glow.material.opacity = 0.55;
   if (!word) { word = makeWord(); title.add(word); }
@@ -579,9 +620,9 @@ function jumpToEnd() {          // Skip: straight to the finished state from any
   }
   if (!lightBlock || lightBlock.parent !== pieces.O) {
     disposeMesh(lightBlock);
-    lightBlock = new THREE.Mesh(voxGeo, new THREE.MeshStandardMaterial({ color: colors ? COLORS.O : BASE, roughness: 0.52 }));
+    lightBlock = new THREE.Mesh(voxGeo, new THREE.MeshStandardMaterial({ color: DIM_WHITE.clone(), roughness: 0.52, emissive: GLOW_WHITE.clone(), emissiveIntensity: DIM }));
     pieces.O.add(lightBlock); lightBlock.position.copy(gapLocal());
-  } else { lightBlock.material.color.set(colors ? COLORS.O : BASE); lightBlock.material.emissiveIntensity = 0; lightBlock.scale.setScalar(1); }
+  } else { lightBlock.material.color.copy(DIM_WHITE); lightBlock.material.emissive.copy(GLOW_WHITE); lightBlock.material.emissiveIntensity = DIM; lightBlock.scale.setScalar(1); }
   phase = 'hold'; startFall(true);
 }
 addEventListener('keydown', () => { if (phase === 'hold') startFall(false); });
@@ -622,6 +663,7 @@ stageEl.addEventListener('keydown', e => {
 // ---------- loop ----------
 let tPrev = performance.now(), fps = 60;
 function frame(now) {
+  if (paused) { rafId = 0; return; }
   const dt = Math.min(0.05, (now - tPrev) / 1000); tPrev = now; fps = fps * 0.95 + (1 / Math.max(dt, 1e-3)) * 0.05;
   for (let i = tweens.length - 1; i >= 0; i--) {
     const t = tweens[i], k = Math.min(1, (now - t.t0) / t.ms);
@@ -661,12 +703,13 @@ function frame(now) {
       (ax ? `axis on screen ${ax.ppu.toFixed(0)} px/unit\n` : '') + `mode ${ptr?.mode ?? '-'}  fps ${fps.toFixed(0)}`;
   }
   renderer.render(scene, camera);
-  requestAnimationFrame(frame);
+  rafId = requestAnimationFrame(frame);
 }
 window.__mazo = {   // test hook: read-only state plus the same helpers the page uses
   state: () => ({ stage, busy, design: D.name, s: stage < 4 ? pieces[ORDER[stage]].userData.s : null,
     done: $('done').classList.contains('on'), phase, blocks: fallData.length, landed: fallData.filter(b => b.landed).length,
-    reveal: Math.round(revealLocal * 100) / 100, sound: !!audio && audio.state }),
+    reveal: Math.round(revealLocal * 100) / 100, sound: !!audio && audio.state, hasSite: !!SITE,
+    lineColors: new Set(fallData.map(b => b.color.getHexString())).size }),
   showMe: () => showMe(),
   axis: L => { const p = pieces[L], u = p.userData; return u.segs.length ? axisScreen(p, u.segs[u.seg].dir) : { dx: 1, dy: 0, ppu: 99, x: 0, y: 0 }; },
   cell: (L, n) => { const u = pieces[L].userData, m = new THREE.Matrix4(); u.mesh.getMatrixAt(n, m);
@@ -676,7 +719,7 @@ window.__mazo = {   // test hook: read-only state plus the same helpers the page
   pick: (x, y) => pick({ clientX: x, clientY: y })
 };
 load(0);
-requestAnimationFrame(frame);
+rafId = requestAnimationFrame(frame);
 </script>
 </body>
 </html>
