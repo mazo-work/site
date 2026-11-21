@@ -15,6 +15,7 @@
   #site { position: fixed; inset: 0; width: 100%; height: 100dvh; border: 0; z-index: 0; display: none; background: #fff; }
   #reintro { right: 16px; bottom: max(14px, env(safe-area-inset-bottom)); z-index: 3; background: rgba(14,16,20,0.82); }
   #stage canvas { display: block; width: 100%; height: 100%; }
+  #stage #snap { position: absolute; inset: 0; display: none; }
   #stage:focus-visible { outline: 2px solid #ffcf8a; outline-offset: -4px; }
   .ui { position: fixed; z-index: 2; }
   #top { top: max(12px, env(safe-area-inset-top)); left: 16px; right: 16px; display: flex; justify-content: space-between;
@@ -51,7 +52,7 @@
 <body>
 <h1 class="sr">MAZO puzzle preview</h1>
 <iframe id="site" title="Jonathan Mazo, the site" aria-hidden="true" tabindex="-1" inert></iframe>
-<div id="stage" tabindex="0" role="application" aria-label="MAZO puzzle. Arrow keys turn it. Enter pulls the letter that is free."></div>
+<div id="stage" tabindex="0" role="application" aria-label="MAZO puzzle. Arrow keys turn it. Enter pulls the letter that is free."><canvas id="snap" aria-hidden="true"></canvas></div>
 <div id="top" class="ui">
   <span id="tag">Preview P0 · shape and order, plain pieces</span>
   <span class="topbtns"><button id="sound" aria-pressed="true">Sound on</button><button id="skip">Skip intro</button></span>
@@ -141,7 +142,7 @@ function dlog(m) { dlogLines.push(`${(performance.now() / 1000).toFixed(1)}s ${m
 addEventListener('error', e => dlog('error: ' + (e.message || e.type)));
 addEventListener('unhandledrejection', e => dlog('rejected: ' + (e.reason && e.reason.message || e.reason)));
 document.addEventListener('visibilitychange', () => dlog('page ' + document.visibilityState));
-if (debug) { dbgEl.style.display = 'block'; $('dbg').setAttribute('aria-pressed', 'true'); dlog('debug on'); }
+if (debug) { dbgEl.style.display = 'block'; $('dbg').setAttribute('aria-pressed', 'true'); dlog('debug on' + (RM ? ', reduced motion' : '')); }
 let yaw = -0.62, pitch = 0.3, vyaw = 0, vpitch = 0, touched = false;
 let W = 1, H = 1, titleScale = 0.3;
 let lastProgress = performance.now(), hintLevel = 0, lockedTold = 0;
@@ -159,12 +160,12 @@ function wakeAudio() {
   try {
     if (!audio) {
       const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
-      audio = new AC(); master = audio.createGain(); master.gain.value = 0.7; master.connect(audio.destination);
+      audio = new AC(); audio.onstatechange = () => { setSoundButton(); dlog('sound ' + audio.state); }; master = audio.createGain(); master.gain.value = 0.7; master.connect(audio.destination);
     }
     if (audio.state !== 'running') {
       // iOS only starts audio inside a tap's touchend or click, and wants a sound started in the same moment
       const b = audio.createBufferSource(); b.buffer = audio.createBuffer(1, 1, 22050); b.connect(audio.destination); b.start(0);
-      const r = audio.resume(); if (r && r.then) r.then(() => dlog('sound ' + audio.state), err => dlog('sound blocked: ' + (err && err.name)));
+      const r = audio.resume(); if (r && r.then) r.catch(err => dlog('sound blocked: ' + (err && err.name)));
     }
   } catch (e) { audio = null; dlog('sound failed: ' + e.message); }
 }
@@ -604,26 +605,39 @@ function ensureSite() {         // loads the site behind the puzzle well before 
   siteEl.style.display = 'block'; siteEl.src = SITE;
   return siteReady;
 }
+function snapshot() {            // the scene as a still picture: phones move a picture smoothly, a live 3D view less reliably
+  renderer.render(scene, camera);
+  const c = $('snap'), g = renderer.domElement; c.width = g.width; c.height = g.height;
+  c.getContext('2d').drawImage(g, 0, 0); c.style.display = 'block'; g.style.visibility = 'hidden';
+}
+function liveAgain() { $('snap').style.display = 'none'; renderer.domElement.style.visibility = ''; }
+function moveStage(y, o, ms, done) {   // a CSS transition, run by the browser's compositor
+  let fin = false;
+  const end = e => { if ((e && e.target !== stageEl) || fin) return; fin = true; stageEl.removeEventListener('transitionend', end); stageEl.style.transition = ''; done(); };
+  stageEl.style.transition = `transform ${ms}ms cubic-bezier(0.45, 0, 0.55, 1), opacity ${ms}ms ease`;
+  void stageEl.offsetHeight;
+  stageEl.style.transform = y ? `translate3d(0, ${y}%, 0)` : ''; stageEl.style.opacity = o === 1 ? '' : String(o);
+  stageEl.addEventListener('transitionend', end); setTimeout(end, ms + 300);
+}
 function liftCurtain() {
   phase = 'lift';
   Promise.race([ensureSite(), new Promise(r => setTimeout(r, 3000))]).then(() => {
-    $('top').style.visibility = 'hidden';
-    tween(RM ? 1 : 1400, k => { stageEl.style.transform = `translate3d(0, ${-100 * easeIO(k)}%, 0)`; }, () => {
-      phase = 'site'; stageEl.style.visibility = 'hidden'; paused = true;
+    $('top').style.visibility = 'hidden'; snapshot(); paused = true; dlog(RM ? 'curtain: fade (reduced motion)' : 'curtain: rising');
+    const opened = () => {
+      phase = 'site'; stageEl.style.visibility = 'hidden';
       siteEl.inert = false; siteEl.removeAttribute('aria-hidden'); siteEl.removeAttribute('tabindex');
       $('reintro').hidden = false; try { siteEl.focus({ preventScroll: true }); } catch (e) {}
       say('The site is open.'); dlog('curtain up');
-    });
+    };
+    if (RM) moveStage(0, 0, 450, opened); else moveStage(-100, 1, 1400, opened);
   });
 }
 $('reintro').onclick = () => {   // brings the curtain back down on a fresh puzzle
   $('reintro').hidden = true; siteEl.inert = true; siteEl.setAttribute('aria-hidden', 'true'); siteEl.setAttribute('tabindex', '-1');
+  load(design); puzzle.rotation.set(pitch, yaw, 0); snapshot();
+  stageEl.style.transition = ''; stageEl.style.transform = RM ? '' : 'translate3d(0, -100%, 0)'; stageEl.style.opacity = RM ? '0' : '';
   stageEl.style.visibility = ''; $('top').style.visibility = '';
-  paused = false; if (!rafId) rafId = requestAnimationFrame(frame);
-  load(design);
-  stageEl.style.transform = 'translate3d(0, -100%, 0)';
-  tween(RM ? 1 : 800, k => { stageEl.style.transform = `translate3d(0, ${-100 * (1 - easeIO(k))}%, 0)`; },
-    () => { stageEl.style.transform = ''; });
+  moveStage(0, 1, RM ? 300 : 800, () => { liveAgain(); paused = false; if (!rafId) rafId = requestAnimationFrame(frame); });
 };
 function jumpToEnd() {          // Skip: straight to the finished state from anywhere
   tweens.length = 0; clearTimeout(holdTimer);
@@ -669,8 +683,10 @@ $('showme').onclick = showMe;
 $('replay').onclick = e => { orb.visible = true; load(design); if (e.detail === 0) stageEl.focus(); };
 $('design').onclick = () => { orb.visible = true; load((design + 1) % DESIGNS.length); };
 $('colors').onclick = () => setColors(!colors);
-function setSoundButton() { $('sound').textContent = soundOn ? 'Sound on' : 'Sound off'; $('sound').setAttribute('aria-pressed', String(soundOn)); }
+const COARSE = matchMedia('(pointer: coarse)').matches;
+function setSoundButton() { $('sound').textContent = !soundOn ? 'Sound off' : (audio && audio.state === 'running') ? 'Sound on' : (COARSE ? 'Tap for sound' : 'Click for sound'); $('sound').setAttribute('aria-pressed', String(soundOn)); }
 $('sound').onclick = () => {
+  if (soundOn && !(audio && audio.state === 'running')) { wakeAudio(); return; }   // this tap only starts the sound
   soundOn = !soundOn; try { localStorage.setItem('mazo-sound', soundOn ? 'on' : 'off'); } catch (e) {}
   setSoundButton(); if (soundOn) wakeAudio(); else if (audio) audio.suspend();
 };

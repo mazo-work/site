@@ -100,7 +100,12 @@ check(s.blocks === 64 && s.landed === 64, `64 blocks in the line (${s.landed}/${
 check(s.lineColors === 1, `the line is one solid colour (${s.lineColors} colours)`);
 check(s.reveal >= 2.5, `the word is fully revealed (${s.reveal})`);
 await page.screenshot({ path: 'shot-5-line.png' });
-if (s.hasSite) { await until(s => s.phase === 'lift', 3000, 'the curtain starts to rise'); await sleep(600); await page.screenshot({ path: 'shot-5b-curtain.png' }); }
+if (s.hasSite) { await until(s => s.phase === 'lift', 3000, 'the curtain starts to rise'); await sleep(700);
+  const mid = await page.evaluate(() => { const m = getComputedStyle(document.getElementById('stage')).transform, h = innerHeight;
+    const y = m === 'none' ? 0 : new DOMMatrix(m).m42; return { y, h, still: getComputedStyle(document.getElementById('snap')).display }; });
+  check(mid.y < -0.1 * mid.h && mid.y > -0.9 * mid.h, `the curtain is partway up, not a cut (${Math.round(mid.y)} of -${mid.h} px)`);
+  check(mid.still === 'block', 'the curtain moves a still picture');
+  await page.screenshot({ path: 'shot-5b-curtain.png' }); }
 s = await finished('first run');
 await page.screenshot({ path: 'shot-5c-end.png' });
 // 4) the hold runs out by itself
