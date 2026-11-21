@@ -22,3 +22,11 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# puzzle tooling
+prototype/p0/node_modules
+prototype/p0/lib
+prototype/p0/index.html
+prototype/p0/shot-*.png
+tools/burr/g3sol_*.json
+__pycache__/

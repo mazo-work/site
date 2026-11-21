@@ -1,0 +1,17 @@
+{
+  "name": "mazo-puzzle-p0",
+  "private": true,
+  "version": "0.0.0",
+  "description": "P0 preview of the MAZO letter puzzle: shape and order, plain pieces",
+  "type": "module",
+  "scripts": {
+    "build": "python3 build.py",
+    "test": "node test.mjs"
+  },
+  "dependencies": {
+    "three": "0.170.0"
+  },
+  "devDependencies": {
+    "puppeteer-core": "23.11.1"
+  }
+}

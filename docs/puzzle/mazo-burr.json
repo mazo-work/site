@@ -1,0 +1,349 @@
+{
+ "version": "v0",
+ "date": "2026-11-21",
+ "note": "Voxel coordinates: x right, y up, z toward the viewer. A letter voxel is R\u00b7(i, r, 0) + off, where (i, r) is its column and row in the glyph (row 0 at the bottom). Paths are unit moves with the earlier letters already out and the later ones held.",
+ "order": [
+  "M",
+  "A",
+  "Z",
+  "O"
+ ],
+ "designs": [
+  {
+   "name": "Pedestal",
+   "search_id": 41246,
+   "note": "M is the flat base and drops out the bottom; no half-pull of M frees anything; preview places it at -center so the shape spins about its middle",
+   "dims": [
+    7,
+    6,
+    7
+   ],
+   "core": [
+    -1.0,
+    1.0,
+    0.0
+   ],
+   "leaks": {
+    "M": 0,
+    "A": 1
+   },
+   "pieces": {
+    "M": {
+     "glyph": [
+      "XX.XX",
+      "XXXXX",
+      "X.X.X",
+      "X...X",
+      "X...X"
+     ],
+     "R": [
+      [
+       0,
+       1,
+       0
+      ],
+      [
+       0,
+       0,
+       1
+      ],
+      [
+       1,
+       0,
+       0
+      ]
+     ],
+     "off": [
+      -1,
+      -1,
+      -3
+     ],
+     "path": [
+      "-y",
+      "-y"
+     ]
+    },
+    "A": {
+     "glyph": [
+      ".XXX.",
+      "XX.XX",
+      "XXXXX",
+      "X...X",
+      "X...X"
+     ],
+     "R": [
+      [
+       1,
+       0,
+       0
+      ],
+      [
+       0,
+       0,
+       -1
+      ],
+      [
+       0,
+       1,
+       0
+      ]
+     ],
+     "off": [
+      -2,
+      0,
+      -1
+     ],
+     "path": [
+      "-y",
+      "-y",
+      "-y"
+     ]
+    },
+    "Z": {
+     "glyph": [
+      "XXXXX",
+      "...XX",
+      "..XX.",
+      ".XX..",
+      "XXXXX"
+     ],
+     "R": [
+      [
+       0,
+       0,
+       1
+      ],
+      [
+       1,
+       0,
+       0
+      ],
+      [
+       0,
+       1,
+       0
+      ]
+     ],
+     "off": [
+      0,
+      -2,
+      -2
+     ],
+     "path": [
+      "-x",
+      "-x",
+      "+z",
+      "+z",
+      "+z"
+     ]
+    },
+    "O": {
+     "glyph": [
+      "XXXXX",
+      "X...X",
+      "X...X",
+      "X...X",
+      "X.XXX"
+     ],
+     "R": [
+      [
+       1,
+       0,
+       0
+      ],
+      [
+       0,
+       1,
+       0
+      ],
+      [
+       0,
+       0,
+       1
+      ]
+     ],
+     "off": [
+      -3,
+      -1,
+      0
+     ],
+     "path": []
+    }
+   },
+   "center": [
+    0,
+    0.5,
+    0
+   ]
+  },
+  {
+   "name": "Upright M",
+   "search_id": 41220,
+   "note": "M stands behind the O and slides out sideways; reads as M from the back; preview places it at -center so the shape spins about its middle",
+   "dims": [
+    7,
+    6,
+    6
+   ],
+   "core": [
+    0.0,
+    1.0,
+    0.0
+   ],
+   "leaks": {
+    "M": 13,
+    "A": 1
+   },
+   "pieces": {
+    "M": {
+     "glyph": [
+      "XX.XX",
+      "XXXXX",
+      "X.X.X",
+      "X...X",
+      "X...X"
+     ],
+     "R": [
+      [
+       0,
+       -1,
+       0
+      ],
+      [
+       1,
+       0,
+       0
+      ],
+      [
+       0,
+       0,
+       1
+      ]
+     ],
+     "off": [
+      1,
+      -1,
+      1
+     ],
+     "path": [
+      "-x",
+      "-x",
+      "-x",
+      "-x"
+     ]
+    },
+    "A": {
+     "glyph": [
+      ".XXX.",
+      "XX.XX",
+      "XXXXX",
+      "X...X",
+      "X...X"
+     ],
+     "R": [
+      [
+       1,
+       0,
+       0
+      ],
+      [
+       0,
+       0,
+       -1
+      ],
+      [
+       0,
+       1,
+       0
+      ]
+     ],
+     "off": [
+      -1,
+      0,
+      -1
+     ],
+     "path": [
+      "-y",
+      "-y",
+      "-y"
+     ]
+    },
+    "Z": {
+     "glyph": [
+      "XXXXX",
+      "...XX",
+      "..XX.",
+      ".XX..",
+      "XXXXX"
+     ],
+     "R": [
+      [
+       0,
+       0,
+       1
+      ],
+      [
+       1,
+       0,
+       0
+      ],
+      [
+       0,
+       1,
+       0
+      ]
+     ],
+     "off": [
+      1,
+      -2,
+      -2
+     ],
+     "path": [
+      "-x",
+      "-x",
+      "+z",
+      "+z",
+      "+z"
+     ]
+    },
+    "O": {
+     "glyph": [
+      "XXXXX",
+      "X...X",
+      "X...X",
+      "X...X",
+      "X.XXX"
+     ],
+     "R": [
+      [
+       1,
+       0,
+       0
+      ],
+      [
+       0,
+       1,
+       0
+      ],
+      [
+       0,
+       0,
+       1
+      ]
+     ],
+     "off": [
+      -2,
+      -1,
+      0
+     ],
+     "path": []
+    }
+   },
+   "center": [
+    0,
+    0.5,
+    0.5
+   ]
+  }
+ ]
+}
