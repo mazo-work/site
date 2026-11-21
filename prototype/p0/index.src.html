@@ -431,10 +431,12 @@ function makeGlow() {           // a soft warm light behind the word, so the let
   grd.addColorStop(0, 'rgba(255,196,120,1)'); grd.addColorStop(0.4, 'rgba(255,170,90,0.45)'); grd.addColorStop(1, 'rgba(255,150,70,0)');
   g.fillStyle = grd; g.fillRect(0, 0, 256, 256);
   const tex = new THREE.CanvasTexture(c); tex.colorSpace = THREE.SRGBColorSpace;
-  const m = new THREE.Mesh(new THREE.PlaneGeometry(40, 14),
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(30, 9),
     new THREE.MeshBasicMaterial({ map: tex, transparent: true, opacity: 0, depthWrite: false, blending: THREE.AdditiveBlending }));
-  m.position.set(0, 0, -2.4); return m;
+  m.position.set(0, 0, -2.4); m.scale.set(0.001, 0.001, 1); return m;
 }
+const GLOW_MAX = 0.32, GLOW_MS = 2800;   // the glow starts as a point at the word's centre and spreads out
+function setGlow(k) { if (!glow) return; glow.scale.set(Math.max(0.001, k), Math.max(0.001, 0.35 + 0.65 * k), 1); glow.material.opacity = GLOW_MAX * k; }
 function makeWord() {           // MAZO in a plain font, capitals, the same height and places as the block letters
   const Wc = 2048, px = Wc / 24.5, c = document.createElement('canvas'); c.width = Wc; c.height = Math.round(6 * px);
   const g = c.getContext('2d');
@@ -501,7 +503,8 @@ function dimBack(instant) {     // the white dims slightly, the O's new block wi
   mats.forEach(m => m.emissive.copy(GLOW_WHITE));
   tween(instant ? 1 : 850, k => { const e = easeOut(k);
     mats.forEach((m, i) => { m.color.copy(from[i].c).lerp(DIM_WHITE, e); m.emissiveIntensity = from[i].e + (DIM - from[i].e) * e; }); });
-  tween(instant ? 1 : 1200, k => { glow.material.opacity = 0.55 * easeOut(k); }, () => startHold(instant));
+  tween(instant ? 1 : 850, () => {}, () => startHold(instant));
+  tween(instant ? 1 : GLOW_MS, k => setGlow(easeIO(k)));
 }
 function startHold(instant) {
   phase = 'hold';
@@ -612,7 +615,7 @@ function jumpToEnd() {          // Skip: straight to the finished state from any
   ORDER.forEach(L => { const m = pieces[L].userData.mat; m.color.copy(DIM_WHITE); m.emissive.copy(GLOW_WHITE); m.emissiveIntensity = DIM; });
   ensureSite();
   hemi.intensity = 0.6; key.intensity = 1.2; scene.environmentIntensity = 0.2; orb.visible = false; orbLight.intensity = 0;
-  if (!glow) { glow = makeGlow(); title.add(glow); } glow.material.opacity = 0.55;
+  if (!glow) { glow = makeGlow(); title.add(glow); } setGlow(1);
   if (!word) { word = makeWord(); title.add(word); }
   if (fallers) {
     const now = performance.now(); fallData.forEach(b => { b.t0 = now - FALL_MS - 400; });
@@ -669,7 +672,6 @@ function frame(now) {
     const t = tweens[i], k = Math.min(1, (now - t.t0) / t.ms);
     t.fn(k); if (k >= 1) { tweens.splice(i, 1); t.done && t.done(); }
   }
-  if (phase === 'hold' && glow) glow.material.opacity = 0.55 + 0.07 * Math.sin(now / 520);
   if (fallers) updateFall(now);
   revealPlane.constant = title.position.y + titleScale * revealLocal;   // camera sits at y = 0, unrotated
   if (!touched && !RM && stage === 0) yaw += dt * 0.22;

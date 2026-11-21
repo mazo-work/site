@@ -1,6 +1,6 @@
 # MAZO puzzle spec
 
-**Version:** v0.2, draft for review (2026-11-21)
+**Version:** v0.3, draft for review (2026-11-21)
 
 The site's front door is a 3D puzzle made of the letters M, A, Z and O, locked together like a wooden burr puzzle. Visitors turn it and pull the letters out one at a time. Each letter flies into a title that spells MAZO, a light sweeps across the name, and the site opens. A skip control and a direct link to the recruiter section are always available.
 
@@ -96,8 +96,8 @@ During the puzzle, the pieces keep their own colours. From the sweep on, everyth
 
 1. **Sweep.** The scene dims. The core leaves the O's ring, moves to the left of the M, and sweeps across the name in 1.7 s. Each letter turns white and glows as the light passes.
 2. **Click-in.** The core turns into a white block and clicks into the gap in the O's bottom bar (0.95 s, then a short pulse). Every letter now has 16 blocks, 64 in all.
-3. **Dim back.** The white dims slightly, on the letters and the new block alike, over 0.85 s. At the same time, a soft warm glow rises behind the word (1.2 s), so the letters stand out against it.
-4. **Hold.** 2 s, with the glow breathing slightly. A tap, click, scroll or key ends the hold at once.
+3. **Dim back.** The white dims slightly, on the letters and the new block alike, over 0.85 s. At the same time, a soft warm glow starts as a point behind the centre of the word and spreads outward over 2.8 s with a gentle ease in and out, so the letters stand out against it. It stays smaller than the word's surroundings and faint (peak opacity 0.32).
+4. **Hold.** 2 s, while the glow finishes spreading. A tap, click, scroll or key ends the hold at once.
 5. **Fall.** The rows let go from the bottom up, 160 ms apart. Each block drops in 0.9 s, with a downward pull that speeds up like a real fall. On the way, it shrinks into its place in one solid-coloured row of all 64 blocks. The row spans 96% of the screen's width and sits 12 px above the bottom edge.
 6. **Word.** As each row lets go, MAZO in a plain bold font is uncovered behind it, from the bottom up. It is set in capitals, at the same height and in the same places as the block letters. The font is a stand-in until the looks are chosen.
 7. **Curtain.** After 0.65 s the line rises like a curtain. The whole scene lifts with it, the line as its hem, over 1.4 s. Underneath is the site. It was loaded behind the puzzle after the first letter came out, so it is ready. While the site shows, the 3D scene stops drawing. "Replay intro" brings the curtain back down on a fresh puzzle. The private preview has no site to reveal, so it ends on a card instead.
@@ -131,7 +131,7 @@ Testers use a public page on the site's domain, published with GitHub Pages. Beh
 
 - **P1, feel.** Tune the numbers above with three to five testers on the test page, without tracking on the site. A per-run summary card for testers comes later. The target is unlocking in 20 to 45 seconds for a first-time visitor, with 9 in 10 under 90 seconds.
 - **P2, looks.** Two or three materials side by side, then one is chosen.
-- **P3, finish.** The handoff into the site: the MAZO title shrinks into the header logo, and the header shows the full name. Also the recruiter link, remembering that a visitor already unlocked it, and performance on mid-range phones.
+- **P3, finish.** The handoff into the site, once the fonts are set: after the blocks fall, the MAZO word shrinks into the centre of the new site's header as a logo. The curtain rises past it, and as it passes the logo it reveals the name beside it. The falling blocks may later morph into one solid line; not before the other transitions are settled. Also the recruiter link, remembering that a visitor already unlocked it, and performance on mid-range phones.
 - **Themes.** Light and dark mode first, and what each colourway holds. To be discussed before the looks are built.
 - **Stack.** P0 is plain three.js. The v2 site is planned as React with react-three-fiber. Decide this before P1.
 
@@ -148,6 +148,7 @@ Testers use a public page on the site's domain, published with GitHub Pages. Beh
 
 ## Version history
 
+- **v0.3 (2026-11-21):** The glow is smaller and fainter, and spreads from the centre of the word over 2.8 s. The logo handoff is written up under P3.
 - **v0.2 (2026-11-21):** The sweep turns the letters white, the white dims with the glow, and the line is one solid colour. The hold is 2 s. The line rises as a curtain on the current site.
 - **v0.1 (2026-11-21):** Pedestal chosen, with Upright M kept as the alternate. Finale v2, sound and the public test page added. The O glyph in the letters table corrected: its gap is second from the left, not in the middle.
 - **v0 (2026-11-21):** first draft. Form, order, title, light and difficulty decided. Two shapes shortlisted and verified. P0 preview built and tested.
