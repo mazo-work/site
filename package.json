@@ -1,6 +1,5 @@
 {
   "name": "my-personal-site",
-  "homepage": "https://mazo-work.github.io/site/",
   "private": true,
   "version": "0.0.0",
   "type": "module",
