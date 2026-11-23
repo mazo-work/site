@@ -10,7 +10,7 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 | U3 spine | [x] | 03d2128 | 11 | 27 | 13 pages; every page reads without JS and is ≤ 2 clicks from every other; 30 checks pass, 6 pending (U9). `tools/screens.mjs` added. |
 | U4 Editorial | [x] | 98557fb | 29 | 26 | Literata + Libre Franklin (77.6 KB); grain, hairlines, vermilion, hanging heads, page turn, halftone portrait, glyph diagram. Design log entry. New check `fonts.*` (4). 34 pass, 6 pending. |
 | U5 entrance | [x] | 9b2a62d | 9 | 9 | P0 ported (76 diff lines, all integration); curtain = cross-document view transition into Home; word → mark morph; 3D code only on /, after first paint (130 KB gzip). New check `entrance.*` (3) incl. a headless play-through. 37 pass, 6 pending. |
-| U6 Terminal | [ ] | | | | |
+| U6 Terminal | [x] | 2ca5e5b | 7 | 8 | Martian Mono + Atkinson Hyperlegible Next (58.5 KB); LED-panel mark, neon flicker, fringe, ## / ./ / ~/ winks, X-ray portrait, CRT transition. Design log entry. 37 pass, 6 pending. |
 | U7 Profile | [ ] | | | | |
 | U8 theme switcher | [ ] | | | | |
 | U9 agent layer | [ ] | | | | |
@@ -25,9 +25,9 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 
 ## Budget
 
-- Units done: 6 of 18 · turns so far: 94 · average turns per unit: 15.7 · estimated turns left: 2 design units × 28 + 10 others × 10 ≈ 156
-- Wall clock: session started 2026-11-23 02:37 UTC; U0 done 02:47; U1 02:54; U2 02:58; U3 03:06; U4 03:19; U5 03:28.
-- Last updated: 2026-11-23 03:28 UTC, after U5.
+- Units done: 7 of 18 · turns so far: 101 · average turns per unit: 14.4 · estimated turns left: 1 design unit × 12 + 10 others × 9 ≈ 102
+- Wall clock: session started 2026-11-23 02:37 UTC; U0 done 02:47; U1 02:54; U2 02:58; U3 03:06; U4 03:19; U5 03:28; U6 03:32.
+- Last updated: 2026-11-23 03:32 UTC, after U6.
 
 ## Checks not yet expected to pass
 
@@ -110,3 +110,6 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
   footer link. Back from Home (bfcache) reloads the entrance for a fresh puzzle. P0's `window.__mazo` test hook is kept.
 - U5 · decision: the word's stand-in font drops P0's named families (one was on the banned list); the look is P0's
   dark stage on every theme until the puzzle's own looks are chosen (spec, P2).
+- U6 · decision: Terminal's loops (the light block's neon flicker, the footer cursor) end within 5 s, so WCAG 2.2.2
+  needs no pause control; the generated winks (`##`, `./`, `../`, `//`, `[01]`) use CSS alt text `/ ""` so screen
+  readers skip them; the crumb (`~/path/`) is `aria-hidden` and shown only in Terminal.
