@@ -103,3 +103,45 @@ no line icons; no emoji; no scroll fades; spacing on the unit, varied by role; w
 5. Fringe reduced to 0.03 em at lower opacity.
 
 **Left for Jon:** none beyond Editorial's notes.
+
+## U7 · Profile (2026-11-23)
+
+**Direction.** The Collage family, as self-aware Y2K maximalism: what the old profile page *did*, made well, not its
+pixels. You could pick your own background: here it is a pale mint graph-paper tile on cream. Content sat in boxes
+with title bars: here, hard-edged windows (2 px ink border, a hard 6 px shadow with no blur) with a title bar and a
+window button, the "screen held up as a window" threshold of §9. Buttons were bevelled and pressed in: the rooms are
+mint bevel buttons; the current room is pressed and coral. Type was 3D: Bungee Shade, a signage face whose shading
+is part of the letters (no effects), sets display; Nunito (rounded, friendly; 400, italic, 800) sets everything else.
+78.5 KB of fonts. The mark is extruded in coral, its light block pink. Lists rank their items in small coral badges.
+The profile picture is stuck on at an angle and straightens when you touch it. One knowing vaporwave gradient, only on
+title bars (coral to pink), annotated. Between pages, the old window drops back and the new one pops up with a small
+overshoot.
+
+**Screens (v1):** all 13 pages × mobile and desktop.
+
+**Critique of v1, against §4's banned list:** no banned font; one gradient, small (title bars), on purpose and
+annotated, coral to pink (not purple to blue); no gradient text (Bungee Shade's shading is outlines in the font); no
+glass; the containers are the theme's idiom and the opposite of the banned card: square corners, 2 px borders, a hard
+shadow with no blur, a title bar; no three-icon grid, bento or logo wall (windows stack in the 12-column grid, sized by
+content); no skill bars; no centred hero (left-set headline, no button pair); no line icons (the window button is a
+plain square); no emoji (the list marker ✦ is a typographic star, not a heading emoji); no scroll fades; spacing on
+the unit. **Against §2:** the wink is the whole theme, kept from kitsch by a strict palette, a real grid and no
+glitter, cursor trails, marquees or blinkies; reading stays quiet inside windows at one measure. **Against §9:**
+collage palette, early-web 3D (bevels, shaded type, the extruded mark), high and low mixed (a signage face over a
+friendly sans), thresholds (windows).
+
+**Problems in v1:**
+1. The graph-paper tile was too strong behind the headline and lede.
+2. On reading pages the title bars stopped at the text measure, leaving a dead strip inside the window.
+3. About's beats were too far apart inside the window, and a gap opened between the head and the first beat.
+
+**Revision (once):**
+1. A paler tile (`#d3f3e7` lines).
+2. Title bars run the full window width; only the text keeps the measure.
+3. Beats a line apart; no gap after the head.
+
+**Found by the checks after the revision:** the draft note's grey on mint measured 4.47:1 (axe), just under AA; it is
+now full ink.
+
+**Left for Jon:** Profile is the theme most likely to need his own signature (BRIEF §3: his fonts and signature per
+theme come later).

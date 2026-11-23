@@ -1,0 +1,150 @@
+/* Profile (U7): the Collage family. Self-aware Y2K maximalism: what the old profile page did, made well, never its
+   pixels. A tiled background you could have picked yourself; content in hard-edged windows with title bars (a screen
+   held up as a window, BRIEF.md §9); bevelled buttons that press in; the mark extruded like early-web 3D; a profile
+   picture stuck on at an angle that straightens when you touch it. Pastel mint, coral and cream; one knowing vaporwave
+   gradient, only on title bars. Bungee Shade (its shading is part of the letters) for display, Nunito for the rest. */
+
+:root[data-theme="profile"] {
+  --paper: #fff4e6;                       /* cream */
+  --panel: #fffcf7;
+  --ink: #2a1f2d;                         /* plum-black */
+  --ink-2: #6b5a6e;                       /* 5.9:1 on cream */
+  --rule: #2a1f2d;
+  --mint: #9ee8cf;
+  --coral: #ff6f61;
+  --pink: #ffa3c7;
+  --accent: var(--coral);
+  --accent-ink: #b83226;                  /* 5.3:1 on the panel */
+  --focus: #2a1f2d;
+  --mark-light: var(--coral);
+  --bevel-hi: #ffffff;
+  --bevel-lo: #2a1f2d;
+  --tile: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Cpath d='M0 .5h24M.5 0v24' stroke='%23d3f3e7' stroke-width='1' fill='none'/%3E%3C/svg%3E");
+  color-scheme: light;
+
+  & body { background-color: var(--paper); background-image: var(--tile); }
+  & ::selection { background: var(--mint); color: var(--ink); }
+  & :focus-visible { outline: 2px dashed var(--ink); outline-offset: 3px; }
+  & a { color: var(--accent-ink); text-decoration-thickness: 2px; }
+  & a:hover { background: var(--mint); color: var(--ink); text-decoration-color: var(--ink); }
+
+  /* masthead: the extruded mark, the name, the rooms as buttons */
+  & .site-header { view-transition-name: masthead; background: var(--panel); border-bottom: 2px solid var(--rule); }
+  & .brand { gap: calc(2 * var(--u)); }
+  & .brand:hover { background: none; }
+  & .brand .mark { width: calc(17 * var(--u)); filter: drop-shadow(1px 1px 0 var(--coral)) drop-shadow(1px 1px 0 var(--coral)); }
+  & .brand .mark-light { fill: var(--pink); }
+  & .brand-name { font-weight: 800; font-size: 0.9375rem; letter-spacing: 0; color: var(--ink); }
+  & .site-nav ul { gap: var(--u); }
+  & .site-nav a, & .cta {
+    display: inline-block; padding: var(--u) calc(2 * var(--u)); font: 800 0.8125rem / calc(3 * var(--u)) var(--font-ui);
+    color: var(--ink); text-decoration: none; background: var(--mint);
+    border: 2px solid; border-color: var(--bevel-hi) var(--bevel-lo) var(--bevel-lo) var(--bevel-hi);
+  }
+  & .site-nav a:hover, & .cta:hover { background: var(--pink); }
+  & .site-nav a[aria-current="page"], & .site-nav a:active, & .cta:active {
+    border-color: var(--bevel-lo) var(--bevel-hi) var(--bevel-hi) var(--bevel-lo); background: var(--coral); text-decoration: none;
+  }
+
+  /* type */
+  & h1 { font-weight: 400; font-size: clamp(2.25rem, 1.2rem + 5vw, 4.5rem); line-height: 1.05; letter-spacing: 0.01em; color: var(--ink); }
+  & .lede { font-style: italic; color: var(--ink); }
+  & .meta { font-weight: 800; font-size: 0.8125rem; }
+
+  /* windows: hard edges, a title bar, a hard shadow (no blur) */
+  & :is(.page.grid > section, .page.grid > aside, .page > .index, .page > nav, .prose) {
+    background: var(--panel); border: 2px solid var(--rule); box-shadow: 6px 6px 0 var(--ink);
+    padding: 0 calc(3 * var(--u)) calc(3 * var(--u));
+  }
+  & .prose { max-width: 52rem; padding-top: 0; margin-top: calc(2 * var(--lh)); }
+  & .page { padding-top: calc(2 * var(--lh)); }
+  & .page.grid > * { align-self: start; }
+  & .page > .index, & .page > nav { margin-top: var(--lh); }
+  & .page-head { padding-top: calc(3 * var(--u)); }
+  & .prose > .page-head { margin-inline: calc(-3 * var(--u)); padding: calc(3 * var(--u)); border-bottom: 2px solid var(--rule); background: var(--paper); }
+  & :is(.page.grid > section, .page.grid > aside) > h2:first-child,
+  & .prose h2 {
+    display: flex; align-items: center; gap: var(--u);
+    margin: 0 calc(-3 * var(--u)) calc(2 * var(--u)); padding: var(--u) calc(2 * var(--u));
+    font: 800 0.8125rem / calc(4 * var(--u)) var(--font-ui); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink);
+    /* gradient-ok: the one knowing vaporwave touch, a title bar, small and on purpose */
+    background: linear-gradient(90deg, var(--coral), var(--pink));
+    border-bottom: 2px solid var(--rule);
+  }
+  & .prose h2 { margin-top: calc(2 * var(--lh)); border-top: 2px solid var(--rule); }
+  & :is(.page.grid > section, .page.grid > aside) > h2:first-child::after, & .prose h2::after {
+    content: "" / ""; margin-left: auto; flex: none; width: calc(3 * var(--u)); height: calc(2.5 * var(--u));
+    background: var(--panel); border: 2px solid var(--rule);
+  }
+  & .page.grid > section > h2.vh:first-child { position: static !important; width: auto; height: auto; overflow: visible; clip-path: none; white-space: normal; }
+  & .flow > h2:not(:first-child) {
+    margin: calc(2 * var(--lh)) calc(-3 * var(--u)) calc(2 * var(--u)); padding: var(--u) calc(2 * var(--u));
+    font: 800 0.8125rem / calc(4 * var(--u)) var(--font-ui); letter-spacing: 0.08em; text-transform: uppercase;
+    background: var(--mint); border-block: 2px solid var(--rule);
+  }
+  & .prose section { margin-top: 0; }
+  & .prose > :is(section, h2) { max-width: none; }
+  & .prose section > :not(h2) { max-width: var(--measure); }
+  & .prose section > h2 { margin-top: var(--lh); }
+  & .prose section + section { margin-top: var(--lh); }
+  & .prose > .page-head + * { margin-top: 0; }
+  & .prose h3 { font-family: var(--font-ui); font-weight: 800; }
+  & .prose pre { background: var(--paper); border: 2px solid var(--rule); }
+  & .prose blockquote { border-left: 4px solid var(--mint); }
+  & .prose table { border: 2px solid var(--rule); }
+  & .prose th { background: var(--mint); font-weight: 800; padding-left: var(--u); }
+  & .prose td { padding-left: var(--u); }
+  & .voice { font-style: normal; color: var(--ink); background: var(--mint); padding: var(--u) calc(2 * var(--u)); border: 2px dashed var(--rule); }
+  & :is(.prose, .flow) ul { list-style-type: "\2726  "; }
+  & :is(.prose, .flow) ul li::marker { color: var(--coral); }
+
+  /* lists: ranks in little badges, dotted rules */
+  & .index { gap: 0; counter-reset: item; }
+  & .index > li {
+    display: grid; grid-template-columns: calc(6 * var(--u)) minmax(0, 1fr); column-gap: calc(2 * var(--u));
+    padding-block: calc(2 * var(--u)); border-top: 2px dotted var(--ink-2);
+  }
+  & .index > li:first-child { border-top: 0; }
+  & .index > li > * { grid-column: 2; }
+  & :is(ul, ol:not([reversed])).index > li { counter-increment: item; }
+  & :is(ul, ol:not([reversed])).index > li::before {
+    content: counter(item) / ""; grid-column: 1; grid-row: 1 / span 3; align-self: start; justify-self: start;
+    min-width: calc(4 * var(--u)); padding: 0 var(--u); margin-top: var(--u); text-align: center;
+    font: 800 0.8125rem / calc(4 * var(--u)) var(--font-ui); background: var(--coral); color: var(--ink); border: 2px solid var(--rule);
+  }
+  & .index a { font-size: var(--step-1); font-weight: 800; text-decoration: none; }
+  & .index a:hover { text-decoration: underline; }
+  & .index p { font-size: var(--step--1); line-height: calc(4 * var(--u)); }
+
+  /* For recruiters */
+  & .cta { font-size: 0.875rem; padding: calc(1.5 * var(--u)) calc(3 * var(--u)); background: var(--coral); }
+  & .facts { margin-top: calc(3 * var(--u)); }
+  & .facts dt { font-weight: 800; }
+  & .skills > div { padding-top: calc(2 * var(--u)); border-top: 2px dotted var(--ink-2); }
+  & .skills > div:first-child { border-top: 0; padding-top: 0; }
+  & .skills dt { font-weight: 800; }
+  & .tags { font-weight: 800; color: var(--accent-ink); }
+
+  /* the profile picture: stuck on at an angle; it straightens when you touch it */
+  & .portrait { border: 2px solid var(--rule); background: var(--panel); padding: var(--u); box-shadow: 4px 4px 0 var(--coral); transform: rotate(-2.5deg); transition: transform 0.35s cubic-bezier(0.2, 1.6, 0.4, 1); }
+  & .portrait:hover { transform: rotate(0deg) scale(1.03); }
+  & aside .portrait { margin: calc(3 * var(--u)) 0 0; }
+
+  /* diagrams */
+  & .glyph svg { fill: var(--ink); }
+  & .glyph .gap { stroke: var(--coral); stroke-width: 0.35; }
+
+  /* footer */
+  & .site-footer { background: var(--panel); border-top: 2px solid var(--rule); color: var(--ink); font-weight: 800; }
+  & .site-footer a { color: var(--ink); }
+}
+
+@media (max-width: 52rem) {
+  :root[data-theme="profile"] :is(.page.grid > section, .page.grid > aside, .page > .index, .page > nav, .prose) { box-shadow: 4px 4px 0 var(--ink); }
+}
+
+/* thresholds: the old window drops back, the new one pops up with a little overshoot */
+:root[data-theme="profile"]::view-transition-old(root) { animation: profile-out 200ms ease-in both; }
+:root[data-theme="profile"]::view-transition-new(root) { animation: profile-in 420ms cubic-bezier(0.2, 1.4, 0.4, 1) both; }
+@keyframes profile-out { to { opacity: 0; transform: scale(0.97); } }
+@keyframes profile-in { from { opacity: 0; transform: translateY(16px) scale(0.98); } }
