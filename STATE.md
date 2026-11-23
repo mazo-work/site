@@ -8,7 +8,7 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 | U1 skeleton | [x] | 9d92285 | 46 | 29 | One header on every page (utility row: Replay, Pause motion, mask toggle Paper · Night; masthead: the mark, large on Home, small elsewhere, and the name; menu band: five rooms), footer (name · [JON: region], Colophon), Ask. Masks are `paper` and `night`; Profile parked. New check `skeleton.*` (4); `switcher.*` rewritten. 59 pass. 7 of the 46 turns were the one-time read of the mocks. |
 | U2 rooms | [x] | dc6c73c | 7 | 10 | Uses is a section of Now (`/now/#uses`); `public/_redirects` 301s `/uses`, `/uses/` and `/uses.md`; the local test server applies `_redirects`; the Colophon is linked from the footer only; llms.txt lists Uses as a section of Now, the sitemap drops /uses/. New check `rooms.*` (2). 61 pass. |
 | U3 type | [x] | 7978e7c | 18 | 24 | Atkinson Hyperlegible Next for body text in both masks; Paper: IM FELL English and SC, served renamed "Mazo Paper" and "Mazo Paper SC" (their licence reserves the name; `tools/fonts/rename.py`); Night: Doto and Martian Mono. Profile's faces parked (files kept, declared nowhere). Paper 208.7 KB, Night 52.0 KB, reported. `fonts.*` rewritten (6). 63 pass. |
-| U4 Paper | [ ] | | 19 | 19 | Paper to the mocks on every page: off-register display type, IM FELL titles and small-capital labels, Atkinson text; Home (headline, Jon's lines, latest project and note), About (the mocks' frame, portrait in a side column), For recruiters (side column), one 660 px measure for reading. Shared page geometry in `pages.css`; `Teaser` component. Design-log entry. 63 pass. |
+| U4 Paper | [x] | 3ec576c | 19 | 19 | Paper to the mocks on every page: off-register display type, IM FELL titles and small-capital labels, Atkinson text; Home (headline, Jon's lines, latest project and note), About (the mocks' frame, portrait in a side column), For recruiters (side column), one 660 px measure for reading. Shared page geometry in `pages.css`; `Teaser` component. Design-log entry. 63 pass. |
 | U5 Night | [ ] | | | | |
 | U5b the puzzle in both masks | [ ] | | | | |
 | U6 the ring | [ ] | | | | |
@@ -21,9 +21,9 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 
 ## Budget
 
-- Units done: 4 of 14 · turns so far: 88 · average turns per unit: 22 (12.5 over U2 and U3) · estimated turns left: 10 units × about 18 = 180
-- Wall clock: session started 2026-11-23 08:05 UTC; U0 done 08:11; U1 08:24; U2 08:27; U3 08:35.
-- Last updated: 2026-11-23 08:47 UTC, during U4.
+- Units done: 5 of 14 · turns so far: 107 · average turns per unit: 21.4 (14.7 over U2 to U4) · estimated turns left: 9 units × about 17 = 155
+- Wall clock: session started 2026-11-23 08:05 UTC; U0 done 08:11; U1 08:24; U2 08:27; U3 08:35; U4 08:48.
+- Last updated: 2026-11-23 08:48 UTC, after U4.
 
 ## Checks not yet expected to pass
 
