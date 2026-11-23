@@ -13,7 +13,7 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 | U6 Terminal | [x] | 2ca5e5b | 7 | 8 | Martian Mono + Atkinson Hyperlegible Next (58.5 KB); LED-panel mark, neon flicker, fringe, ## / ./ / ~/ winks, X-ray portrait, CRT transition. Design log entry. 37 pass, 6 pending. |
 | U7 Profile | [x] | bb3b20c | 9 | 6 | Bungee Shade + Nunito (78.5 KB); graph-paper tile, windows with title bars, bevel buttons, extruded mark, tilted profile pic, window-pop transition. Design log entry. 37 pass, 6 pending. |
 | U8 theme switcher | [x] | e058cfb | 5 | 6 | Masks as a native radio group; no flash; device default followed live; keyboard; localStorage, no cookie. New check `switcher.*` (4). 41 pass, 6 pending. |
-| U9 agent layer | [ ] | | | | |
+| U9 agent layer | [x] | d7af40b | 8 | 14 | 12 twins from built HTML, llms.txt, sitemap (11 URLs), RSS, JSON-LD per page type, robots.txt from vendor docs (sources in `src/data/crawlers.ts`). 47 pass, 0 pending. |
 | U10 colophon | [ ] | | | | |
 | U11 secrets | [ ] | | | | |
 | U12 gag chatbot | [ ] | | | | |
@@ -25,9 +25,9 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 
 ## Budget
 
-- Units done: 9 of 18 · turns so far: 115 · average turns per unit: 12.8 · estimated turns left: 9 units × 8 ≈ 72
-- Wall clock: session started 2026-11-23 02:37 UTC; U0 done 02:47; U1 02:54; U2 02:58; U3 03:06; U4 03:19; U5 03:28; U6 03:32; U7 03:38; U8 03:41.
-- Last updated: 2026-11-23 03:41 UTC, after U8.
+- Units done: 10 of 18 · turns so far: 123 · average turns per unit: 12.3 · estimated turns left: 8 units × 7 ≈ 56
+- Wall clock: session started 2026-11-23 02:37 UTC; U0 done 02:47; U1 02:54; U2 02:58; U3 03:06; U4 03:19; U5 03:28; U6 03:32; U7 03:38; U8 03:41; U9 03:47.
+- Last updated: 2026-11-23 03:47 UTC, after U9.
 
 ## Checks not yet expected to pass
 
@@ -118,3 +118,17 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
   ARIA; it lives in the header of every content page (not on the entrance, which keeps P0's look, nor the 404's
   header, which has none of its own). No "follow the device" option once a choice is made (the brief asks for none);
   until then the site follows the device live.
+- U8 · correction (U9): the line above says the 404 has no header; it has the site header, switcher included.
+- U9 · found: from this environment only Anthropic's crawler page was reachable; the other vendors' hosts are outside
+  the network allowlist. Their crawler names and purposes come from web search results that quote the official pages
+  (each URL recorded in `src/data/crawlers.ts`); marked as read through search, not fetched, for the handoff. I did
+  not ask to widen the network (no questions mid-run).
+- U9 · decision: "training-only" is read literally. Disallowed: GPTBot, ClaudeBot, Applebot-Extended,
+  MistralAI-Training. Allowed and flagged for Jon, because each also serves search or answers: Google-Extended (it
+  also controls grounding in Gemini's answers), CCBot (its archive also feeds search indexes), Meta-ExternalAgent
+  (training or product indexing), Amazonbot (products and services; may train). Not named: Bytespider (no vendor
+  documentation found), MistralAI-Index (purpose not confirmed), Cohere (its page says it runs no crawlers). The IETF
+  AIPREF training signal that Anthropic and Google now read is not added: its syntax is a draft I could not verify.
+- U9 · decision: twins are generated from each built page's `<main>` (they can never drift); the puzzle's UI is
+  marked `data-twin="skip"`. JSON-LD states only facts (name; languages from "Bilingual: English & Spanish"); a
+  photo, `sameAs` links, a region and a job title wait for Jon.
