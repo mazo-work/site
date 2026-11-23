@@ -20,6 +20,7 @@ The scripts set `ASTRO_TELEMETRY_DISABLED=1` (POSIX shells; on Windows set it yo
 | `src/entrance/` | The MAZO puzzle, ported from `prototype/p0` (its logic and finale unchanged; edits marked `v3`), loaded only by `/` after first paint. |
 | `src/data/v2-words.ts` | Jon's words carried over from v2, verbatim. |
 | `tools/check/` | `npm run check`: HTML, links, pages, the banned list, a headless pass per page × theme (CSP, network, errors), axe, JSON-LD, the agent files, secrets. `config.mjs` holds what they expect. |
+| `tools/verify-live.mjs` | After a deploy: compares the live site's headers with `public/_headers` (see `handoff/deploy-runbook.md`). |
 | `tools/pdf/strip.py` | Reports what a PDF carries (values redacted) and writes a copy without its metadata; see `handoff/resume-pdf.md`. |
 | `tools/screens.mjs` | Screenshots of the built site per page × theme × (mobile, desktop), for the design loop and U15. |
 | `src/content/` | Lab notes and case studies (Markdown). About, Now and Uses are Markdown pages in `src/pages/`. |
