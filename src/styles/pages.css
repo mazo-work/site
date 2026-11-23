@@ -68,6 +68,7 @@ body { font-size: 1.0625rem; line-height: 1.55; }                       /* 17 px
 .prose ul.plain { list-style: none; padding-left: 0; }
 .prose ul.plain li + li { margin-top: var(--u); }
 .prose ul.plain code { word-break: break-word; }
+.prose :is(p, li, td) code { overflow-wrap: anywhere; }      /* a long URL in a wide mono face must not push the page sideways */
 .beat + .beat, .beat + .pull, .pull + .beat { margin-top: calc(7 * var(--u)); }
 .pull { margin-block: calc(8 * var(--u)) calc(9 * var(--u)); }
 .closing { margin-top: calc(7 * var(--u)); }
@@ -91,7 +92,7 @@ body { font-size: 1.0625rem; line-height: 1.55; }                       /* 17 px
 /* the portrait (v3's markup; U9 changes the photo) */
 .portrait { margin: 0; width: calc(40 * var(--u)); max-width: 60%; }
 .portrait img { display: block; width: 100%; height: auto; }
-.portrait-screen { display: none; }
+.portrait-screen, .portrait-scan, .portrait-ring { display: none; }
 
 /* the 404's way back */
 .rooms { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--u) calc(4 * var(--u)); }

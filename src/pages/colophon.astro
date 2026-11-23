@@ -9,6 +9,7 @@ import Base from '../layouts/Base.astro';
 import StoryFragment from '../components/StoryFragment.astro';
 import { DESCRIPTIONS } from '../data/site';
 import { BOOT } from '../data/theme-boot.mjs';
+import { displayClass } from '../data/display';
 import { CRAWLERS, SOURCES, CHECKED, allowed } from '../data/crawlers';
 import { parseHeaders, headersFor, parseCsp } from '../../tools/check/lib/headers.mjs';
 
@@ -32,7 +33,7 @@ const kinds = { search: 'search and answers', user: 'a person asked', training: 
 <Base title="Colophon" description={DESCRIPTIONS.colophon}>
   <article class="page reading">
     <header class="page-head">
-      <h1 class="display misreg" data-text="Colophon">Colophon</h1>
+      <h1 class:list={['display', 'misreg', displayClass('Colophon')]} data-text="Colophon">Colophon</h1>
       <p class="lede">{DESCRIPTIONS.colophon}</p>
     </header>
     <div class="prose body">

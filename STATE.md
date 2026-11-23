@@ -9,7 +9,7 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 | U2 rooms | [x] | dc6c73c | 7 | 10 | Uses is a section of Now (`/now/#uses`); `public/_redirects` 301s `/uses`, `/uses/` and `/uses.md`; the local test server applies `_redirects`; the Colophon is linked from the footer only; llms.txt lists Uses as a section of Now, the sitemap drops /uses/. New check `rooms.*` (2). 61 pass. |
 | U3 type | [x] | 7978e7c | 18 | 24 | Atkinson Hyperlegible Next for body text in both masks; Paper: IM FELL English and SC, served renamed "Mazo Paper" and "Mazo Paper SC" (their licence reserves the name; `tools/fonts/rename.py`); Night: Doto and Martian Mono. Profile's faces parked (files kept, declared nowhere). Paper 208.7 KB, Night 52.0 KB, reported. `fonts.*` rewritten (6). 63 pass. |
 | U4 Paper | [x] | 3ec576c | 19 | 19 | Paper to the mocks on every page: off-register display type, IM FELL titles and small-capital labels, Atkinson text; Home (headline, Jon's lines, latest project and note), About (the mocks' frame, portrait in a side column), For recruiters (side column), one 660 px measure for reading. Shared page geometry in `pages.css`; `Teaser` component. Design-log entry. 63 pass. |
-| U5 Night | [ ] | | | | |
+| U5 Night | [ ] | | 15 | 12 | Night to the mocks on every page: Doto display headlines, Atkinson 600 titles, Martian Mono capitals for labels; purple rules and underlines, green hover and focus; Home in three columns; the portrait as an X-ray in a round window with a ring and a scanning line. New check `layout.fit` (every page, both masks, phone and desktop: no sideways scroll, no headline spilling). Design-log entry. 64 pass. |
 | U5b the puzzle in both masks | [ ] | | | | |
 | U6 the ring | [ ] | | | | |
 | U7 entering an orb | [ ] | | | | |
@@ -22,8 +22,8 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 ## Budget
 
 - Units done: 5 of 14 · turns so far: 107 · average turns per unit: 21.4 (14.7 over U2 to U4) · estimated turns left: 9 units × about 17 = 155
-- Wall clock: session started 2026-11-23 08:05 UTC; U0 done 08:11; U1 08:24; U2 08:27; U3 08:35; U4 08:48.
-- Last updated: 2026-11-23 08:48 UTC, after U4.
+- Wall clock (read from `date`): session started 2026-11-23 08:05 UTC; U0 done 08:11; U1 about 08:23; U2 about 08:26; U3 about 08:33; U4 08:41; U5 08:49.
+- Last updated: 2026-11-23 08:49 UTC, during U5.
 
 ## Checks not yet expected to pass
 
@@ -120,3 +120,18 @@ where the brief is silent)
   menu band, then a room's list). Listed for the handoff.
 - U4 · note: between U4 and U5, Night's page styles are v3 Terminal's on v4's markup: readable, not designed. U5
   rewrites them.
+- U5 · decision: Night's section titles (h2, h3) are Atkinson Hyperlegible Next 600, as the mocks set them; Doto is
+  for the display headlines and the name (this refines U3's Doto h2: Doto at 24-30 px reads poorly).
+- U5 · decision: one job per accent, as the brief assigns them: the mocks' green and orange teaser labels are the
+  label grey here; links turn green on hover (the brief: green for hover), the band keeps its purple underline for here
+  and hover (the brief's one treatment per mask).
+- U5 · decision: no glow on text or lines: the mock's purple glow behind About's headline and the glow under the
+  portrait's scan line were not built (v4 bans glow blobs and halos). The LED mark keeps its 2 px halo.
+- U5 · decision: v3 Terminal's winks (`##` before headings, `./` before rooms, `~/path`, `[01]`) are gone: the mocks
+  show none, and `[01]` is numbering.
+- U5 · decision: the portrait's ring, ticks and scan line are decorative markup in `Portrait.astro`, shown by Night
+  and hidden by Paper; the scan is a 7 s loop, so Pause motion stops it. The X-ray's colour waits for U9.
+- U5 · decision: a display title with a word of nine letters or more takes a smaller size in Night (Doto is wide and
+  monospaced), so "recruiters" fits its column while short titles keep the mocks' 140 px. New check `layout.fit`.
+- U5 · fix: a Night rule that coloured every h2 near-white also hit the assistant panel's title (light on light;
+  axe caught it in `chatbot.a11y`); heading colour is scoped to the page's main.

@@ -63,74 +63,114 @@
   & .chat-launcher:hover { border-color: var(--green); }
   @media (max-width: 47.99rem) { & .utility, & .site-footer { font-size: 0.6875rem; } & .menu { font-size: 0.75rem; letter-spacing: 0.14em; } & .chat-launcher { font-size: 0.6875rem; } }
 
-  /* type: mono structure, legible text */
-  & h1 {
-    font-weight: 800; font-size: clamp(1.875rem, 1.1rem + 3.4vw, 3.5rem); line-height: 1.12; letter-spacing: 0;
+  /* type: Doto for display headlines (and the name), Atkinson Hyperlegible Next for everything read (600 for titles,
+     as the mocks set them), Martian Mono in capitals for labels */
+  & a:hover { color: var(--green); }
+  & main :is(h1, h2, h3) { color: #f4f1ff; }
+  & .display { font-family: var(--font-display); font-weight: 800; font-size: clamp(2.5rem, 0.8rem + 9vw, 8.75rem); line-height: 0.92; letter-spacing: 0; }
+  & .display-long { font-size: clamp(2.5rem, 0.8rem + 6.2vw, 6.5rem); }
+  & .home .display { font-size: clamp(2.5rem, 1.2rem + 3vw, 3.875rem); line-height: 1; }
+  & .display-title { font-size: clamp(2rem, 1rem + 2.6vw, 3.5rem); line-height: 1.02; }
+  & h2, & h3 { font-family: var(--font-text); font-weight: 600; letter-spacing: 0; }
+  & h2 { font-size: 1.5rem; line-height: 1.2; }
+  & h3 { font-size: 1.25rem; line-height: 1.25; }
+  & .lede { font-size: 1.125rem; line-height: 1.45; color: #ece9fa; }
+  & .prose p, & .prose li, & .teaser-desc, & .skills dd, & .closing { color: #cfcbe6; }
+  & .prose a, & .teaser-desc a { text-decoration-color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
+  & .meta, & .teaser-label, & .facts dt, & .tags, & .prose thead th, & .glyph, & .glyphs figcaption {
+    font-family: var(--font-label); font-size: 0.6875rem; line-height: 1.6; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-3);
   }
-  & h2 { font-weight: 800; font-size: var(--step-1); letter-spacing: 0.02em; }
-  & h3 { font-family: var(--font-text); font-weight: 600; font-size: var(--step-0); }
-  & .prose h2::before, & .flow > h2::before { content: "## " / ""; color: var(--accent); }
-  & .prose h3::before { content: "### " / ""; color: var(--accent); }
-  & .lede { color: var(--ink); }
-  & .page-head { padding-bottom: calc(4 * var(--u)); border-bottom: 1px dashed var(--rule); }
-  & .page-head .meta a { text-decoration: none; color: var(--accent); }
-  & .page-head .meta a::before { content: "../" / ""; color: var(--ink-2); }
-  & code { color: var(--accent); }
-  & .prose pre { background: var(--paper-2); border: 1px dashed var(--rule); }
-  & .prose pre code { color: var(--ink); }
-  & .prose blockquote { border-left: 2px solid var(--violet); color: var(--ink); }
-  & .prose table { border-top: 1px dashed var(--rule); }
-  & .prose th, & .prose td { border-bottom: 1px dashed var(--rule); }
-  & :is(.prose, .flow) ul { list-style-type: "- "; }
-  & :is(.prose, .flow) ul li::marker { color: var(--accent); }
-  & .voice { font-family: var(--font-ui); font-style: normal; font-size: 0.75rem; }
-  & .voice::before { content: "// " / ""; color: var(--accent); }
+  & .meta a { color: var(--ink-2); text-decoration: none; }
+  & .meta a:hover { color: var(--green); }
+  & .voice { font-size: 0.9375rem; line-height: 1.5; color: var(--ink-3); }
+  & code { font-family: var(--font-mono); font-size: 0.85em; color: #ece9fa; }
 
-  /* lists as a listing: [01] in the signal colour, dashed rules */
-  & .index { gap: 0; counter-reset: item; }
-  & .index > li {
-    display: grid; grid-template-columns: calc(8 * var(--u)) minmax(0, 1fr); column-gap: calc(2 * var(--u));
-    padding-block: calc(2 * var(--u)) calc(3 * var(--u)); border-top: 1px dashed var(--rule);
-  }
-  & .index > li > * { grid-column: 2; }
-  & :is(ul, ol:not([reversed])).index > li { counter-increment: item; }
-  & :is(ul, ol:not([reversed])).index > li::before {
-    content: "[" counter(item, decimal-leading-zero) "]" / ""; grid-column: 1; grid-row: 1 / span 3;
-    font: var(--label); color: var(--accent); padding-top: calc(1.5 * var(--u));
-  }
-  & .index a { font-size: var(--step-1); line-height: calc(6 * var(--u)); text-decoration: none; }
-  & .index p { font-size: var(--step--1); line-height: calc(4 * var(--u)); }
-  & .index time { display: block; color: var(--ink-2); }
+  /* teasers: a label in mono capitals, a title in Atkinson 600, purple underline and green on hover */
+  & .teaser { border-top-color: rgba(218, 214, 240, 0.25); }
+  & .teasers > li:last-child .teaser, & .home > .teaser:last-child { border-bottom-color: rgba(218, 214, 240, 0.25); }
+  & .teaser-title { font-family: var(--font-text); font-weight: 600; font-size: 1.3125rem; line-height: 1.2; }
+  & .teaser-title a { color: #f4f1ff; text-decoration: underline 1px transparent; text-underline-offset: 0.2em; }
+  & .teaser:hover .teaser-title a, & .teaser-title a:focus-visible { color: var(--green); text-decoration-color: var(--accent); }
+  & .teaser-desc { font-size: 1rem; line-height: 1.5; }
+
+  /* About: the pulled line between two purple hairlines, in the italic */
+  & .pull { padding-block: calc(4 * var(--u)); border-block: 1px solid rgba(139, 92, 255, 0.5); font-style: italic; font-size: 1.5rem; line-height: 1.2; color: #f4f1ff; }
+  & .closing { font-size: 1.125rem; color: #ece9fa; }
+
+  /* reading */
+  & :is(.prose, .body) ul:not(.plain, .teasers, .rooms) { list-style-type: "- "; }
+  & :is(.prose, .body) ul:not(.plain, .teasers, .rooms) li::marker { color: var(--accent); }
+  & .prose blockquote:not(.pull) { padding-left: calc(3 * var(--u)); border-left: 1px solid var(--accent); font-style: italic; }
+  & .prose pre { background: var(--paper-2); border: 1px solid var(--rule); }
+  & .prose table { border-top: 1px solid rgba(218, 214, 240, 0.45); }
+  & .prose th { font-weight: 600; }
 
   /* For recruiters */
-  & .cta {
-    display: inline-block; font: var(--label); font-size: 0.8125rem; color: var(--accent); text-decoration: none;
-    border: 1px solid var(--accent); padding: calc(1.5 * var(--u)) calc(3 * var(--u));
-  }
-  & .cta::before { content: "> " / ""; }
-  & .cta:hover { background: var(--green); border-color: var(--green); color: var(--paper); }
-  & .facts { margin-top: calc(3 * var(--u)); border-top: 1px dashed var(--rule); padding-top: calc(2 * var(--u)); }
-  & .skills > div { padding-top: calc(2 * var(--u)); border-top: 1px dashed var(--rule); }
-  & .tags { color: var(--violet); }
+  & .facts { padding-top: calc(2 * var(--u)); border-top: 1px solid rgba(218, 214, 240, 0.45); }
+  & .facts dt { padding-top: 4px; }
+  & .skills > div { padding-top: calc(3 * var(--u)); border-top: 1px solid var(--rule); }
+  & .skills dt { font-weight: 600; color: #f4f1ff; }
+  & .tags { color: var(--ink-2); }
+  & .side-lists h2 { font-size: 1.125rem; }
+  & .side-lists li { color: #cfcbe6; padding-block: 2px; }
 
-  /* the portrait: an X-ray (a cyan negative) over the photo; it clears when you look closer */
-  & .portrait { position: relative; }
+  /* the 404's way back */
+  & .rooms { font-family: var(--font-label); font-size: 0.8125rem; letter-spacing: 0.16em; text-transform: uppercase; }
+  & .rooms a { color: var(--ink-2); text-decoration: underline 2px transparent; text-underline-offset: 8px; }
+  & .rooms a:hover { color: #fff; text-decoration-color: var(--accent); }
+
+  /* the portrait: an X-ray in a round window, a thin purple ring with four ticks, and a green line that scans it
+     (the mock). It clears to the photo when you look closer. */
+  & .portrait { position: relative; aspect-ratio: 1; }
+  & .portrait-screen, & .portrait-img {
+    position: absolute; inset: 6%; width: 88%; height: 88%; overflow: hidden;
+    /* radius-ok: the round window of the X-ray (the mock), not a card */
+    border-radius: 50%;
+  }
   & .portrait-screen { display: block; }
-  & .portrait-screen img { filter: grayscale(1) invert(1) sepia(1) saturate(3.5) hue-rotate(125deg) contrast(1.15) brightness(0.9); }
-  & .portrait-img { position: absolute; inset: 0; opacity: 0; transition: opacity 0.5s ease; }
+  & .portrait-screen img, & .portrait-img { object-fit: cover; }
+  & .portrait-screen img { width: 100%; height: 100%; filter: grayscale(1) invert(1) sepia(1) saturate(3.5) hue-rotate(125deg) contrast(1.15) brightness(0.9); }
+  & .portrait-img { opacity: 0; transition: opacity 0.5s ease; }
   & .portrait:hover .portrait-img { opacity: 1; }
+  & .portrait-ring { display: block; position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+  & .portrait-ring circle { fill: none; stroke: var(--accent); stroke-opacity: 0.7; stroke-width: 0.4; }
+  & .portrait-ring path { stroke: var(--ink); stroke-opacity: 0.6; stroke-width: 0.4; }
+  & .portrait-scan {
+    display: block; position: absolute; inset: 6%; overflow: hidden; pointer-events: none;
+    /* radius-ok: the scan line is clipped to the same round window */
+    border-radius: 50%;
+  }
+  & .portrait-scan::after {
+    content: "" / ""; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: var(--green);
+    animation: night-scan 7s ease-in-out infinite;
+  }
 
   /* diagrams */
   & .glyph svg { fill: var(--ink); }
-  & .glyph .gap { stroke: var(--magenta); }
-
+  & .glyph .gap { stroke: var(--orange); }
 }
 
-/* desktop reading: one column, the measure, a little more air */
+/* desktop: the mocks' sizes (Home's headline 62 px, a room's up to 140 px, the lede 26 px, a beat 30 px) */
+@media (min-width: 48rem) {
+  :root[data-theme="night"] {
+    & .lede { font-size: 1.625rem; }
+    & .home .lede { font-size: 1.375rem; line-height: 1.5; }
+    & h2 { font-size: 1.875rem; }
+    & h3 { font-size: 1.375rem; }
+    & .teaser-title { font-size: 1.5rem; }
+    & .teaser-desc { font-size: 1.0625rem; }
+    & .pull { font-size: 2.375rem; padding-block: calc(4 * var(--u)) calc(4 * var(--u)); }
+    & .closing { font-size: 1.375rem; }
+  }
+}
+/* desktop Home: three columns, the headline and the two latest things side by side (the mock: 6 to 3 to 3, 56 px) */
 @media (min-width: 62rem) {
-  :root[data-theme="night"] .prose { padding-top: calc(3 * var(--lh)); }
+  :root[data-theme="night"] .home { grid-template-columns: minmax(0, 6fr) minmax(0, 3fr) minmax(0, 3fr); column-gap: calc(9 * var(--u)); }
+  :root[data-theme="night"] .home > .page-head { grid-column: 1; grid-row: 1; }
+  :root[data-theme="night"] .home > .teaser { grid-column: auto; grid-row: 1; margin-top: 0; align-self: start; border-bottom: 0; }
 }
 
+@keyframes night-scan { 0%, 100% { transform: translateY(-160px); opacity: 0; } 12%, 88% { opacity: 0.6; } 50% { transform: translateY(160px); } }
 
 /* thresholds: the old page powers off to a line, the new one powers on from it (transform and opacity only) */
 :root[data-theme="night"]::view-transition-old(root) { animation: terminal-off 240ms cubic-bezier(0.6, 0, 0.9, 0.4) both; }

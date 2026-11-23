@@ -3,12 +3,13 @@ import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import Teaser from '../../components/Teaser.astro';
 import { DESCRIPTIONS } from '../../data/site';
+import { displayClass } from '../../data/display';
 const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
 ---
 <Base title="Projects" description={DESCRIPTIONS.projects}>
   <div class="page reading">
     <header class="page-head">
-      <h1 class="display misreg" data-text="Projects">Projects</h1>
+      <h1 class:list={['display', 'misreg', displayClass('Projects')]} data-text="Projects">Projects</h1>
       <p class="lede">{DESCRIPTIONS.projects}</p>
     </header>
     <ul class="teasers body">

@@ -6,11 +6,12 @@ import Base from '../layouts/Base.astro';
 import Portrait from '../components/Portrait.astro';
 import { name, about, skills, resume, sidebar } from '../data/v2-words';
 import { DESCRIPTIONS } from '../data/site';
+import { displayClass } from '../data/display';
 ---
 <Base title="For recruiters" description={DESCRIPTIONS.recruiters}>
   <div class="page reading has-side">
     <header class="page-head">
-      <h1 class="display misreg" data-text="For recruiters">For recruiters</h1>
+      <h1 class:list={['display', 'misreg', displayClass('For recruiters')]} data-text="For recruiters">For recruiters</h1>
       <p class="lede">{resume.summary}</p>
     </header>
     <aside class="side" aria-label="Facts">

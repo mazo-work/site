@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import Teaser from '../../components/Teaser.astro';
 import { DESCRIPTIONS } from '../../data/site';
+import { displayClass } from '../../data/display';
 import StoryFragment from '../../components/StoryFragment.astro';
 const notes = (await getCollection('notes')).sort((a, b) => +b.data.date - +a.data.date);
 const day = (d: Date) => d.toISOString().slice(0, 10);
@@ -10,7 +11,7 @@ const day = (d: Date) => d.toISOString().slice(0, 10);
 <Base title="Lab notes" description={DESCRIPTIONS.notes}>
   <div class="page reading">
     <header class="page-head">
-      <h1 class="display misreg" data-text="Lab notes">Lab notes</h1>
+      <h1 class:list={['display', 'misreg', displayClass('Lab notes')]} data-text="Lab notes">Lab notes</h1>
       <p class="lede">{DESCRIPTIONS.notes}</p>
     </header>
     <div class="body">

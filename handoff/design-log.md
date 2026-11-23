@@ -201,3 +201,44 @@ stored, and no longer claims that every loop stops within five seconds (Pause mo
 
 **Left for later units, by design:** the ring under the band on Home (U6), the parakeet on the mark and in the
 portrait (U8), the parakeet photo, its caption and alt text (U9).
+
+## U5 · Night (2026-11-23)
+
+**Direction (the mocks, applied to every page).** v3's Terminal, quieted to Jon's review: near-black `#07060B` under
+a faint dot grid (one 1 px dot per 26 px), text `#DAD6F0`, and three accents with one job each: purple `#8B5CFF` for
+underlines and rules (and U6's orbit), green `#46D98A` for hover, focus and Ask, orange `#FF6A2B` for the light. Doto
+800 sets the display headlines (Home's 62 px, a room's up to 140 px) and the name; Atkinson Hyperlegible Next sets the
+reading, with titles in its 600 as the mocks set them; Martian Mono in spaced capitals sets every label, the rows and
+the band. Home is the mock's three columns (the headline and Jon's lines, then the latest project, then the latest
+note: 6 to 3 to 3). About is the shared frame with the pulled line between two purple hairlines in the italic. The
+portrait is the mock's instrument: an X-ray in a round window, a thin purple ring with four ticks, and a green line
+that scans it every 7 s (a loop, so Pause motion stops it). v3's CRT power-off and power-on between pages stays.
+
+**Screens (v1):** 12 pages × mobile and desktop.
+
+**Critique of v1, against the banned lists:**
+- No glow anywhere but the LED mark's 2 px halo (it is how an LED reads): the mock's purple glow behind About's
+  headline and the soft glow under the scan line were not built; v3's chromatic fringe and glowing hover went in U1.
+- Gradients: one, the dot grid, a texture (annotated). Radius: the portrait's round window and its scan line's clip
+  (annotated); no cards, no soft shadows.
+- No icons, dingbats or numbering: v3's `##`, `./`, `~/path` and `[01]` winks are gone (the mocks have none, and
+  `[01]` is numbering).
+- One accent per job: the mock coloured the teasers' labels green and orange; here they are the label grey, because
+  the brief gives green to hover, focus and Ask and orange to the light only.
+
+**Critique of v1, against the mocks, §2 and §9:**
+- Matches: the rows and the band in Martian Mono capitals, the LED mark, Home's three columns and sizes, About's
+  frame, the portrait's ring and scan, the phone layouts (Doto at 40 px, the band in two rows).
+- §9: light as material (the orange light, the green scan), diagrams and wireframe (the ring and ticks; U6's orbit),
+  loops in place (the blink, the scan), what lies under the surface (the X-ray).
+- Wrong in v1: room titles were shrunk across the board (about 105 px on a desktop) so that "recruiters", ten letters
+  of a wide monospaced face, would fit its column: every short title lost the mock's 140 px to protect one long word.
+  And the colophon scrolled 2 px sideways on a phone: a long URL in Martian Mono could not break.
+
+**The one revision:** room titles take the mock's size again (up to 140 px) and only a title with a word of nine
+letters or more takes a smaller size (`display-long`, from `src/data/display.ts`); code in running text may break
+anywhere. A new check, `layout.fit`, loads every page in both masks at 390 and 1440 px and fails on any sideways
+scroll or any display headline whose words run past its box; it caught the colophon's 2 px before the fix.
+
+**Left for later units:** the ring (U6), the bird on the mark and the portrait (U8), the softer X-ray of the parakeet
+photo (U9).

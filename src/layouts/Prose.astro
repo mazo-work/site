@@ -4,12 +4,13 @@
 // desktop; on a phone it follows the lede).
 import Base from './Base.astro';
 import Portrait from '../components/Portrait.astro';
+import { displayClass } from '../data/display';
 const { frontmatter } = Astro.props;
 ---
 <Base title={frontmatter.title} description={frontmatter.description} schema={frontmatter.schema ? { type: frontmatter.schema } : undefined}>
   <div class:list={['page', 'reading', { 'has-side': frontmatter.photo }]}>
     <header class="page-head">
-      <h1 class="display misreg" data-text={frontmatter.title}>{frontmatter.title}</h1>
+      <h1 class:list={['display', 'misreg', displayClass(frontmatter.title)]} data-text={frontmatter.title}>{frontmatter.title}</h1>
       {frontmatter.lede && <p class="lede">{frontmatter.lede}</p>}
     </header>
     {frontmatter.photo && <aside class="side" aria-label="The portrait"><Portrait /></aside>}
