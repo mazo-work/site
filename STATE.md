@@ -10,6 +10,7 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 | U3 type | [ ] | | | | |
 | U4 Paper | [ ] | | | | |
 | U5 Night | [ ] | | | | |
+| U5b the puzzle in both masks | [ ] | | | | |
 | U6 the ring | [ ] | | | | |
 | U7 entering an orb | [ ] | | | | |
 | U8 the parakeet | [ ] | | | | |
@@ -20,7 +21,7 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 
 ## Budget
 
-- Units done: 0 of 13 · turns so far: 0 · average turns per unit: - · estimated turns left: -
+- Units done: 0 of 14 · turns so far: 0 · average turns per unit: - · estimated turns left: -
 - Last updated: -
 
 ## Log

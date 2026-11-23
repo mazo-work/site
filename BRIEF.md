@@ -36,7 +36,8 @@ menu and the theme toggle never move; the themes differ in type, colour, texture
 Editorial) is the cleanest: its centred masthead and enclosed menu band are the model. Night (v3's Terminal) is the
 most creative: its ring of orbs becomes the home page's navigation in **both** themes, and clicking an orb **enters its
 atmosphere** to reach the page. Profile is parked: hidden, not deleted. The parakeet becomes a resident: it appears
-after the entrance, perches on the mark, flies between pages and lands in the portrait.
+after the entrance, perches on the mark, flies between pages and lands in the portrait. The entrance puzzle keeps
+everything but its colours, which now follow the mask.
 
 ## 3. Decisions (fixed: do not change them; propose changes in the handoff)
 
@@ -75,6 +76,18 @@ faint dot grid; text #DAD6F0; **purple #8B5CFF, green #46D98A and orange #FF6A2B
 orbit and underlines, green for hover, focus and Ask, orange for the light. No glow blobs, no multicolour halos, no
 chromatic fringes on text (Jon: the glowing spheres bordered on AI slop). The X-ray portrait stays, **less saturated**
 than v3's (muted violet to pale cyan, as in the mock).
+
+**The entrance puzzle wears the mask** (Jon: the same functionality; only the colourway changes). v3's puzzle stays
+exactly as it is: the pieces, the solve, gestures and keys, the hints, the sound, the finale and its timings, the
+curtain, Skip intro, the no-3D fallback. Only its colours change, to whichever mask is in force when it starts. The
+rule: **the puzzle's ink and light match the mark's**, so the word lands in Home's mark without changing colour.
+- **Night:** v3's look, recoloured. Stage #07060B, text #DAD6F0, the light orange #FF6A2B. Each letter takes the
+  nearest Night colour: M orange, A green, Z purple; O's amber has no match, so O takes the text colour. Its light
+  effects stay, recoloured.
+- **Paper** (the big change): the cream paper and its grain show through behind the puzzle. Pieces in ink and riso
+  red, with tints, keeping the four letters easy to tell apart. The light red, the word ink. Glows can't show on
+  cream, so they print instead (your call how; record it in the log).
+- Stage text, buttons and focus rings use the mask's colours and pass 4.5:1.
 
 **The ring, in both themes** (Home only, directly under the menu band): a slow orbit (about 90 s a turn) of five orbs,
 one per room, round a central sphere whose core is the O's light; orbs grow and brighten at the front and dim at the
@@ -145,6 +158,7 @@ the operator's infrastructure; licences recorded. Latitude: free within §3 and 
 | U3 | Type: Atkinson for body text everywhere; IM Fell (Paper) and Doto with Martian Mono (Night), per-theme loading, licences | check passes |
 | U4 | Paper to its mocks, with the §4 loop | check passes; design-log entry |
 | U5 | Night to its mocks, with the §4 loop | as U4 |
+| U5b | The entrance puzzle in both masks, per §3 "The entrance puzzle wears the mask". Colours only: today they are constants in `src/entrance/puzzle.js` and variables in `src/styles/entrance.css` | check passes; the entrance check solves the puzzle in both masks; screenshots of both in `handoff/screens/` |
 | U6 | The ring (both themes, Home): orbit, depth, pause on hover and focus, Paper's print rendering, the phone variant | check passes; orbs are links in every theme |
 | U7 | Entering an orb: the cross-document transition in both themes, and the fallback | check passes; recorded in a screen capture or frame sequence in `handoff/` |
 | U8 | The parakeet: appear, perch and hop, fly (view transition), land in the portrait, head follows the pointer | check passes; no network request from the bird |
