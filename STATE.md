@@ -5,7 +5,7 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 | Unit | Done | Commit | Turns | Files | Notes |
 |---|---|---|---|---|---|
 | U0 scaffold | [x] | 17b87c7 | 28 | 30 | Astro 7.4.13 + three 0.170.0 pinned; v2's words in `src/data/v2-words.ts`; React app removed. 13 of the 28 turns were the one-time read of the brief's inputs. |
-| U1 check suite | [ ] | | | | |
+| U1 check suite | [x] | 4e78de4 | 11 | 17 | `npm run check`: 32 checks, 22 pass, 10 pending (listed below). Proven against a broken fixture. CI workflow `check.yml` (check only). |
 | U2 headers | [ ] | | | | |
 | U3 spine | [ ] | | | | |
 | U4 Editorial | [ ] | | | | |
@@ -25,9 +25,9 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 
 ## Budget
 
-- Units done: 1 of 18 · turns so far: 28 · average turns per unit: 28 (15 without the one-time read) · estimated turns left: 17 × 15 ≈ 255
-- Wall clock: session started 2026-11-23 02:37 UTC; U0 done 02:47 UTC.
-- Last updated: 2026-11-23 02:48 UTC, after U0.
+- Units done: 2 of 18 · turns so far: 39 · average turns per unit: 19.5 (13 without U0's one-time read) · estimated turns left: 16 × 13 ≈ 210
+- Wall clock: session started 2026-11-23 02:37 UTC; U0 done 02:47; U1 done 02:54.
+- Last updated: 2026-11-23 02:55 UTC, after U1.
 
 ## Checks not yet expected to pass
 
@@ -58,3 +58,14 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 - U0 · decision: the public origin is read from `SITE_URL` at build time; the placeholder is `https://mazo.invalid`
   (a reserved TLD that can never resolve). `[JON: domain]` for the handoff.
 - U0 · decision: Astro telemetry is off in every npm script (`ASTRO_TELEMETRY_DISABLED=1`).
+- U1 · decision: HTML validation is html-validate (recommended rules; trailing-whitespace off for compressed output;
+  SRI required only cross-origin), not the Nu checker: offline, no Java, fast. Playwright is pinned to 1.63.0, the
+  version whose Chromium is preinstalled here; CI installs its matching browser.
+- U1 · decision: the CSP pass serves dist/ with dist/_headers applied (a Cloudflare-like static server), so violations
+  are the ones production would raise. axe runs in a second pass with CSP bypassed (it is injected); colours, focus and
+  semantics are unchanged by that. On the entrance, `[data-art]` (the 3D stage) is excluded from axe (§3, art).
+- U1 · decision: routes fixed in `tools/check/config.mjs`: /home/, /about/, /projects/ (+ /mazo/, /case-study-2/),
+  /notes/ (+ /note-template/), /now/, /uses/, /recruiters/, /colophon/, /404.html; the entrance is /. The theme lives in
+  localStorage under `mazo-theme`. A case-study shell is `noindex`, out of the sitemap, and WebPage (not Article).
+- U1 · decision: a check-only CI workflow, `.github/workflows/check.yml` (push to v3; contents: read; actions pinned to
+  the same commits as test-page.yml, which is untouched).
