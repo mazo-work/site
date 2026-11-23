@@ -162,6 +162,11 @@ hr { border: 0; border-top: 1px solid var(--rule); margin: calc(2 * var(--lh)) 0
 .prose section + section { margin-top: calc(2 * var(--lh)); }
 .prose section > * + * { margin-top: var(--lh); }
 .prose section > h2 + * { margin-top: calc(2 * var(--u)); }
+.table-scroll { overflow-x: auto; }
+.table-scroll table { display: table; }
+.prose ul.plain { list-style: none; padding-left: 0; }
+.prose ul.plain li + li { margin-top: var(--u); }
+.prose ul.plain code { word-break: break-word; }
 .meta { font-family: var(--font-ui); font-size: var(--step--1); color: var(--ink-2); }
 
 /* lists of things: rooms, projects, notes */

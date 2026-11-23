@@ -16,7 +16,7 @@
   & a:hover { text-decoration-thickness: 2px; }
 
   /* labels: the grotesque, small, spaced, in capitals */
-  & .meta, & .brand-name, & .site-nav a, & .site-footer, & .facts dt, & .tags, & .prose th, & .index time {
+  & .meta, & .brand-name, & .site-nav a, & .site-footer, & .facts dt, & .tags, & .prose thead th, & .index time {
     font: var(--label); letter-spacing: 0.1em; text-transform: uppercase;
   }
 

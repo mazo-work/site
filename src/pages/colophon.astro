@@ -1,10 +1,32 @@
 ---
-// The colophon. U3: the stack, from the build. U10 adds the headers, sizes, fonts, licences, analytics,
-// crawler policy and accessibility statement.
+// The colophon (U10). Every fact here is generated from the build: the headers and CSP from public/_headers, the
+// stack and licences from package.json and node_modules, the fonts from tools/fonts/fonts.json, the crawler policy
+// from src/data/crawlers.ts (the same data robots.txt is made from), and sizes measured after the build
+// (src/integrations/measure.mjs). The analytics section reads the CSP, so it tells the truth whatever the CSP says.
+import fs from 'node:fs';
+import path from 'node:path';
 import Base from '../layouts/Base.astro';
 import { DESCRIPTIONS } from '../data/site';
-import pkg from '../../package.json';
-const astro = pkg.dependencies.astro;
+import { BOOT } from '../data/theme-boot.mjs';
+import { CRAWLERS, SOURCES, CHECKED, allowed } from '../data/crawlers';
+import { parseHeaders, headersFor, parseCsp } from '../../tools/check/lib/headers.mjs';
+
+const root = process.cwd();
+const pkg = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8'));
+const version = (name: string) => JSON.parse(fs.readFileSync(path.join(root, 'node_modules', name, 'package.json'), 'utf8'));
+const headers = [...headersFor(parseHeaders(fs.readFileSync(path.join(root, 'public', '_headers'), 'utf8')), '/').values()];
+const cspHeader = headers.find((h) => h.name.toLowerCase() === 'content-security-policy');
+const csp = parseCsp(cspHeader?.value ?? '');
+const other = headers.filter((h) => h !== cspHeader);
+const beacon = (csp.get('script-src') || []).includes('https://static.cloudflareinsights.com');
+const fonts = JSON.parse(fs.readFileSync(path.join(root, 'tools', 'fonts', 'fonts.json'), 'utf8')).families.map((f: any) => ({
+  ...f, kb: f.faces.reduce((a: number, [w, s]: string[]) => a + fs.statSync(path.join(root, 'public', 'fonts', f.id, `${f.id}-${w}-${s}.woff2`)).size, 0) / 1024,
+}));
+const deps = [
+  ...Object.keys(pkg.dependencies).map((n) => ({ n, where: n === 'three' ? 'sent to visitors (the entrance only)' : 'builds the site' })),
+  ...Object.keys(pkg.devDependencies).map((n) => ({ n, where: 'checks the site' })),
+].map((d) => ({ ...d, v: version(d.n).version, licence: version(d.n).license }));
+const kinds = { search: 'search and answers', user: 'a person asked', training: 'training only', mixed: 'training and search or answers' };
 ---
 <Base title="Colophon" description={DESCRIPTIONS.colophon}>
   <article class="prose">
@@ -12,13 +34,95 @@ const astro = pkg.dependencies.astro;
       <h1>Colophon</h1>
       <p class="lede">{DESCRIPTIONS.colophon}</p>
     </header>
+
     <section aria-labelledby="stack">
       <h2 id="stack">Stack</h2>
-      <p>Built with Astro {astro} as static files: every page is complete HTML and CSS, and reads without JavaScript. Scripts load only where a part needs one.</p>
+      <p>Built with Astro {version('astro').version} as static files: every page is complete HTML and CSS and reads without JavaScript. Scripts run only where a part needs one: a {BOOT.length}-byte inline script in every page's head that applies your theme before the first paint, the theme switcher, and on the entrance, after the first paint, the puzzle (three.js {version('three').version}). Markdown is rendered by Sätteri. No framework runs in your browser, no client router, no cookies.</p>
+      <p>Each build is checked by tools/check in the repository: HTML validation, links, every page in every theme in a headless browser with these headers applied (CSP violations, every network request, script errors), axe-core accessibility rules, JSON-LD, the Markdown twins, the fonts, the entrance, and a secret scan.</p>
     </section>
+
+    <section aria-labelledby="headers">
+      <h2 id="headers">Headers</h2>
+      <p>Every response carries these, read from the site's <code>_headers</code> file when this page was built. The Content-Security-Policy, directive by directive:</p>
+      <ul class="plain">
+        {[...csp].map(([d, s]) => <li><code>{d}{s.length ? ' ' + s.join(' ') : ''}</code></li>)}
+      </ul>
+      <p>And the rest:</p>
+      <ul class="plain">
+        {other.map((h) => <li><code>{h.name}: {h.value}</code></li>)}
+      </ul>
+    </section>
+
+    <section aria-labelledby="third-parties">
+      <h2 id="third-parties">Third parties</h2>
+      {beacon
+        ? <p>One. Cloudflare Web Analytics, a cookieless beacon, counts visits. It is the only exception in the policy above: it adds <code>https://static.cloudflareinsights.com</code> to <code>script-src</code> and <code>https://cloudflareinsights.com</code> to <code>connect-src</code>, and nothing else. No other third party is loaded: no font services, embeds, icon services, widgets or trackers.</p>
+        : <p>None. Every file comes from this site: no analytics, font services, embeds, icon services, widgets or trackers.</p>}
+    </section>
+
+    <section aria-labelledby="storage">
+      <h2 id="storage">What is stored</h2>
+      <p>No cookies. In your browser only, and never sent anywhere: <code>mazo-theme</code> (the theme you chose; localStorage), <code>mazo-sound</code> (whether the entrance plays sound; localStorage), and <code>mazo-curtain</code> (a one-time flag that lets Home finish the entrance's curtain; sessionStorage, removed as soon as it is read).</p>
+    </section>
+
+    <section aria-labelledby="sizes">
+      <h2 id="sizes">Sizes</h2>
+      <p data-measured>MEASURED</p>
+    </section>
+
+    <section aria-labelledby="fonts">
+      <h2 id="fonts">Fonts</h2>
+      <p>Self-hosted, Latin subset, WOFF2, from the Fontsource packages; each theme loads only its own. All are under the SIL Open Font License 1.1; each licence sits beside its files.</p>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th scope="col">Family</th><th scope="col">Theme</th><th scope="col">Faces</th><th scope="col">KB</th><th scope="col">Licence</th></tr></thead>
+          <tbody>
+            {fonts.map((f: any) => (
+              <tr><th scope="row">{f.family}</th><td>{f.themes.join(', ')}</td><td>{f.faces.map(([w, s]: string[]) => `${w}${s === 'italic' ? ' italic' : ''}`).join(', ')}</td><td>{f.kb.toFixed(1)}</td><td><a href={`/fonts/${f.id}/OFL.txt`}>OFL 1.1</a></td></tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section aria-labelledby="crawlers">
+      <h2 id="crawlers">Crawlers</h2>
+      <p>Search and answer engines, and fetches a person asks for, are welcome; crawlers that only gather AI training data are refused in <a href="/robots.txt">robots.txt</a>. Crawlers that do both are allowed for now. Every page also has a Markdown twin, listed in <a href="/llms.txt">llms.txt</a>. Names and purposes from each vendor's documentation, checked {CHECKED}:</p>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th scope="col">Crawler</th><th scope="col">Vendor</th><th scope="col">What it is for</th><th scope="col">Here</th></tr></thead>
+          <tbody>
+            {CRAWLERS.map((c) => (
+              <tr><th scope="row"><code>{c.token}</code></th><td><a href={SOURCES[c.source].url}>{SOURCES[c.source].vendor}</a></td><td>{c.purpose} ({kinds[c.kind]})</td><td>{allowed(c) ? 'allowed' : 'refused'}</td></tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section aria-labelledby="accessibility">
+      <h2 id="accessibility">Accessibility</h2>
+      <p>The aim is WCAG 2.2 AA on every page, in every theme. Each build runs axe-core's WCAG 2.2 AA rules on every page in every theme, checks that the theme switcher works by keyboard and is named for screen readers, and checks that every page reads without JavaScript. The entrance is an artwork: its puzzle has keyboard controls and spoken progress but is not otherwise made accessible, and Skip intro is always the way in. Motion is the same for everyone for now (the system's Reduce Motion setting is not yet honoured); anything that moves on its own stops within five seconds.</p>
+      <p>To report a problem: [JON: contact].</p>
+    </section>
+
+    <section aria-labelledby="licences">
+      <h2 id="licences">Licences</h2>
+      <p>The site's direct dependencies; every installed package and its licence is listed in <a href="/licences.txt">licences.txt</a>.</p>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th scope="col">Package</th><th scope="col">Version</th><th scope="col">Licence</th><th scope="col">Role</th></tr></thead>
+          <tbody>
+            {deps.map((d) => <tr><th scope="row"><code>{d.n}</code></th><td>{d.v}</td><td>{d.licence}</td><td>{d.where}</td></tr>)}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
     <section aria-labelledby="made">
       <h2 id="made">How this was made</h2>
       <p>[JON: how this site was made, in your words: the brief, the puzzle, working with an AI.]</p>
+      <p>[JON: what you would tell someone teaching themselves to make things like this.]</p>
     </section>
   </article>
 </Base>
