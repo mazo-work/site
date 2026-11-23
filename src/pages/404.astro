@@ -1,0 +1,18 @@
+---
+import Base from '../layouts/Base.astro';
+import { NAV, FOOTER_NAV, DESCRIPTIONS } from '../data/site';
+---
+<Base title="Not found" description={DESCRIPTIONS.notFound} noindex canonical={false}>
+  <div class="page">
+    <header class="page-head">
+      <h1>Not found</h1>
+      <p class="lede">[JON: a line for the 404: the wink]</p>
+    </header>
+    <nav aria-label="Rooms">
+      <ul class="index">
+        <li><a href="/home/">Home</a></li>
+        {[...NAV, FOOTER_NAV[0]].map((r) => <li><a href={r.href}>{r.label}</a></li>)}
+      </ul>
+    </nav>
+  </div>
+</Base>

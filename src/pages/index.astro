@@ -1,40 +1,18 @@
 ---
-// U0: v2's words on one plain page, so a stop here still leaves a usable site. U3 builds the spine.
-import { Image } from 'astro:assets';
+// The entrance (U3: the still picture and the way in; U5 adds the puzzle, which loads after first paint).
 import Base from '../layouts/Base.astro';
-import headshot from '../assets/headshot.webp';
-import { name, documentTitle, hero, about, skills, resume, sidebar } from '../data/v2-words';
+import Mark from '../components/Mark.astro';
+import { SITE_NAME, DESCRIPTIONS } from '../data/site';
 ---
-<Base title={documentTitle}>
-  <main>
-    <h1>{hero.heading}</h1>
-    <Image src={headshot} alt={sidebar.headshotAlt} width={256} />
-    <section>
-      <h2>{about.heading}</h2>
-      {about.paragraphs.map((p) => <p>{p}</p>)}
-    </section>
-    <section>
-      <h2>{skills.heading}</h2>
-      <dl>
-        {skills.items.map((s) => (
-          <>
-            <dt>{s.title}</dt>
-            <dd>{s.description} ({s.tags.join(', ')})</dd>
-          </>
-        ))}
-      </dl>
-    </section>
-    <section>
-      <h2>{resume.heading}</h2>
-      <p>{resume.summary}</p>
-      <p><a href={`/${resume.file}`}>{resume.linkText}</a></p>
-    </section>
-    <section>
-      <h2>{sidebar.strengths.heading}</h2>
-      <ul>{sidebar.strengths.items.map((i) => <li>{i}</li>)}</ul>
-      <h2>{sidebar.technologies.heading}</h2>
-      <ul>{sidebar.technologies.items.map((i) => <li>{i}</li>)}</ul>
-    </section>
-  </main>
-  <footer><p>{name}</p></footer>
+<Base title={SITE_NAME} description={DESCRIPTIONS.home} bare bodyClass="is-entrance">
+  <div class="entrance">
+    <Mark />
+    <h1>{SITE_NAME}</h1>
+    <nav aria-label="Ways in">
+      <ul>
+        <li><a href="/home/" id="skip-intro">Skip intro</a></li>
+        <li><a href="/recruiters/">For recruiters</a></li>
+      </ul>
+    </nav>
+  </div>
 </Base>

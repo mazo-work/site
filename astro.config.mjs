@@ -16,6 +16,8 @@ export default defineConfig({
     inlineStylesheets: 'never',
   },
   // No dev toolbar, no client prefetching: nothing the site did not ask for.
+  // No syntax highlighting: Shiki writes inline style attributes, which the CSP (style-src 'self') blocks.
+  markdown: { syntaxHighlight: false },
   devToolbar: { enabled: false },
   prefetch: false,
   vite: {

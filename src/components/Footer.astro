@@ -1,0 +1,15 @@
+---
+import { FOOTER_NAV, SITE_NAME } from '../data/site';
+interface Props { path: string; }
+const { path } = Astro.props;
+---
+<footer class="site-footer">
+  <p class="footer-name">{SITE_NAME}</p>
+  <nav aria-label="Footer">
+    <ul>
+      {FOOTER_NAV.map((item) => (
+        <li><a href={item.href} aria-current={path === item.href ? 'page' : undefined}>{item.label}</a></li>
+      ))}
+    </ul>
+  </nav>
+</footer>

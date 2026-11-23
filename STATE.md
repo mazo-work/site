@@ -34,10 +34,6 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 (U1 lists here what fails only because it is not built yet; each line is removed when its unit lands.
 `npm run check` reads the lines below: a failing check listed here prints as PENDING instead of failing the run.)
 
-- `pages.exist` the pages of §3 are not built yet (U3)
-- `pages.semantic` U0's single page has no nav and no description (U3)
-- `browser.themes` no theme boot script sets data-theme yet (U3)
-- `browser.nojs` the entrance has no way in to /home/ yet (U3)
 - `jsonld.types` no JSON-LD yet (U9)
 - `agents` no twins, llms.txt, sitemap, RSS or robots.txt yet (U9)
 

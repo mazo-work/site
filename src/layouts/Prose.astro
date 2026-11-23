@@ -1,0 +1,18 @@
+---
+// Markdown pages in src/pages (About, Now, Uses): the title as <h1>, then the Markdown.
+import { Image } from 'astro:assets';
+import Base from './Base.astro';
+import headshot from '../assets/headshot.webp';
+import { sidebar } from '../data/v2-words';
+const { frontmatter } = Astro.props;
+---
+<Base title={frontmatter.title} description={frontmatter.description}>
+  <article class="prose">
+    <header class="page-head">
+      <h1>{frontmatter.title}</h1>
+      {frontmatter.lede && <p class="lede">{frontmatter.lede}</p>}
+      {frontmatter.photo && <Image class="portrait" src={headshot} alt={sidebar.headshotAlt} width={320} />}
+    </header>
+    <slot />
+  </article>
+</Base>

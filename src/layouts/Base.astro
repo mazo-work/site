@@ -1,20 +1,45 @@
 ---
-// U0's minimal document shell. U3 replaces it with the spine's layout.
+// Every page's document. Head order matters: the theme boot runs before the stylesheet so the first paint is
+// already in the right theme. `bare` drops the header and footer (the entrance).
+import '../styles/base.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { BOOT } from '../data/theme-boot.mjs';
+import { SITE_NAME } from '../data/site';
+
 interface Props {
-  title: string;
-  description?: string;
+  title: string;              // the page's own name; the document title adds the site's
+  description: string;
+  noindex?: boolean;
+  bare?: boolean;
+  bodyClass?: string;
+  canonical?: boolean;        // false for pages that are not documents (the 404)
 }
-const { title, description } = Astro.props;
+const { title, description, noindex = false, bare = false, bodyClass, canonical: hasCanonical = true } = Astro.props;
+const path = Astro.url.pathname;
+const docTitle = title === SITE_NAME ? SITE_NAME : `${title} · ${SITE_NAME}`;
+const canonical = new URL(path, Astro.site).href;
 ---
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    <script is:inline set:html={BOOT}></script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title}</title>
-    {description && <meta name="description" content={description} />}
+    <title>{docTitle}</title>
+    <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex" />}
+    {hasCanonical && <link rel="canonical" href={canonical} />}
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="color-scheme" content="light dark" />
+    <slot name="head" />
   </head>
-  <body>
-    <slot />
+  <body class={bodyClass}>
+    <a class="skip" href="#main">Skip to content</a>
+    {!bare && <Header path={path} />}
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    {!bare && <Footer path={path} />}
   </body>
 </html>

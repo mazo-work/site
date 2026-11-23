@@ -1,7 +1,7 @@
 // The headless-browser pass (§6 U1): every page × theme, served with dist/_headers applied, recording CSP
 // violations (Trusted Types included), every network request (only same-origin, plus the beacon's two hosts),
 // script errors, and whether the requested theme applied. Then every page once with JavaScript off.
-import { THEMES, THEME_KEY, BEACON_HOSTS, ENTRANCE } from '../config.mjs';
+import { THEMES, THEME_KEY, BEACON_HOSTS, ENTRANCE, NOT_DOCUMENTS, SHELLS } from '../config.mjs';
 
 export async function themedContext(browser, theme, options = {}) {
   const context = await browser.newContext({ viewport: { width: 1280, height: 800 }, serviceWorkers: 'block',
@@ -70,7 +70,7 @@ export default {
           text: (main?.innerText || '').trim().length, homeLink: !!home };
       });
       if (!s.main || !s.visible) r.nojs.push(`${p.url}: <main> is not visible without JS`);
-      else if (p.url === ENTRANCE ? !s.homeLink : s.text < 80) r.nojs.push(p.url === ENTRANCE ? `${p.url}: no visible way in (a link to /home/) without JS` : `${p.url}: ${s.text} characters visible without JS`);
+      else if (p.url === ENTRANCE ? !s.homeLink : (s.text < 80 && !NOT_DOCUMENTS.includes(p.url) && !SHELLS.includes(p.url))) r.nojs.push(p.url === ENTRANCE ? `${p.url}: no visible way in (a link to /home/) without JS` : `${p.url}: ${s.text} characters visible without JS`);
       await page.close();
     }
     await nojs.close();

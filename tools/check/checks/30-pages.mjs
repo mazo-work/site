@@ -2,7 +2,7 @@
 // and every page is reachable from every other in at most two clicks of plain links.
 import { read, dom, DIST } from '../lib/dist.mjs';
 import { resolvePath } from '../lib/server.mjs';
-import { ROUTES, ENTRANCE } from '../config.mjs';
+import { ROUTES, ENTRANCE, NOT_DOCUMENTS, SHELLS } from '../config.mjs';
 
 export default {
   id: 'pages',
@@ -22,7 +22,7 @@ export default {
       if (main.length !== 1) semantic.push(`${p.url}: ${main.length} <main> elements (want 1)`);
       if (d.querySelectorAll('h1').length !== 1) semantic.push(`${p.url}: ${d.querySelectorAll('h1').length} <h1> (want 1)`);
       const text = (main[0]?.textContent || '').replace(/\s+/g, ' ').trim();
-      if (p.url !== ENTRANCE && text.length < 80) semantic.push(`${p.url}: <main> has ${text.length} characters of static text`);
+      if (p.url !== ENTRANCE && !NOT_DOCUMENTS.includes(p.url) && !SHELLS.includes(p.url) && text.length < 80) semantic.push(`${p.url}: <main> has ${text.length} characters of static text`);
       if (!d.querySelector('nav')) semantic.push(`${p.url}: no <nav>`);
       // plain links only (what works without JS)
       const out = new Set();

@@ -1,0 +1,46 @@
+---
+// For recruiters: v2's Skills and Resume folded into one fast page, the resume PDF linked (BRIEF.md §3).
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import headshot from '../assets/headshot.webp';
+import { name, about, skills, resume, sidebar } from '../data/v2-words';
+import { RESUME_PDF, DESCRIPTIONS } from '../data/site';
+---
+<Base title="For recruiters" description={DESCRIPTIONS.recruiters}>
+  <div class="page grid">
+    <header class="page-head span-8">
+      <h1>For recruiters</h1>
+      <p class="lede">{resume.summary}</p>
+      <p><a class="cta" href={RESUME_PDF}>{resume.linkText}</a></p>
+    </header>
+    <aside class="span-4" aria-label="Facts">
+      <Image class="portrait" src={headshot} alt={sidebar.headshotAlt} width={320} />
+      <dl class="facts">
+        <dt>Name</dt><dd>{name}</dd>
+        <dt>Region</dt><dd>[JON: region]</dd>
+        <dt>Contact</dt><dd>[JON: contact: a profile link; no email or phone on the site]</dd>
+      </dl>
+    </aside>
+    <section class="span-8 flow" aria-labelledby="skills">
+      <h2 id="skills">{skills.heading}</h2>
+      <dl class="skills">
+        {skills.items.map((s) => (
+          <div>
+            <dt>{s.title}</dt>
+            <dd>{s.description}<span class="tags">{s.tags.join(' · ')}</span></dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+    <section class="span-4 flow" aria-labelledby="strengths">
+      <h2 id="strengths">{sidebar.strengths.heading}</h2>
+      <ul>{sidebar.strengths.items.map((i) => <li>{i}</li>)}</ul>
+      <h2 id="technologies">{sidebar.technologies.heading}</h2>
+      <ul>{sidebar.technologies.items.map((i) => <li>{i}</li>)}</ul>
+    </section>
+    <section class="span-8 flow" aria-labelledby="about">
+      <h2 id="about">{about.heading}</h2>
+      {about.paragraphs.map((p) => <p>{p}</p>)}
+    </section>
+  </div>
+</Base>

@@ -1,0 +1,45 @@
+---
+// Home: who, and every room one click away (the spine's hub; every page is two clicks from every other).
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import { hero } from '../data/v2-words';
+import { NAV, FOOTER_NAV, DESCRIPTIONS } from '../data/site';
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+const notes = (await getCollection('notes')).sort((a, b) => +b.data.date - +a.data.date);
+const rooms = [...NAV, FOOTER_NAV[0]];
+---
+<Base title="Home" description={DESCRIPTIONS.home}>
+  <div class="page grid">
+    <header class="page-head span-all">
+      <h1>{hero.heading}</h1>
+      <p class="lede">[JON: one or two lines in your own voice, in place of v2's tagline (it used a phrase on the brief's banned list)]</p>
+    </header>
+    <section class="span-4" aria-labelledby="rooms">
+      <h2 id="rooms" class="vh">Rooms</h2>
+      <ul class="index">
+        {rooms.map((r) => <li><a href={r.href}>{r.label}</a></li>)}
+      </ul>
+    </section>
+    <section class="span-8 flow" aria-labelledby="work">
+      <h2 id="work">Projects</h2>
+      <ul class="index">
+        {projects.map((p) => (
+          <li>
+            <a href={`/projects/${p.id}/`}>{p.data.title}</a>
+            <p>{p.data.description}</p>
+          </li>
+        ))}
+      </ul>
+      <h2 id="latest">Lab notes</h2>
+      <ul class="index">
+        {notes.slice(0, 3).map((n) => (
+          <li>
+            <a href={`/notes/${n.id}/`}>{n.data.title}</a>
+            <p>{n.data.description}</p>
+          </li>
+        ))}
+      </ul>
+      <p class="meta"><a href="/">Replay the intro</a></p>
+    </section>
+  </div>
+</Base>
