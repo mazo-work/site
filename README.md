@@ -1,12 +1,21 @@
-# React + Vite
+# mazo-work/site, v3
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Jonathan Mazo's personal site: static, fast, hardened, readable by agents. Built with [Astro](https://astro.build)
+(static output, zero JavaScript by default). The brief for this version is `BRIEF.md`; progress is in `STATE.md`.
 
-Currently, two official plugins are available:
+```bash
+npm ci            # install from the lockfile
+npm run dev       # local preview with reload
+npm run build     # the static site into dist/
+```
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+The scripts set `ASTRO_TELEMETRY_DISABLED=1` (POSIX shells; on Windows set it yourself).
 
-## Expanding the ESLint configuration
+## Layout
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+| Path | What it holds |
+| --- | --- |
+| `src/pages/` | One file per page (routes). |
+| `src/data/v2-words.ts` | Jon's words carried over from v2, verbatim. |
+| `public/` | Files served as they are (the resume PDF; later `_headers`, `robots.txt`). |
+| `docs/`, `prototype/p0/`, `tools/burr/` | The MAZO puzzle: its spec, its preview, its solver and checker. |
