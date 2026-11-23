@@ -8,6 +8,7 @@ import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { ROOT, DIST, read, dom, walk } from '../lib/dist.mjs';
 import { ENTRANCE } from '../config.mjs';
+import { chromium } from 'playwright';
 import { themedContext } from './50-browser.mjs';
 
 const STATIC = /(?:import|export)\s*(?:[^'"`;()]*?from\s*)?["'`]([^"'`]+\.js)["'`]/g;
@@ -58,13 +59,17 @@ export default {
     catch (e) { r.data.push(`tools/burr/check.py failed: ${(e.stdout || '').toString().trim().split('\n').slice(-3).join(' | ')}`); }
 
     const { origin } = await ctx.server();
-    const browser = await ctx.browser();
+    // Its own browser, with no request interception: Playwright's routing (even for one host) makes Chrome drop
+    // cross-document view transitions, which is exactly what this checks. The beacon's hosts simply do not resolve,
+    // so the run stays off the network; failed beacon loads are ignored below by their source.
+    const browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader',
+      '--ignore-gpu-blocklist', '--host-resolver-rules=MAP static.cloudflareinsights.com ~NOTFOUND, MAP cloudflareinsights.com ~NOTFOUND'] });
     const run = async (label, drive) => {
       const context = await themedContext(browser, 'editorial');
       const page = await context.newPage();
       const errs = [];
       page.on('pageerror', (e) => errs.push(`uncaught: ${e.message}`));
-      page.on('console', (m) => { if (m.type() === 'error' && !/AudioContext was not allowed/.test(m.text())) errs.push(`console: ${m.text().slice(0, 160)}`); });
+      page.on('console', (m) => { if (m.type() === 'error' && !/AudioContext was not allowed/.test(m.text()) && !/cloudflareinsights\.com/.test(m.location()?.url || '')) errs.push(`console: ${m.text().slice(0, 160)}`); });
       try {
         await page.goto(origin + ENTRANCE, { waitUntil: 'load' });
         await page.waitForFunction(() => window.__mazo && window.__mazo.state().stage === 0, null, { timeout: 30000 });
@@ -86,6 +91,7 @@ export default {
       if (s.stage !== 4) r.play.push(`the solve: stage ${s.stage} after four pulls`);
     });
     await run('Skip intro', async (page) => { await page.click('#skip'); });
+    await browser.close();
     return Object.entries(r).map(([k, problems]) => ({ id: `entrance.${k}`, ok: problems.length === 0, problems }));
   },
 };

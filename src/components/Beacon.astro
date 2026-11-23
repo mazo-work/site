@@ -1,0 +1,11 @@
+---
+// Cloudflare Web Analytics (U13): a cookieless beacon, the site's one named third party (BRIEF.md §3). Its site token
+// is public; the source keeps it as [CF_BEACON_TOKEN] and a build with CF_BEACON_TOKEN set fills it in. The CSP allows
+// https://static.cloudflareinsights.com in script-src and https://cloudflareinsights.com in connect-src, nothing more.
+// No Subresource Integrity: Cloudflare updates beacon.min.js in place, so a hash would break it.
+const token = process.env.CF_BEACON_TOKEN || '[CF_BEACON_TOKEN]';
+const config = JSON.stringify({ token });
+const noSri = '<!-- [html-validate-disable-next require-sri -- Cloudflare updates the beacon in place; the CSP limits it to its two hosts] -->';
+---
+<Fragment set:html={noSri} />
+<script is:inline defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon={config}></script>
