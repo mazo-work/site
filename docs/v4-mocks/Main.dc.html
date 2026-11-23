@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Paper · Home</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&amp;family=IM+Fell+English+SC&amp;family=Literata:ital,opsz,wght@0,7..72,400;1,7..72,400&amp;family=Atkinson+Hyperlegible+Next:ital,wght@0,400;0,600;1,400&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#1B1816}a:hover{color:#B0301B}
+.paper{background-color:#EEE7DA;background-image:url(/_blob/6a8130b3fbb1dedc8f879b3715d75660);background-size:256px 256px}
+.misreg{position:relative;isolation:isolate}
+.misreg::before{content:attr(data-text);position:absolute;left:0;top:0;transform:translate(5px,3px);color:var(--accent);opacity:.85;z-index:-1}
+.mark-light{animation:blink 2.6s steps(1,end) infinite}
+@keyframes blink{0%,62%{opacity:1}63%,88%{opacity:.12}89%,100%{opacity:1}}
+.pace{animation:pace 7s ease-in-out infinite;transform-origin:24px 40px}
+.hop{animation:hop 1.4s ease-in-out infinite}
+@keyframes pace{0%,42%{transform:translateX(0) scaleX(1)}50%,92%{transform:translateX(-34px) scaleX(-1)}100%{transform:translateX(0) scaleX(1)}}
+@keyframes hop{0%,55%,100%{transform:translateY(0)}65%{transform:translateY(-7px)}75%{transform:translateY(0)}82%{transform:translateY(-3px)}88%{transform:translateY(0)}}
+.menu a{text-decoration:none;padding:14px 4px}
+.menu a:hover{text-decoration:underline;text-decoration-thickness:2px;text-decoration-color:var(--accent);text-underline-offset:6px}
+.latest{display:block;text-decoration:none;padding:22px 0;border-top:1px solid rgba(27,24,22,.45)}
+.latest:hover .latest-title{color:#B0301B}
+</style>
+</helmet>
+<div class="paper" style="--accent: {{accent}}; position: relative; min-height: 100%; color: #1B1816; font-family: '{{bodyFont}}', Georgia, serif; font-size: 19px; line-height: 1.6">
+  <div style="max-width: 1280px; margin: 0 auto; padding: 0 48px 120px">
+
+    <div style="display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 16px 0 12px; border-bottom: 1px solid rgba(27,24,22,.45); font-family: 'IM Fell English SC', Georgia, serif; font-size: 17px; letter-spacing: .04em">
+      <a href="#replay" style="text-decoration: none">Replay the intro</a>
+      <nav aria-label="Theme" style="display: flex; gap: 14px; align-items: baseline">
+        <span style="font-family: 'IM Fell English', Georgia, serif; font-style: italic">Mask:</span>
+        <a href="Main.dc.html" aria-current="true" style="text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 5px">Paper</a>
+        <a href="Terminal-Home.dc.html" style="text-decoration: none">Night</a>
+      </nav>
+    </div>
+
+    <header style="display: flex; flex-direction: column; align-items: center; padding: 64px 0 22px">
+      <div style="position: relative; width: 540px; max-width: 100%">
+        <svg viewBox="0 0 49 10" width="540" height="110" shape-rendering="crispEdges" role="img" aria-label="MAZO" style="display: block; width: 100%; height: auto">
+          <path fill="#1B1816" d="M0 0h2v2h-2zM2 0h2v2h-2zM6 0h2v2h-2zM8 0h2v2h-2zM0 2h2v2h-2zM2 2h2v2h-2zM4 2h2v2h-2zM6 2h2v2h-2zM8 2h2v2h-2zM0 4h2v2h-2zM4 4h2v2h-2zM8 4h2v2h-2zM0 6h2v2h-2zM8 6h2v2h-2zM0 8h2v2h-2zM8 8h2v2h-2zM15 0h2v2h-2zM17 0h2v2h-2zM19 0h2v2h-2zM13 2h2v2h-2zM15 2h2v2h-2zM19 2h2v2h-2zM21 2h2v2h-2zM13 4h2v2h-2zM15 4h2v2h-2zM17 4h2v2h-2zM19 4h2v2h-2zM21 4h2v2h-2zM13 6h2v2h-2zM21 6h2v2h-2zM13 8h2v2h-2zM21 8h2v2h-2zM26 0h2v2h-2zM28 0h2v2h-2zM30 0h2v2h-2zM32 0h2v2h-2zM34 0h2v2h-2zM32 2h2v2h-2zM34 2h2v2h-2zM30 4h2v2h-2zM32 4h2v2h-2zM28 6h2v2h-2zM30 6h2v2h-2zM26 8h2v2h-2zM28 8h2v2h-2zM30 8h2v2h-2zM32 8h2v2h-2zM34 8h2v2h-2zM39 0h2v2h-2zM41 0h2v2h-2zM43 0h2v2h-2zM45 0h2v2h-2zM47 0h2v2h-2zM39 2h2v2h-2zM47 2h2v2h-2zM39 4h2v2h-2zM47 4h2v2h-2zM39 6h2v2h-2zM47 6h2v2h-2zM39 8h2v2h-2zM43 8h2v2h-2zM45 8h2v2h-2zM47 8h2v2h-2z"/>
+          <path class="mark-light" d="M41 8h2v2h-2z" style="fill: var(--accent)"/>
+        </svg>
+        <div class="pace" style="position: absolute; left: 472px; top: -44px; width: 48px; height: 48px">
+          <div class="hop" style="width: 48px; height: 48px">
+            <svg viewBox="0 0 12 12" width="48" height="48" shape-rendering="crispEdges" role="img" aria-label="The parakeet, perched on the O">
+              <path fill="#F2F5FA" d="M4 0h1v1h-1zM6 0h1v1h-1zM3 1h1v1h-1zM5 1h1v1h-1zM7 1h1v1h-1zM8 1h1v1h-1zM4 2h1v1h-1zM6 2h1v1h-1zM7 2h1v1h-1zM9 2h1v1h-1zM3 3h6v1H3zM4 4h1v1h-1zM5 4h1v1h-1zM7 4h1v1h-1z"/>
+              <path fill="#1D2233" d="M5 0h1v1h-1zM7 0h1v1h-1zM4 1h1v1h-1zM6 1h1v1h-1zM3 2h1v1h-1zM5 2h1v1h-1zM6 4h1v1h-1zM8 4h1v1h-1zM2 6h1v1h-1zM4 6h1v1h-1zM3 7h1v1h-1zM5 7h1v1h-1zM1 8h1v1h-1zM3 8h1v1h-1z"/>
+              <path fill="#0B0C12" d="M8 2h1v1h-1z"/>
+              <path fill="#E9B949" d="M9 3h2v1H9zM9 4h1v1h-1z"/>
+              <path fill="#7DAEF2" d="M3 5h7v1H3zM5 6h6v1H5zM6 7h5v1H6zM5 8h5v1H5zM4 9h5v1H4z"/>
+              <path fill="#F2F5FA" d="M3 6h1v1h-1zM2 7h1v1h-1zM4 7h1v1h-1zM2 8h1v1h-1zM4 8h1v1h-1z"/>
+              <path fill="#3F63B8" d="M1 9h3v1H1zM0 10h3v1H0zM0 11h2v1H0z"/>
+              <path fill="#D9909A" d="M5 10h1v1h-1zM8 10h1v1h-1z"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <p style="margin: 22px 0 0; font-family: 'IM Fell English', Georgia, serif; font-style: italic; font-size: 30px; line-height: 1.2">Jonathan Mazo</p>
+    </header>
+
+    <nav class="menu" aria-label="Main" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 0 28px; border-top: 3px double #1B1816; border-bottom: 1px solid rgba(27,24,22,.5); font-family: 'IM Fell English SC', Georgia, serif; font-size: 21px; letter-spacing: .03em">
+      <a href="Editorial-About.dc.html">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#notes">Lab notes</a>
+      <a href="#now">Now</a>
+      <a href="#recruiters">For recruiters</a>
+    </nav>
+
+    <main style="display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); gap: 88px; padding-top: 72px">
+      <div>
+        <h1 class="misreg" data-text="A child of the internet." style="margin: 0; font-family: 'IM Fell English', Georgia, serif; font-weight: 400; font-size: 120px; line-height: .9; letter-spacing: -.01em">A child of the internet.</h1>
+        <p style="margin: 32px 0 0; font-size: 26px; line-height: 1.45; max-width: 660px">[JON: one or two lines in your own voice, under your own headline]</p>
+      </div>
+      <div style="padding-top: 10px">
+        <a class="latest" id="projects" href="#mazo">
+          <span style="display: block; font-family: 'IM Fell English SC', Georgia, serif; font-size: 17px; letter-spacing: .06em; color: #B0301B">Latest project</span>
+          <span class="latest-title" style="display: block; margin-top: 4px; font-family: 'IM Fell English', Georgia, serif; font-size: 32px; line-height: 1.1">MAZO: making the entrance</span>
+          <span style="display: block; margin-top: 8px; font-size: 18px; line-height: 1.5">The site's front door is a 3D puzzle made of the letters M, A, Z and O, locked together like a wooden burr puzzle.</span>
+        </a>
+        <a class="latest" id="notes" href="#note">
+          <span style="display: block; font-family: 'IM Fell English SC', Georgia, serif; font-size: 17px; letter-spacing: .06em; color: #B0301B">Latest note</span>
+          <span class="latest-title" style="display: block; margin-top: 4px; font-family: 'IM Fell English', Georgia, serif; font-size: 32px; line-height: 1.1">[JON: note title]</span>
+          <span style="display: block; margin-top: 8px; font-size: 18px; line-height: 1.5">[JON: one sentence: what the note is about]</span>
+        </a>
+      </div>
+    </main>
+
+    <footer style="margin-top: 110px; border-top: 1px solid rgba(27,24,22,.45); padding-top: 18px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; font-family: 'IM Fell English SC', Georgia, serif; font-size: 17px; letter-spacing: .04em">
+      <span>Jonathan Mazo · [JON: region]</span>
+      <a href="#colophon">Colophon</a>
+    </footer>
+  </div>
+
+  <button type="button" aria-label="Open the chat" style="position: absolute; right: 36px; bottom: 32px; width: 68px; height: 68px; border-radius: 50%; border: 2px solid #1B1816; background: #EEE7DA; color: #1B1816; font-family: 'IM Fell English SC', Georgia, serif; font-size: 20px; cursor: pointer; box-shadow: 3px 3px 0 var(--accent)">Ask</button>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#E5484D","options":["#E5484D","#2F5FD0","#14866D"]},"bodyFont":{"editor":"enum","options":["Atkinson Hyperlegible Next","Literata"],"default":"Atkinson Hyperlegible Next"},"$preview":{"width":1440,"height":1250}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      accent: this.props.accent ?? '#E5484D',
+      bodyFont: this.props.bodyFont ?? 'Atkinson Hyperlegible Next',
+    };
+  }
+}
+</script>
+</body>
+</html>

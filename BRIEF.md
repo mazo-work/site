@@ -1,256 +1,161 @@
-# Site v3 brief: a contract for one Claude Code cloud session
+# Site v4 brief: a contract for one Claude Code cloud session
 
-**Role:** you are a senior designer and front-end engineer. You build the next version of Jon's personal site: static,
-fast, hardened, readable by agents, and above all *his*. **Repository:** `mazo-work/site` (public). **Branch:** `v3`,
-created from `v2`. **Written:** 2026-11-22, from a six-round Q&A with Jon (the operator); every decision below is his
-unless marked as delegated.
+**Role:** you are a senior designer and front-end engineer. You take the v3 site (Astro, static, hardened, two
+working themes and a parked third) to v4: one predictable structure across themes, the two themes reworked to Jon's
+reviewed mocks, a navigation ring with an "enter the orb" transition, and a parakeet that lives on the site.
+**Repository:** `mazo-work/site` (public). **Branch:** `v4`, created from `v3`. **Written:** 2026-11-23, after a mocks
+review with Jon (the operator). Every decision below is his unless marked as Claude's proposal he accepted.
 
-This repository is public. So is this brief. Nothing in it, and nothing you write, names or describes the operator's
-home infrastructure.
+This repository is public, and so is this brief. Nothing you write names or describes the operator's home
+infrastructure.
 
 ## 0. Read first, every time you start or resume
 
 1. This file, then `STATE.md`. **`STATE.md` is the source of truth for progress.** Resume at the first unticked unit;
    never redo a ticked unit; never rewrite a ticked unit's files except to fix a failing check, which you record there.
-2. `docs/puzzle-spec.md` and `prototype/p0/`: the MAZO puzzle, the site's entrance. Its spec is the house style for
-   precision: read how it states decisions and numbers.
-3. §9 (References): Jon's own taste. Read it before every design unit.
-4. The current content in `src/sections/*.jsx` on `v2`: the words you reuse.
+2. `docs/v4-mocks/`: the reviewed mocks, as Design-canvas source files (`.dc.html`). They do not render on their own
+   (they need the canvas runtime, and their `/_blob/…` image addresses do not resolve here): **read them for values**,
+   such as structure, sizes, colours, fonts, spacing and motion. `docs/v4-mocks/README.md` maps each file to a page.
+3. `docs/briefs/v3-BRIEF.md` and `docs/briefs/v3-HANDOFF.md`: the v3 contract and what v3 built. Everything in v3's
+   §3 still holds unless §3 here changes it: the headers, the CSP, the agent layer, the crawler policy, the words rule,
+   the personal-data rule, the static-only rule.
+4. §9 of `docs/briefs/v3-BRIEF.md` (Jon's taste profile), before every design unit.
 
 ## 1. Checkpoints: so a usage limit never costs more than one unit
 
-Jon works on a plan allowance; this session can stop at any point. Work so that stopping costs little:
+As in v3: one unit at a time in `STATE.md`'s order; a unit is done when `npm run check` passes for everything built so
+far; commit (`v4: <unit> <what>`), push `v4`, tick the unit in `STATE.md` with its commit hash, push that too. Log your
+turns per unit, the running average and the estimate of turns left; if the rest will not fit in what is likely left of
+a five-hour window, finish the unit in hand, write `STATE.md`, push, and say so. Never hold work only in the chat. If
+you are resumed with "resume": read §0, run `npm run check` once, continue at the first unticked unit.
 
-- **One unit at a time, in `STATE.md`'s order** (the most valuable first: a stop must still leave a usable site). A unit
-  is done when `npm run check` passes for everything built so far. Then, before the next: commit (`v3: <unit> <what>`),
-  push `v3`, tick the unit in `STATE.md` with its commit hash, and push that too.
-- **Log the cost:** for each unit, the number of your own turns it took and the files it touched; keep the running
-  average and an estimate of turns left (units left × average). If the rest will not fit in what is likely left of a
-  five-hour window, finish the unit in hand, write `STATE.md`, push, and say so.
-- **Never hold work only in the chat.** Anything you would need after a restart is in a committed file.
-- **If you are resumed** with "resume": read §0, run `npm run check` once, continue at the first unticked unit.
+## 2. What changes, in one paragraph
 
-## 2. What this site is
-
-**Thesis (v0, Jon's to refine):** *the old web's soul, built with today's engineering.* Jon grew up in the
-pre-commercial internet: Myspace profiles he customised with click counters, music players and GIFs; Tumblr; anonymous
-chatrooms; online games; AMVs; memes; a web that was handmade, strange, shared by millions, where you could become
-anyone. He always wanted to make that kind of wonder and skill kept it out of reach; now the tools have caught up. He is
-self-taught; those years made his career. He dislikes advertising, which is why he is good at it: he knows when to step
-back, when targeting helps, and when it starts to feel like being watched. **The site is self-aware:** it shows the Y2K
-revival while knowing that feeling different is itself mainstream. It borrows what the old web *did*, never a
-pixel-for-pixel pastiche of how it looked.
-
-**Audiences, in priority order:** (1) creative and tech peers: the site must impress and show personality, his
-differentiator; (2) hiring managers: one fast door to the facts; (3) AI agents and answer engines: they must read and
-cite him correctly; (4) future clients.
-
-**Temperament, by zone (adopted):** *a loud entrance, quiet rooms, secrets in the walls.*
-- *Precise* everywhere: exact type, a real grid, real performance numbers.
-- *Mysterious* at the surface: the entrance, hidden details, things found by looking.
-- *Quiet and editorial* wherever people read: case studies, notes, the recruiter page.
-- *The wink* in the details: knowing nods to the old web, never kitsch.
-
-**Structure:** exploration first for people, on a plain spine: every page is a complete, semantic HTML document that
-reads fully without JavaScript (for agents, crawlers and anyone without JS); the unconventional layout and motion sit on
-top. Nothing important hides behind an interaction. The entrance has a visible **skip intro** link.
+Jon's review of the mocks: the themes differed too much from each other. v4 gives every theme **one skeleton**, so the
+menu and the theme toggle never move; the themes differ in type, colour, texture and motion only. Paper (v3's
+Editorial) is the cleanest: its centred masthead and enclosed menu band are the model. Night (v3's Terminal) is the
+most creative: its ring of orbs becomes the home page's navigation in **both** themes, and clicking an orb **enters its
+atmosphere** to reach the page. Profile is parked: hidden, not deleted. The parakeet becomes a resident: it appears
+after the entrance, perches on the mark, flies between pages and lands in the portrait.
 
 ## 3. Decisions (fixed: do not change them; propose changes in the handoff)
 
-**Pages.** Entrance (`/`, the puzzle) → Home; **About** (Jon's story: a frame with four beats and `[JON: …]` slots; he
-writes it); **Projects** (index + case studies: *MAZO's making-of* first, from `docs/puzzle-spec.md`; a second case study
-as a "coming soon" shell with no content); **Lab notes** (a Markdown collection, one template note); **Now** and **Uses**;
-**For recruiters** (the current Skills and Resume folded into one fast page, the resume PDF linked); **Colophon** (§6,
-U10); a 404. Navigation is yours to design (§5 latitude), but every page is reachable in two clicks without JS.
+**One skeleton, every page, every theme** (the mocks show it):
+1. A slim **utility row**: "Replay the intro" on the left; on the right the **mask toggle**, offering **Paper** and
+   **Night** only. Also in this row, left, a **Pause motion** control (see Motion).
+2. The **masthead**: the MAZO block mark centred, Jon's name centred under it. Large on Home (mark about 540 px wide on
+   desktop), smaller on every other page (about 300 px). Paper draws the mark in ink with the riso red light; Night
+   draws it as LED dots with the orange light; the light blinks as in v3.
+3. The **menu band**: a double rule above, a single rule below, five items centred: **About · Projects · Lab notes ·
+   Now · For recruiters**. Hover and the current page share one treatment per theme (an underline in the accent).
+4. The **page content**.
+5. The **footer**: "Jonathan Mazo · [JON: region]" left, **Colophon** right. The Colophon page stays; it is reached
+   from the footer only.
+6. The **Ask** button (the gag chatbot) bottom-right, the same size and place in both themes.
 
-**Story fragments.** Besides the About page, 2–4 fragments of the story are hidden around the site, each linking back to
-About (placeholders `[JON: fragment]`).
+**Rooms.** The menu has five items. **Uses moves into Now** as a section of the Now page (`/now/#uses`); `/uses/`
+redirects there (a Cloudflare Pages `_redirects` file, 301). Every agent file (twins, `llms.txt`, sitemap, JSON-LD)
+follows.
 
-**Themes (visitor-switchable, three for v1).** *Editorial* (paper and ink, quiet, built for reading); *Terminal* (dark,
-monospace accents, the engineer's side); *Profile* (self-aware Y2K maximalism, the Myspace-era wink). Jon finds these
-generic as described; they are v1 directions, and his own signature comes later, so make each one distinct and well made,
-not a costume. The default follows the device: light → Editorial, dark → Terminal. The choice persists (local storage; no
-cookie) and applies before first paint (no flash). Themes are also design directions: each must hold its own on every
-page.
+**Type.** **Atkinson Hyperlegible Next for all body text, in every theme** (Jon: the most legible of all themes).
+Display faces stay per theme: Paper, IM Fell English and IM Fell English SC; Night, Doto (the dotted face) for
+headings and Jon's name, Martian Mono for labels, the menu and small caps. IM Fell is an OFL font with a Reserved Font
+Name: self-host it unmodified, or, if you subset it, rename it as the OFL requires and record that in the colophon.
+Fonts load only for the active theme, as in v3.
 
-**The puzzle.** At the entrance only. Two through-lines tie it to the rest (delegated ruling): MAZO resolves into the
-header as the site's mark (spec v0.4's idea), and one spacing unit runs through every theme. Do not change the
-puzzle's logic or finale; integrate it (curtain onto Home; skip intro; its heavy 3D code loads only on the entrance,
-after first paint).
+**Paper** (`docs/v4-mocks/Main.dc.html`, `Editorial-About.dc.html`, `Editorial-Phone.dc.html`): cream paper with
+grain; ink #1B1816; riso red #E5484D for print effects (the off-register headline, the mark's light, the Ask button's
+offset shadow, underlines) and #B0301B for small accent text (it passes 4.5:1 on the paper). Keep: the off-register
+red under display headlines, the halftone portrait (live CSS over the photo, as v3), the paper grain. **Removed, and
+not to come back:** ornaments and icons (the eye, arrows with notes, red-pen marks), section numbering and page
+numbers, the dateline and issue number. Personality comes from type, scale, colour and the bird, not ornament.
 
-**Motion.** The same motion for everyone for now (Jon's rule, to be revisited; Reduce Motion is not yet honoured).
-Floor: anything that moves on its own for more than 5 s can be paused (WCAG 2.2.2). Animate only `transform` and
-`opacity`; 60 fps on a mid-range phone. Page-to-page transitions use the browser's cross-document View Transitions in CSS
-(`@view-transition { navigation: auto; }`): no client router, no SPA. Motion has meaning; nothing fades up on scroll by
-default.
+**Night** (`Terminal-Home.dc.html`, `Terminal-About.dc.html`, `Terminal-Phone.dc.html`): near-black #07060B with a
+faint dot grid; text #DAD6F0; **purple #8B5CFF, green #46D98A and orange #FF6A2B as accents only**: purple for the
+orbit and underlines, green for hover, focus and Ask, orange for the light. No glow blobs, no multicolour halos, no
+chromatic fringes on text (Jon: the glowing spheres bordered on AI slop). The X-ray portrait stays, **less saturated**
+than v3's (muted violet to pale cyan, as in the mock).
 
-**Type.** Per theme, at most two families and about 60–80 KB per theme, loaded only when that theme is active.
-Self-hosted, subsetted WOFF2, open-licence (OFL) placeholders behind tokens in one file: Jon will choose or buy his own.
-Never Inter, Poppins, Roboto, Montserrat or Open Sans.
+**The ring, in both themes** (Home only, directly under the menu band): a slow orbit (about 90 s a turn) of five orbs,
+one per room, round a central sphere whose core is the O's light; orbs grow and brighten at the front and dim at the
+back. Night renders it as the mock: neutral outlined orbs, a thin purple orbit, a wireframe sphere. **Paper renders the
+same geometry in print**: ink lines for the orbit, ink-dot orbs that turn red on hover and focus, and a halftone sphere
+(dots, not shading); no glow. The orbs are real links. The ring **pauses while the pointer is over it or an orb has
+focus**, so nobody has to chase a moving target, and the menu band above stays the plain way in. On a phone the ring
+is smaller and decorative (dots orbiting the sphere, as in `Terminal-Phone.dc.html`); the menu band is the navigation
+there. Jon may later replace the spheres with another shape or a stripe: keep the ring one component with its look in
+the theme files.
 
-**Stack.** Astro, static output, zero JavaScript by default; islands only where a part needs JS (the entrance, the theme
-switcher, the chatbot). Replace the React app; keep `prototype/`, `docs/`, `tools/burr/`. **Budget: measured first.**
-Report the numbers; propose limits in the handoff. Reference targets (reported, not gating): non-entrance pages ≤ 100 KB
-compressed, the largest content painted < 1.5 s on a mid-range phone over 4G, layout shift < 0.05.
+**Entering an orb** (Jon: "zoom in, entering the orb's atmosphere, to navigate to each page"): clicking an orb plays a
+transition in which the orb grows to fill the screen, as if breaking through its atmosphere, and the destination page
+settles out of it. Use the browser's cross-document View Transitions (a `view-transition-name` on the clicked orb
+matched to the destination's main region, plus a circular reveal); no client router. Night: a dark-to-light atmosphere
+with a brief purple rim. Paper: an ink flood that clears to paper. Browsers without cross-document View Transitions get
+a normal page change. Navigation by the menu band keeps each theme's v3 page transition (Jon liked them).
 
-**Security (maximal).** `public/_headers` for Cloudflare Pages:
-- CSP: `default-src 'none'`; `script-src 'self'` (plus hashes for any unavoidable inline script, such as the theme
-  boot); `style-src 'self'`; `img-src 'self' data:`; `font-src 'self'`; `connect-src 'self'`; `media-src 'self'`;
-  `frame-ancestors 'none'`; `base-uri 'none'`; `form-action 'none'`; `object-src 'none'`; `upgrade-insecure-requests`;
-  `require-trusted-types-for 'script'` with a named policy if a dependency needs one (never silently dropped).
-- `Strict-Transport-Security: max-age=63072000; includeSubDomains` (**no `preload`**), `X-Content-Type-Options: nosniff`,
-  `Referrer-Policy: strict-origin-when-cross-origin`, `Cross-Origin-Opener-Policy: same-origin`,
-  `Cross-Origin-Resource-Policy: same-origin`, a `Permissions-Policy` denying every feature the site does not use,
-  `X-Frame-Options: DENY`.
-- `/.well-known/security.txt` (contact: `[JON: contact]`, an expiry date).
-- **One named exception:** Cloudflare Web Analytics, a cookieless beacon. It adds `https://static.cloudflareinsights.com`
-  to `script-src` and `https://cloudflareinsights.com` to `connect-src`, and nothing else. Its site token is public; write
-  it as `[CF_BEACON_TOKEN]`. The colophon names this exception honestly.
-- No other third party, anywhere: no CDN fonts, embeds, icon services, widgets or trackers.
+**The parakeet.** A placeholder sprite, as in `docs/v4-mocks/Parakeet.dc.html` (a 12 × 12 pixel map; reuse it), kept
+in one file so Jon's artist's sprite replaces it with no code change. Behaviour:
+- After the entrance, it **appears** beside the MAZO blocks.
+- On pages without a portrait it **perches on the O** of the masthead mark and **hops back and forth** as on a branch.
+- Between pages it **flies**: give it one `view-transition-name` so the browser carries it from the mark to the
+  portrait and back.
+- On About and For recruiters it **lands in the portrait's place**; the photo shows, and the bird sits on the frame.
+- On pages with the portrait its **head follows the pointer**: one small script, transform-only, nothing stored or sent,
+  still when there is no pointer (touch). The colophon says what it does and does not do.
+- The seed-bowl game stays in the backlog.
 
-**Personal data.** Name and photo; a region, never a city (`[JON: region]`); the resume PDF (checked, U14). No email
-address, phone or street address anywhere.
+**The portrait.** Replace v2's parrot with the blue parakeet photo in `src/assets/parakeet.jpg` (CC0, from rawpixel;
+credit it in the colophon even though CC0 does not require it). Alt text: "A parakeet, standing in for Jon". Paper's
+halftone and Night's X-ray are drawn over it live, as v3 does.
 
-**Agents and search.** A Markdown twin of every page (`/about.md`, and so on); `/llms.txt` mapping the site to the twins;
-JSON-LD (`Person`, `ProfilePage`, `WebSite`, and `Article` for each case study and note); `sitemap.xml`; an RSS feed for
-Lab notes. **AI crawlers:** search and answer-engine crawlers allowed; training-only crawlers disallowed in `robots.txt`,
-per crawler. Crawler names change: take them from each vendor's current documentation at run time and cite the sources
-in the handoff.
+**Profile.** Hidden: removed from the mask toggle and never loaded. Keep its files; it returns in its own session.
 
-**Accessibility.** WCAG 2.2 AA on every page in every theme (contrast, keyboard, focus, screen readers, semantics). The
-entrance is excepted as art; the skip-intro link is its accessible way in.
+**Motion.** Jon's rule stands: the same motion for everyone (no automatic Reduce Motion variant yet). v4 adds motion
+that loops for more than 5 s (the ring, the bird's hop, the light's blink), so the WCAG 2.2.2 floor now needs a
+**Pause motion** control: in the utility row, a real button, remembered for the visit (local storage, no cookie), that
+pauses every looping animation; page transitions still play. Animate only `transform` and `opacity` (and the reveal's
+`clip-path`).
 
-**The gag chatbot (v1).** A modern support widget, played straight: launcher bubble, a professional header
-("Assistant · Online"), typing indicator, welcome line. It only ever answers in randomly generated Minion-style
-gibberish from a word list. **Never** the word "Minion", the characters, their look or any other branding: gibberish words
-only. No model, no network call; what the visitor types never leaves the browser and is not stored (the colophon says
-so). It loads only when opened, works by keyboard, and announces replies to screen readers.
+**Budget.** No size budget for this version (Jon: get the design right first; a performance session follows). Measure
+and report as in v3; do not trade design for bytes.
 
-**Optional ideas from the references (yours to use or ignore; Jon approved all three).**
-- *Themes as masks:* the theme switcher is a set of masks; put one on and the site becomes someone else.
-- *The site map as a diagram:* an original diagram or constellation of the pages, a second way to navigate, in the
-  spirit of the esoteric diagrams in §9 (original; never a religious symbol).
-- *An eye that tracks nothing:* a recurring eye that follows the pointer; the site "watches" and stores nothing. One
-  small script, transform-only animation, no data kept or sent, still when there is no pointer (touch); the colophon
-  says what it does and does not do.
-
-**Words.** You write no marketing copy. Reuse Jon's existing words as they stand; mark every new line `[JON: …]` with a
-one-line note on what it needs. Two exceptions: the colophon's facts (generated from the build) and MAZO's case study,
-where you may write plain, factual prose drawn only from `docs/puzzle-spec.md`, marked `[DRAFT: Jon to voice]`.
+**Unchanged from v3** (keep every check passing): the `_headers` (CSP, HSTS, isolation, Permissions-Policy,
+`X-Robots-Tag: noindex` until launch), the crawler policy, the agent layer, no third parties but the analytics beacon,
+static only, the words rule (`[JON: …]` slots, no marketing copy), WCAG 2.2 AA on every page in both themes.
 
 ## 4. The generic-AI-look ban
 
-The main risk of this run is a site that looks like every LLM-made site. Treat it as a defect class.
-
-**Banned (a grep where possible; a written self-review otherwise):** the fonts above; purple-to-blue or any decorative
-gradient on large areas; gradient text; glassmorphism; `rounded-2xl`-plus-soft-shadow cards as the default container;
-grids of three icon cards; bento grids; a centred hero of heading + subhead + two buttons; Lucide/Heroicons-style line
-icons as decoration; emoji in headings; skill bars or percentages; logo walls; fade-up-on-scroll on every block; uniform
-spacing everywhere; the phrases "passionate about", "crafting", "let's build something amazing", "I'm a … who …"
-openers, three-adjective lists.
-
-**The loop (every design unit):** build → screenshot each page in the theme (mobile and desktop) → critique the
-screenshots in writing against the banned list, §2's temperament and §9's references → revise once → log the critique
-and what changed in `handoff/design-log.md`.
+v3's §4 list stands, plus, from Jon's review: glow blobs, multicolour halos, chromatic fringes on text, glowing
+gradient orbs; ornamental icons and dingbats; numbered sections, page numbers, datelines. Keep the §4 loop (screenshot,
+critique against the list, the mocks and §9, revise once, log it in `handoff/design-log.md`).
 
 ## 5. Boundaries (hard)
 
-1. Work only on `v3`. Never push to `main`, `v2` or `gh-pages`; never change `.github/workflows/test-page.yml`.
-2. No deploys, no Cloudflare access, no tokens, no secrets. CI on `v3` builds and checks; it never deploys.
-3. All static: no Pages Functions, no server code, no forms that submit anywhere.
-4. Nothing about the operator's home network or infrastructure: no hostnames, addresses, services, screenshots of
-   dashboards. The second case study is a shell.
-5. Licences: OFL (or equivalent) fonts only, each with its licence file; every dependency's licence listed in the
-   colophon's source. No copyrighted media, characters or brand assets.
-6. Latitude (adopted): free within §3 and §4. You may change layout, navigation and page structure; you may not change
-   a decision or the banned list. Propose changes in the handoff instead.
+As v3's §5: work only on `v4`; never push to `main`, `v2`, `v3` or `gh-pages`; never change
+`.github/workflows/test-page.yml`; no deploys, no Cloudflare access, no tokens, no secrets; static only; nothing about
+the operator's infrastructure; licences recorded. Latitude: free within §3 and §4; propose changes in the handoff.
 
-## 6. Units, in order (spine → themes → extras)
+## 6. Units, in order
 
 | Unit | What | Done when |
 |---|---|---|
-| U0 | `v3` from `v2`; Astro scaffold; content extracted from the React sections; React app removed | `npm run build` passes |
-| U1 | `npm run check`: build; HTML validation; internal links; a headless-browser pass over every page × theme recording CSP violations and every network request (only same-origin, plus the beacon's two hosts); the banned-pattern grep; axe-core (AA) per page × theme; JSON-LD parse and types; twins and `llms.txt` present for every page; a secret scan | runs, failing only on what is not built yet (listed in `STATE.md`) |
-| U2 | `public/_headers` and `security.txt`; a check that parses `_headers` and asserts §3's directives | check passes |
-| U3 | The spine: layout, navigation, every page of §3 with its content and `[JON: …]` slots, in a neutral base | check passes; every page readable without JS |
-| U4 | Editorial theme, full design, with the §4 loop | check passes; design log entry |
-| U5 | Entrance integrated: the puzzle at `/`, skip intro, curtain onto Home, MAZO into the header mark | check passes; the entrance's 3D code absent from every other page |
-| U6 | Terminal theme, with the §4 loop | as U4 |
-| U7 | Profile theme, with the §4 loop | as U4 |
-| U8 | Theme switcher: device default, persistence, no flash, keyboard and screen reader | check passes, in all three themes |
-| U9 | Agent layer: twins, `llms.txt`, JSON-LD, sitemap, RSS, `robots.txt` (crawler sources cited) | check passes |
-| U10 | Colophon: the headers and CSP rendered from `_headers` at build time; measured sizes; stack; fonts and licences; the analytics exception; the crawler policy; the accessibility statement; "how this was made" with `[JON: …]` slots | check passes |
-| U11 | Secrets in the walls: view-source messages (`[JON: …]`), the story fragments | check passes |
-| U12 | The gag chatbot | check passes; no network request when used |
-| U13 | The analytics beacon behind `[CF_BEACON_TOKEN]`, with its CSP exception | check passes; requests limited to the two hosts |
-| U14 | Resume PDF: extract text and metadata; report any phone number, street address or identifying metadata, and ship a metadata-stripped copy (content changes are Jon's) | report in the handoff |
-| U15 | Measure: Lighthouse (mobile and desktop) per page; sizes per page; screenshots per page × theme × (mobile, desktop) into `handoff/screens/`; a proposed budget | numbers in the handoff |
-| U16 | `handoff/deploy-runbook.md`: connect Cloudflare Pages to `v3` with access to this repository only; the test subdomain with `X-Robots-Tag: noindex` until launch; verifying headers with `curl -sI`; matching Cloudflare's AI-crawler settings to `robots.txt`; the beacon token; how to launch | file written |
-| U17 | `HANDOFF.md` (§8) | §8's checks done |
+| U0 | The branch is ready (made by the reviewing session: v3's `BRIEF.md`, `STATE.md`, `HANDOFF.md` and `MANIFEST.sha256` moved to `docs/briefs/` as `v3-…`; the mocks and the photo added). Run `npm run check` and record the baseline | check passes as inherited |
+| U1 | The skeleton: utility row (Replay, Pause motion, mask toggle Paper · Night), masthead (large and small), menu band (five items), footer (Colophon), Ask; identical markup in both themes | check passes; Profile not offered |
+| U2 | Rooms: Uses into Now, `/uses/` 301 to `/now/#uses`, Colophon in the footer only; agent files follow | check passes |
+| U3 | Type: Atkinson for body text everywhere; IM Fell (Paper) and Doto with Martian Mono (Night), per-theme loading, licences | check passes |
+| U4 | Paper to its mocks, with the §4 loop | check passes; design-log entry |
+| U5 | Night to its mocks, with the §4 loop | as U4 |
+| U6 | The ring (both themes, Home): orbit, depth, pause on hover and focus, Paper's print rendering, the phone variant | check passes; orbs are links in every theme |
+| U7 | Entering an orb: the cross-document transition in both themes, and the fallback | check passes; recorded in a screen capture or frame sequence in `handoff/` |
+| U8 | The parakeet: appear, perch and hop, fly (view transition), land in the portrait, head follows the pointer | check passes; no network request from the bird |
+| U9 | The portrait: the CC0 parakeet photo, alt text, Paper's halftone and Night's softer X-ray, colophon credit | check passes |
+| U10 | Pause motion: the control, its memory, every loop paused, transitions kept | check passes; axe passes |
+| U11 | Measure and screenshots: every page × Paper and Night × mobile and desktop into `handoff/screens/`; Lighthouse; sizes | numbers in the handoff |
+| U12 | `HANDOFF.md`, v3's seven sections | §8 of v3's brief, applied |
 
-## 7. Ideas backlog: do not build; leave room
+## 7. Backlog (do not build; leave room)
 
-A tracker-free counter that tells humans from bots and agents (needs server code); an optional soundtrack from the
-puzzle's synthesised sound; more chatbot personalities looping at random (a Gen Z one that refuses because it finds you
-annoying, an anxious one that never answers because it doesn't trust itself); more gags (an honest cookie banner on a
-site with no cookies, an apologetic newsletter pop-up); a guestbook; a webring and 88×31 buttons; an anonymous
-chatroom; OpenGraph cards; Jon's own fonts and signature per theme; a Reduce Motion version that still feels right; the
-resume PDF replaced by LinkedIn and email links.
-
-## 8. The handoff (U17): seven sections, in order; a section that does not apply says `NONE`
-
-1. **SCOPE:** what was asked, which units were done, what you decided and why (each theme's direction in a paragraph).
-2. **CROSSING:** the branch, its last commit, and `MANIFEST.sha256` (`sha256sum` over the tracked tree, `.git` excluded).
-3. **MEASURED:** every number with the command that produced it; the proposed budget.
-4. **CLAIMS:** anything not verified by a check this session, each marked `[UNVERIFIED]` (for example behaviour on a
-   real iPhone, Cloudflare's handling of `_headers`).
-5. **MISSES:** what went wrong and what you changed, or `none recorded`.
-6. **ATTACHED:** the files a reviewer needs, by path (`handoff/design-log.md`, `handoff/screens/`, the runbook).
-7. **OPEN AT HANDOFF:** every `[JON: …]` slot by page; decisions you would change and why; what Jon must do before launch.
-
-Before writing it, check each claim against the code and the checks, and attribute no words to Jon that this brief does
-not quote.
-
-## 9. References (Jon's)
-
-**Loves** (confirmed by Jon: "Yes, that's me. But will continue to evolve."). Distilled from 46 images Jon curated over years (the images stay on his desk; they are other people's work,
-and nothing here should be copied or imitated). These are qualities to design from, not motifs to paste:
-
-1. **Thresholds.** Doors cut into walls, stairs going down, arches, a screen held up as a window. The site as a series
-   of thresholds: the entrance is one, and moving between pages should feel like going through a door, not scrolling a
-   feed.
-2. **What lies under the surface.** X-ray under a veil, anatomical slices, masks, a poster that says what you see is
-   not all there is. Layers that reveal themselves to people who look: the "secrets in the walls" rule, confirmed.
-3. **Eyes and masks.** Eyes recur everywhere, and so do masks and hidden faces. Watching and being watched; anonymity,
-   becoming someone else. (Jon's two themes: the fluid identity of the old web, and his distaste for surveillance.)
-4. **Light as material.** Neon in the snow, prismatic light leaks, chromatic fringes, refraction through a glass of
-   water, glow. Light is the accent: the puzzle's white sweep and glow belong to this family.
-5. **Texture over gloss.** Halftone, woodcut and engraving, risograph and photocopy grain, film grain, pencil, pastel.
-   Printed and handled surfaces, never the smooth, shadowed, rounded look.
-6. **The hand-made line.** Pen sketches, boiling pencil marks, single-weight cartoon outlines, wireframe geometry. Thin
-   lines carry structure.
-7. **Deadpan surreal.** Surrealist paintings, uncanny masked figures, an alien on a rotary phone, a head made of a jar.
-   Humour that is strange and played straight, never cute. (The gag chatbot is this.)
-8. **Diagrams and geometry.** Esoteric diagrams, mandala symmetry, moiré circles, abstract geometric compositions,
-   rotating wireframe solids. Maps and diagrams as things of beauty.
-9. **Loops, not reveals.** A quarter of the set is short seamless loops: hypnotic, ambient, cycling. Motion that loops
-   in place is his language; content fading up on scroll is not.
-10. **High and low, mixed as equals.** Old-master painting next to manga, graffiti wildstyle, 1980s Japanese
-    illustration, pop art, ritual masquerade costume, film photography of a mountain lake. No hierarchy of taste.
-11. **Gravity.** Several images are dark and unflinching (mortality, conflict). The site is allowed weight and tension;
-    it is not cheerful by default. (Attitude only: no such imagery on the site.)
-
-**Palettes that recur (two families, plus collage):**
-- *Night:* near-black grounds; electric violet and magenta, signal orange-red, cyan-teal; light as the highlight.
-- *Paper:* warm cream and newsprint grey; ink black; one hot accent (coral, vermilion).
-- *Collage:* pastel mint, coral and cream; vaporwave gradients used knowingly; early-web 3D textures.
-
-**How they map to the themes:** *Editorial* is the Paper family (ink, halftone, engraving, riso grain); *Terminal* is
-the Night family (neon, light traces, wireframes, loops); *Profile* is the Collage family (pop, kitsch, early-web 3D, the
-deadpan surreal).
-
-**One observation to use or ignore:** graffiti wildstyle is lettering that interlocks; the MAZO puzzle is letters that
-interlock in three dimensions.
-
-**Dislikes:** none yet, by design: they come from Jon's review of this run's screenshots (U15). Until then, §4's
-banned list does their job.
+The Profile theme's own session; another shape or a stripe in place of the orbs; per-theme page transitions explored
+further; the seed-bowl game; more chatbot personalities and gags; the tracker-free human/bot counter; telemetry (scroll
+depth, rage clicks), aggregate and identifier-free, after the design work; an automatic Reduce Motion version that
+still feels right; Jon's own fonts and the artist's sprite; a console-style ring menu as a separate project.
