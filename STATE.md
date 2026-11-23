@@ -5,7 +5,7 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 | Unit | Done | Commit | Turns | Files | Notes |
 |---|---|---|---|---|---|
 | U0 baseline | [x] | a15ed3d | 17 | 1 | `npm run check` as inherited: 55 checks, 55 passed, 0 pending, 0 failed (73 s). 15 of the 17 turns were the one-time read of §0's inputs and the install. |
-| U1 skeleton | [ ] | | 46 | 29 | One header on every page (utility row: Replay, Pause motion, mask toggle Paper · Night; masthead: the mark, large on Home, small elsewhere, and the name; menu band: five rooms), footer (name · [JON: region], Colophon), Ask. Masks are `paper` and `night`; Profile parked. New check `skeleton.*` (4); `switcher.*` rewritten. 59 pass. 7 of the 46 turns were the one-time read of the mocks. |
+| U1 skeleton | [x] | 9d92285 | 46 | 29 | One header on every page (utility row: Replay, Pause motion, mask toggle Paper · Night; masthead: the mark, large on Home, small elsewhere, and the name; menu band: five rooms), footer (name · [JON: region], Colophon), Ask. Masks are `paper` and `night`; Profile parked. New check `skeleton.*` (4); `switcher.*` rewritten. 59 pass. 7 of the 46 turns were the one-time read of the mocks. |
 | U2 rooms | [ ] | | | | |
 | U3 type | [ ] | | | | |
 | U4 Paper | [ ] | | | | |
@@ -21,9 +21,9 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 
 ## Budget
 
-- Units done: 1 of 14 · turns so far: 17 · average turns per unit: 17 (U0 was mostly reading; the real average starts at U1) · estimated turns left: about 13 units × 10 = 130 (v3's average was 9.6)
-- Wall clock: session started 2026-11-23 08:05 UTC; U0 done 08:11.
-- Last updated: 2026-11-23 08:24 UTC, during U1.
+- Units done: 2 of 14 · turns so far: 63 · average turns per unit: 31.5 (U0 and U1 carried the one-time reading) · estimated turns left: 12 units × about 20 = 240
+- Wall clock: session started 2026-11-23 08:05 UTC; U0 done 08:11; U1 08:24.
+- Last updated: 2026-11-23 08:24 UTC, after U1.
 
 ## Checks not yet expected to pass
 
