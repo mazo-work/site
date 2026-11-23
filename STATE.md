@@ -250,3 +250,8 @@ where the brief is silent)
   excluded) is written after this tick, in the same commit.
 - 2026-11-23 14:25 UTC · session end: all 14 units done, `npm run check` 78 of 78, nothing pending; CI on `v4`
   passed runs #36 and #37 (later ones were running at the end).
+- Post-handoff, main-seat review (2026-11-23), Jon's rulings applied by the reviewing session: Home's headline is his
+  line, "I Promise I Sounded Like This Before ChatGPT.", replacing the mocks' "A child of the internet."
+  (`HOME_HEADLINE` in `src/data/site.ts`); the other calls the handoff listed for him are accepted as built (Jon:
+  "Accept all, new headline"). `npm run check`: 78 of 78 (`layout.fit` included: the headline sets in four lines in
+  both masks, phone and desktop). `MANIFEST.sha256` refreshed over the tracked tree.

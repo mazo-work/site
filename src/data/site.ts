@@ -27,9 +27,9 @@ export const FOOTER_NAV: NavItem[] = [
   { href: '/colophon/', label: 'Colophon' },
 ];
 
-/** Home's headline. v4: from the reviewed mocks (docs/v4-mocks/Main.dc.html and the others), the one line in them that
- *  is not a [JON: …] slot; not from v2. Listed in the handoff for Jon to confirm or replace. */
-export const HOME_HEADLINE = 'A child of the internet.';
+/** Home's headline, in Jon's words: his line at the post-handoff review (2026-11-23), replacing the mocks'
+ *  "A child of the internet." (docs/v4-mocks/Main.dc.html), which Code had kept for him to confirm or replace. */
+export const HOME_HEADLINE = 'I Promise I Sounded Like This Before ChatGPT.';
 
 export const DESCRIPTIONS = {
   home: '[JON: one sentence for search and agents: who you are and what this site is]',
