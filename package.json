@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "ASTRO_TELEMETRY_DISABLED=1 astro dev",
     "build": "ASTRO_TELEMETRY_DISABLED=1 astro build",
-    "preview": "ASTRO_TELEMETRY_DISABLED=1 astro preview"
+    "preview": "ASTRO_TELEMETRY_DISABLED=1 astro preview",
+    "check": "node tools/check/run.mjs"
   },
   "dependencies": {
     "astro": "7.4.13",
@@ -16,5 +17,11 @@
   "license": "UNLICENSED",
   "engines": {
     "node": ">=22.23.4"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.14.0",
+    "html-validate": "11.21.1",
+    "linkedom": "0.18.15",
+    "playwright": "1.63.0"
   }
 }

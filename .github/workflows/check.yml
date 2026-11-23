@@ -1,0 +1,30 @@
+# Builds and checks the v3 site on every push to v3 (BRIEF.md §5: CI on v3 builds and checks; it never deploys).
+# Every action is pinned to the exact commit of the release named beside it, as in test-page.yml.
+name: Check v3
+
+on:
+  push:
+    branches: [v3]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
+      - name: Check the puzzle still comes apart only in order
+        run: python3 tools/burr/check.py
+      - name: Install from the lockfile (no install scripts)
+        run: npm ci --ignore-scripts
+      - name: Install the headless browser the checks use
+        run: npx playwright install --with-deps chromium
+      - name: Build and check
+        run: npm run check
