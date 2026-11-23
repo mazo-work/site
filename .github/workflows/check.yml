@@ -1,10 +1,10 @@
-# Builds and checks the v3 site on every push to v3 (BRIEF.md §5: CI on v3 builds and checks; it never deploys).
+# Builds and checks the site on every push to v3 or v4 (v3 BRIEF §5: CI builds and checks; it never deploys).
 # Every action is pinned to the exact commit of the release named beside it, as in test-page.yml.
-name: Check v3
+name: Check
 
 on:
   push:
-    branches: [v3]
+    branches: [v3, v4]
   workflow_dispatch:
 
 permissions:
