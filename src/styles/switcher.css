@@ -18,6 +18,17 @@
 :root[data-theme="profile"] .mask-profile { background: var(--mint); }
 :root[data-theme="terminal"] .mask { font-family: var(--font-ui); font-weight: 400; }
 
+/* story fragments (U11): one small square, the light that completes the O; open, a line of the story */
+.fragment { margin-top: calc(4 * var(--u)); max-width: var(--measure); }
+.fragment summary { list-style: none; display: inline-grid; place-items: center; width: calc(4 * var(--u)); height: calc(4 * var(--u)); cursor: pointer; }
+.fragment summary::-webkit-details-marker { display: none; }
+.fragment summary::before { content: "" / ""; width: var(--u); height: var(--u); background: var(--mark-light); transition: transform 0.3s ease; }
+.fragment summary:hover::before, .fragment[open] summary::before { transform: scale(1.6); }
+.fragment summary:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.fragment[open] { padding: calc(2 * var(--u)) calc(3 * var(--u)) calc(3 * var(--u)); border-left: 2px solid var(--mark-light); }
+.fragment[open] summary { margin-bottom: var(--u); }
+.fragment p + p { margin-top: var(--u); }
+
 /* putting on a mask: a cross-fade, whatever the theme's page transition is */
 :root.theme-switching[data-theme]::view-transition-old(root) { animation: mask-off 0.35s ease both; }
 :root.theme-switching[data-theme]::view-transition-new(root) { animation: mask-on 0.45s ease both; }

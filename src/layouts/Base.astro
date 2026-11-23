@@ -12,6 +12,7 @@ import Footer from '../components/Footer.astro';
 import { BOOT } from '../data/theme-boot.mjs';
 import { SITE_NAME } from '../data/site';
 import { jsonldFor, type Schema } from '../data/jsonld';
+import puzzle from '../../docs/puzzle/mazo-burr.json';
 
 interface Props {
   title: string;              // the page's own name; the document title adds the site's
@@ -28,8 +29,14 @@ const docTitle = title === SITE_NAME ? SITE_NAME : `${title} · ${SITE_NAME}`;
 const canonical = new URL(path, Astro.site).href;
 const twin = path === '/' ? '/index.md' : path.replace(/\/$/, '') + '.md';
 const graph = hasCanonical ? jsonldFor(path, title, description, schema) : null;
+// For whoever reads the source (U11): the mark as text, drawn from the puzzle's glyphs, the O solved, and Jon's note.
+const glyphs = (['M', 'A', 'Z', 'O'] as const).map((L) => (puzzle.designs[0].pieces as any)[L].glyph as string[]);
+const art = [0, 1, 2, 3, 4].map((r) => glyphs.map((g, k) => [...g[r]].map((ch, c) =>
+  ch === 'X' || (k === 3 && (r === 0 || r === 4 || c === 0 || c === 4)) ? '\u2588\u2588' : '  ').join('')).join('   ')).join('\n  ');
+const sourceNote = `<!--\n\n  ${art}\n\n  [JON: a message for whoever reads the source]\n\n-->`;
 ---
 <!doctype html>
+<Fragment set:html={sourceNote} />
 <html lang="en">
   <head>
     <meta charset="utf-8" />

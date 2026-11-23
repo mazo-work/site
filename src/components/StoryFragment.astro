@@ -1,0 +1,12 @@
+---
+// A fragment of the story, hidden in the walls (BRIEF.md §3, U11): closed, it is one small square in the colour of
+// the light that completes the O; open, it is a line of Jon's story and the way back to it on About. A native
+// <details>, so it works without JavaScript, by keyboard and with screen readers.
+interface Props { beat: 1 | 2 | 3 | 4; }
+const { beat } = Astro.props;
+---
+<details class="fragment">
+  <summary><span class="vh">A fragment of the story</span></summary>
+  <p>[JON: fragment {beat}: a line or two of the story, from beat {beat}; it links back to About]</p>
+  <p><a href={`/about/#beat-${beat}`}>The whole story</a></p>
+</details>

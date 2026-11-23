@@ -6,6 +6,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import Base from '../layouts/Base.astro';
+import StoryFragment from '../components/StoryFragment.astro';
 import { DESCRIPTIONS } from '../data/site';
 import { BOOT } from '../data/theme-boot.mjs';
 import { CRAWLERS, SOURCES, CHECKED, allowed } from '../data/crawlers';
@@ -123,6 +124,7 @@ const kinds = { search: 'search and answers', user: 'a person asked', training: 
       <h2 id="made">How this was made</h2>
       <p>[JON: how this site was made, in your words: the brief, the puzzle, working with an AI.]</p>
       <p>[JON: what you would tell someone teaching themselves to make things like this.]</p>
+      <StoryFragment beat={4} />
     </section>
   </article>
 </Base>
