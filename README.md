@@ -17,6 +17,7 @@ The scripts set `ASTRO_TELEMETRY_DISABLED=1` (POSIX shells; on Windows set it yo
 | Path | What it holds |
 | --- | --- |
 | `src/pages/` | One file per page (routes). |
+| `src/entrance/` | The MAZO puzzle, ported from `prototype/p0` (its logic and finale unchanged; edits marked `v3`), loaded only by `/` after first paint. |
 | `src/data/v2-words.ts` | Jon's words carried over from v2, verbatim. |
 | `tools/check/` | `npm run check`: HTML, links, pages, the banned list, a headless pass per page × theme (CSP, network, errors), axe, JSON-LD, the agent files, secrets. `config.mjs` holds what they expect. |
 | `tools/screens.mjs` | Screenshots of the built site per page × theme × (mobile, desktop), for the design loop and U15. |

@@ -1,0 +1,68 @@
+/* The entrance (U5). Without JavaScript only the still picture and the ways in show (Editorial's paper, the mark).
+   With it, P0's stage and controls, in P0's look on every theme: the puzzle's own look is decided later (spec, P2). */
+
+body.is-entrance main { min-height: 100vh; display: grid; place-content: center; justify-items: start; gap: calc(4 * var(--u)); padding: var(--page-pad); }
+.entrance-still .mark { width: min(80vw, calc(110 * var(--u))); }
+.entrance-top h1 { font-size: var(--step-1); font-family: var(--font-ui); font-weight: 400; letter-spacing: 0.04em; }
+.entrance-top ul { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: calc(3 * var(--u)); font-family: var(--font-ui); }
+.entrance-top ul a { display: inline-block; padding-block: var(--u); }
+.puzzle-ui, .js-only { display: none; }
+
+/* with JavaScript: the stage */
+[data-js] body.is-entrance {
+  --stage: #0e1014; --stage-ink: #e8e4da; --stage-ink-2: #9a968c; --glow: #ffcf8a;
+  background: var(--stage); color: var(--stage-ink); height: 100%; overflow: hidden;
+  font: 15px/1.5 ui-sans-serif, system-ui, sans-serif; background-image: none;
+}
+[data-js] body.is-entrance main { display: block; min-height: 0; padding: 0; }
+[data-js] .is-entrance .puzzle-ui { display: block; }
+[data-js] .is-entrance .js-only { display: inline-block; }
+[data-js] .is-entrance .entrance-still {
+  position: fixed; inset: 0; z-index: 2; display: grid; place-items: center; pointer-events: none;
+  color: var(--stage-ink); transition: opacity 0.6s ease;
+}
+[data-js] .is-entrance .entrance-still .mark { width: min(56vw, calc(64 * var(--u))); }
+[data-js] .is-entrance .entrance-still .mark-light { fill: var(--glow); }
+[data-js] .is-entrance.puzzle-ready .entrance-still { opacity: 0; }
+
+#stage { position: fixed; inset: 0; height: 100dvh; z-index: 1; touch-action: none; user-select: none; -webkit-user-select: none; will-change: transform; background: var(--stage); }
+#stage canvas { display: block; width: 100%; height: 100%; }
+#stage #snap { position: absolute; inset: 0; display: none; }
+#stage:focus-visible { outline: 2px solid var(--glow); outline-offset: -4px; }
+.is-entrance .ui { position: fixed; z-index: 2; }
+
+[data-js] .is-entrance .entrance-top {
+  position: fixed; z-index: 3; top: max(12px, env(safe-area-inset-top)); left: 16px; right: 16px;
+  display: flex; justify-content: space-between; align-items: center; gap: 12px; pointer-events: none;
+}
+[data-js] .is-entrance .entrance-top > * { pointer-events: auto; }
+[data-js] .is-entrance .entrance-top h1 { font: 13px/1.5 ui-sans-serif, system-ui, sans-serif; letter-spacing: 0.02em; color: var(--stage-ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+[data-js] .is-entrance .topbtns { display: flex; gap: 8px; align-items: center; }
+[data-js] .is-entrance .topbtns ul { gap: 8px; font: inherit; }
+[data-js] .is-entrance .topbtns ul a, [data-js] .is-entrance button, [data-js] .is-entrance #fbskip {
+  display: inline-block; white-space: nowrap; font: inherit; font-size: 14px; line-height: 1.5; color: var(--stage-ink);
+  background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.18); border-radius: 8px;
+  padding: 6px 12px; cursor: pointer; text-decoration: none;
+}
+[data-js] .is-entrance :is(button, .topbtns a, #fbskip):hover { background: rgba(255, 255, 255, 0.13); }
+[data-js] .is-entrance :is(button, a):focus-visible { outline: 2px solid var(--glow); outline-offset: 2px; }
+[data-js] .is-entrance button[aria-pressed="true"] { background: rgba(255, 207, 138, 0.18); border-color: rgba(255, 207, 138, 0.5); }
+
+#hint { bottom: calc(max(14px, env(safe-area-inset-bottom)) + 44px); left: 50%; transform: translateX(-50%); width: min(92vw, 520px);
+  margin: 0; text-align: center; color: #b9b4a8; font-size: 14px; transition: opacity 0.4s; pointer-events: none; }
+#bottom { left: 16px; right: 16px; bottom: max(14px, env(safe-area-inset-bottom)); display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+#bottom .spacer { flex: 1; }
+#bottom .dev { display: none; }
+body:has(#debug:target) #bottom .dev { display: inline-block; }
+#arrow { position: fixed; left: 0; top: 0; width: 56px; height: 56px; margin: -28px 0 0 -28px; pointer-events: none; opacity: 0; transition: opacity 0.4s; z-index: 2; }
+#done[hidden] { display: none; }
+.is-entrance .card { background: rgba(14, 16, 20, 0.78); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; padding: 16px 20px; text-align: center; max-width: min(90vw, 440px); }
+.is-entrance .card h2 { font: 500 18px/1.3 ui-sans-serif, system-ui, sans-serif; margin: 0 0 4px; }
+.is-entrance .card p { color: #b9b4a8; margin: 0 0 12px; }
+#debug { right: 16px; top: calc(max(12px, env(safe-area-inset-top)) + 40px); font: 12px/1.45 ui-monospace, Menlo, monospace;
+  color: #d8d3c7; white-space: pre; text-align: right; display: none; pointer-events: none;
+  background: rgba(12, 13, 16, 0.78); padding: 6px 8px; border-radius: 6px; z-index: 5; }
+#fallback { inset: 0; display: none; align-items: center; justify-content: center; }
+
+/* the word, as a still image over the 3D word at the curtain; the page change carries it into Home's mark */
+#word { position: fixed; z-index: 4; display: block; pointer-events: none; view-transition-name: mark; }

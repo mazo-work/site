@@ -177,9 +177,17 @@ hr { border: 0; border-top: 1px solid var(--rule); margin: calc(2 * var(--lh)) 0
 .skills dd, .facts dd { margin: 0; }
 .tags { display: block; margin-top: var(--u); font-family: var(--font-ui); font-size: var(--step--1); color: var(--ink-2); }
 
-/* the entrance without its puzzle: the mark as a still picture and the way in */
-.entrance { min-height: 100vh; display: grid; place-content: center; gap: calc(4 * var(--u)); padding: var(--page-pad); }
-.entrance .mark { width: min(80vw, calc(110 * var(--u))); }
-.entrance h1 { font-size: var(--step-1); font-family: var(--font-ui); font-weight: 400; letter-spacing: 0.04em; }
-.entrance ul { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: calc(3 * var(--u)); font-family: var(--font-ui); }
-.entrance ul a { display: inline-block; padding-block: var(--u); }
+/* The curtain (U5): arriving from the entrance, this page's own change runs P0's curtain: the finished scene, a still
+   picture, rises over 1.4 s with this page underneath, and the word travels into the header's mark (the one element
+   named in both pages). The page's own transition (a theme's) steps aside: these selectors outrank it. */
+.brand .mark { view-transition-name: mark; }
+:root[data-curtain][data-theme] .site-header { view-transition-name: none; }
+:root[data-curtain][data-theme]::view-transition-old(root) {
+  animation: mazo-curtain 1.4s cubic-bezier(0.45, 0, 0.55, 1) both; z-index: 1; mix-blend-mode: normal;
+}
+:root[data-curtain="fade"][data-theme]::view-transition-old(root) { animation: mazo-curtain-fade 0.45s ease both; }
+:root[data-curtain][data-theme]::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+:root[data-curtain][data-theme]::view-transition-group(mark) { animation-duration: 1.4s; animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1); }
+:root[data-curtain][data-theme]::view-transition-old(mark), :root[data-curtain][data-theme]::view-transition-new(mark) { animation-duration: 1.4s; }
+@keyframes mazo-curtain { to { transform: translateY(-100%); } }
+@keyframes mazo-curtain-fade { to { opacity: 0; } }
