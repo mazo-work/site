@@ -1,5 +1,6 @@
 ---
 import Mark from './Mark.astro';
+import ThemeSwitch from './ThemeSwitch.astro';
 import { NAV, SITE_NAME } from '../data/site';
 interface Props { path: string; }
 const { path } = Astro.props;
@@ -18,4 +19,5 @@ const current = (href: string) => path === href || (href !== '/' && path.startsW
       ))}
     </ul>
   </nav>
+  <ThemeSwitch />
 </header>

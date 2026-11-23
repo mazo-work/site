@@ -1,0 +1,25 @@
+/* The masks (U8): one control, drawn with each theme's tokens so it belongs to whichever theme is on. Each mask
+   wears its own theme's colours, so it previews who you become. Loaded after the themes. */
+.masks { display: none; margin: 0; padding: 0; border: 0; min-inline-size: 0; }
+[data-js] .masks { display: flex; flex-wrap: wrap; gap: var(--u); align-items: center; }
+.mask { position: relative; display: inline-flex; align-items: center; gap: var(--u); padding: var(--u) calc(1.5 * var(--u));
+  font: 500 0.75rem / calc(3 * var(--u)) var(--font-ui); color: var(--ink-2); cursor: pointer; border: 1px solid transparent; }
+.mask input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.mask svg { width: calc(4 * var(--u)); height: auto; flex: none; stroke-width: 1.2; }
+.mask-editorial svg { fill: #f5f0e6; stroke: #1d1b18; }
+.mask-terminal svg { fill: #0b0c10; stroke: #36e3d0; }
+.mask-profile svg { fill: #ff6f61; stroke: #2a1f2d; }
+.mask:hover { color: var(--ink); }
+.mask:has(input:focus-visible) { outline: 2px solid var(--focus); outline-offset: 2px; }
+:root[data-theme="editorial"] .mask-editorial, :root[data-theme="terminal"] .mask-terminal, :root[data-theme="profile"] .mask-profile {
+  color: var(--ink); border-color: var(--ink);
+}
+:root[data-theme="profile"] .mask { font-weight: 800; }
+:root[data-theme="profile"] .mask-profile { background: var(--mint); }
+:root[data-theme="terminal"] .mask { font-family: var(--font-ui); font-weight: 400; }
+
+/* putting on a mask: a cross-fade, whatever the theme's page transition is */
+:root.theme-switching[data-theme]::view-transition-old(root) { animation: mask-off 0.35s ease both; }
+:root.theme-switching[data-theme]::view-transition-new(root) { animation: mask-on 0.45s ease both; }
+@keyframes mask-off { to { opacity: 0; } }
+@keyframes mask-on { from { opacity: 0; } }
