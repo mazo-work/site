@@ -15,7 +15,7 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 | U8 theme switcher | [x] | e058cfb | 5 | 6 | Masks as a native radio group; no flash; device default followed live; keyboard; localStorage, no cookie. New check `switcher.*` (4). 41 pass, 6 pending. |
 | U9 agent layer | [x] | d7af40b | 8 | 14 | 12 twins from built HTML, llms.txt, sitemap (11 URLs), RSS, JSON-LD per page type, robots.txt from vendor docs (sources in `src/data/crawlers.ts`). 47 pass, 0 pending. |
 | U10 colophon | [x] | c791ef8 | 6 | 7 | Generated from the build: headers/CSP, stack, licences (+ /licences.txt), fonts, crawlers, storage, accessibility; sizes measured post-build (7-17 KB brotli per page before fonts). 47 pass. |
-| U11 secrets | [ ] | | | | |
+| U11 secrets | [x] | 8239eb2 | 3 | 9 | View-source note (the mark as text + [JON] slot) on every page; 4 story fragments as native details, linking to About's beats. New check `secrets-in-walls.*` (2). 49 pass. |
 | U12 gag chatbot | [ ] | | | | |
 | U13 analytics beacon | [ ] | | | | |
 | U14 resume PDF | [ ] | | | | |
@@ -25,9 +25,9 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 
 ## Budget
 
-- Units done: 11 of 18 · turns so far: 129 · average turns per unit: 11.7 · estimated turns left: 7 units × 7 ≈ 49
-- Wall clock: session started 2026-11-23 02:37 UTC; U0 done 02:47; U1 02:54; U2 02:58; U3 03:06; U4 03:19; U5 03:28; U6 03:32; U7 03:38; U8 03:41; U9 03:47; U10 03:52.
-- Last updated: 2026-11-23 03:52 UTC, after U10.
+- Units done: 12 of 18 · turns so far: 132 · average turns per unit: 11 · estimated turns left: 6 units × 7 ≈ 42
+- Wall clock: session started 2026-11-23 02:37 UTC; U0 done 02:47; U1 02:54; U2 02:58; U3 03:06; U4 03:19; U5 03:28; U6 03:32; U7 03:38; U8 03:41; U9 03:47; U10 03:52; U11 03:55.
+- Last updated: 2026-11-23 03:55 UTC, after U11.
 
 ## Checks not yet expected to pass
 
@@ -138,3 +138,7 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
   licences and roles, and `/licences.txt` lists every installed package (from package-lock.json). Only three.js is
   sent to visitors (the entrance). Sizes are measured from the built files by a build hook and written into the
   colophon (the colophon's own row is measured before the table is added).
+- U11 · decision: four fragments (the brief allows two to four): the 404 (beat 1), Lab notes (beat 2), MAZO's case
+  study (beat 3), the colophon (beat 4); which page carries which beat is Jon's to change. The marker is the light
+  block's square, the site's one recurring secret. The link text "The whole story" and the summary's hidden name
+  "A fragment of the story" are functional labels, listed for Jon. The optional "eye that tracks nothing" is not built.
