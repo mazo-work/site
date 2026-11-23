@@ -11,6 +11,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { BOOT } from '../data/theme-boot.mjs';
 import { SITE_NAME } from '../data/site';
+import { jsonldFor, type Schema } from '../data/jsonld';
 
 interface Props {
   title: string;              // the page's own name; the document title adds the site's
@@ -19,11 +20,14 @@ interface Props {
   bare?: boolean;
   bodyClass?: string;
   canonical?: boolean;        // false for pages that are not documents (the 404)
+  schema?: Schema;            // JSON-LD: which kind of page this is (default: a WebPage)
 }
-const { title, description, noindex = false, bare = false, bodyClass, canonical: hasCanonical = true } = Astro.props;
+const { title, description, noindex = false, bare = false, bodyClass, canonical: hasCanonical = true, schema } = Astro.props;
 const path = Astro.url.pathname;
 const docTitle = title === SITE_NAME ? SITE_NAME : `${title} · ${SITE_NAME}`;
 const canonical = new URL(path, Astro.site).href;
+const twin = path === '/' ? '/index.md' : path.replace(/\/$/, '') + '.md';
+const graph = hasCanonical ? jsonldFor(path, title, description, schema) : null;
 ---
 <!doctype html>
 <html lang="en">
@@ -37,6 +41,9 @@ const canonical = new URL(path, Astro.site).href;
     {hasCanonical && <link rel="canonical" href={canonical} />}
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <meta name="color-scheme" content="light dark" />
+    {hasCanonical && <link rel="alternate" type="text/markdown" href={twin} title="This page in Markdown" />}
+    <link rel="alternate" type="application/rss+xml" href="/notes/rss.xml" title="Lab notes" />
+    {graph && <script type="application/ld+json" set:html={JSON.stringify(graph).replace(/</g, '\\u003c')} />}
     <slot name="head" />
   </head>
   <body class={bodyClass}>

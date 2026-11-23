@@ -4,6 +4,7 @@ title: About
 description: "[JON: one sentence for search and agents: who you are, in your words]"
 lede: "[JON: one line that opens the story; region: [JON: region]]"
 photo: true
+schema: profile
 ---
 
 <!-- The frame: four beats. Jon writes each one; the notes say what each beat needs. The ids stay put:

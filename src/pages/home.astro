@@ -8,7 +8,7 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.order -
 const notes = (await getCollection('notes')).sort((a, b) => +b.data.date - +a.data.date);
 const rooms = [...NAV, FOOTER_NAV[0]];
 ---
-<Base title="Home" description={DESCRIPTIONS.home}>
+<Base title="Home" description={DESCRIPTIONS.home} schema={{ type: 'home' }}>
   <div class="page grid">
     <header class="page-head span-all">
       <h1>{hero.heading}</h1>

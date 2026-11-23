@@ -7,7 +7,7 @@ import Mark from '../components/Mark.astro';
 import { SITE_NAME, DESCRIPTIONS } from '../data/site';
 import '../styles/entrance.css';
 ---
-<Base title={SITE_NAME} description={DESCRIPTIONS.home} bare bodyClass="is-entrance">
+<Base title={SITE_NAME} description={DESCRIPTIONS.home} bare bodyClass="is-entrance" schema={{ type: 'website' }}>
   <div class="entrance-still"><Mark /></div>
   <header id="top" class="entrance-top">
     <h1 id="tag">{SITE_NAME}</h1>
@@ -21,7 +21,7 @@ import '../styles/entrance.css';
       </nav>
     </div>
   </header>
-  <div class="puzzle-ui">
+  <div class="puzzle-ui" data-twin="skip">
     <div id="stage" tabindex="0" role="application" aria-label="MAZO puzzle. Arrow keys turn it. Enter pulls the letter that is free." data-art><canvas id="snap" aria-hidden="true"></canvas></div>
     <p id="hint" class="ui">Drag to turn it. Pull a letter out.</p>
     <div id="bottom" class="ui">

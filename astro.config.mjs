@@ -3,10 +3,13 @@
 import { defineConfig } from 'astro/config';
 import { satteri } from '@astrojs/markdown-satteri';
 import { glyphs } from './src/lib/markdown-glyphs.mjs';
+import agentFiles from './src/integrations/agent-files.mjs';
+import { SITE } from './src/data/origin.mjs';
+import { SITE_NAME, DESCRIPTIONS, RESUME_PDF } from './src/data/site.ts';
 
 // The public origin. Jon's domain is not in this repository: set SITE_URL when building for real.
 // `.invalid` is a reserved TLD (RFC 2606), so the placeholder can never resolve. [JON: domain]
-const site = process.env.SITE_URL || 'https://mazo.invalid';
+const site = SITE;
 
 export default defineConfig({
   site,
@@ -20,6 +23,10 @@ export default defineConfig({
   // No dev toolbar, no client prefetching: nothing the site did not ask for.
   // No syntax highlighting: Shiki writes inline style attributes, which the CSP (style-src 'self') blocks.
   markdown: { syntaxHighlight: false, processor: satteri({ mdastPlugins: [glyphs] }) },
+  integrations: [agentFiles({ site: SITE, siteName: SITE_NAME, summary: DESCRIPTIONS.home, extras: [
+    { title: 'Resume (PDF)', href: RESUME_PDF },
+    { title: 'Lab notes feed (RSS)', href: '/notes/rss.xml' },
+  ] })],
   devToolbar: { enabled: false },
   prefetch: false,
   vite: {

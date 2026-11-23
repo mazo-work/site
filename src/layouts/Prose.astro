@@ -4,7 +4,7 @@ import Base from './Base.astro';
 import Portrait from '../components/Portrait.astro';
 const { frontmatter } = Astro.props;
 ---
-<Base title={frontmatter.title} description={frontmatter.description}>
+<Base title={frontmatter.title} description={frontmatter.description} schema={frontmatter.schema ? { type: frontmatter.schema } : undefined}>
   <article class="prose">
     <header class:list={['page-head', { 'has-photo': frontmatter.photo }]}>
       <div class="page-title">
