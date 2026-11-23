@@ -1,26 +1,25 @@
 ---
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+import Teaser from '../../components/Teaser.astro';
 import { DESCRIPTIONS } from '../../data/site';
 import StoryFragment from '../../components/StoryFragment.astro';
 const notes = (await getCollection('notes')).sort((a, b) => +b.data.date - +a.data.date);
 const day = (d: Date) => d.toISOString().slice(0, 10);
 ---
 <Base title="Lab notes" description={DESCRIPTIONS.notes}>
-  <div class="page">
+  <div class="page reading">
     <header class="page-head">
-      <h1>Lab notes</h1>
+      <h1 class="display misreg" data-text="Lab notes">Lab notes</h1>
       <p class="lede">{DESCRIPTIONS.notes}</p>
     </header>
-    <ol class="index" reversed>
-      {notes.map((n) => (
-        <li>
-          <time class="meta" datetime={day(n.data.date)}>{day(n.data.date)}</time>
-          <a href={`/notes/${n.id}/`}>{n.data.title}</a>
-          <p>{n.data.description}</p>
-        </li>
-      ))}
-    </ol>
-    <StoryFragment beat={2} />
+    <div class="body">
+      <ul class="teasers">
+        {notes.map((n) => (
+          <li><Teaser href={`/notes/${n.id}/`} label={day(n.data.date)} time={day(n.data.date)} title={n.data.title} desc={n.data.description} /></li>
+        ))}
+      </ul>
+      <StoryFragment beat={2} />
+    </div>
   </div>
 </Base>

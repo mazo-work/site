@@ -13,14 +13,16 @@ const shell = entry.data.status === 'coming-soon';
 ---
 <Base title={entry.data.title} description={entry.data.description} noindex={shell}
   schema={shell ? { type: 'webpage' } : { type: 'article', datePublished: entry.data.date }}>
-  <article class="prose">
+  <article class="page reading">
     <header class="page-head">
       <p class="meta"><a href="/projects/">Projects</a></p>
-      <h1>{entry.data.title}</h1>
+      <h1 class="display display-title misreg" data-text={entry.data.title}>{entry.data.title}</h1>
       {shell ? <p class="lede">Coming soon.</p> : <p class="lede">{entry.data.description}</p>}
       {entry.data.voice && <p class="voice">{entry.data.voice}</p>}
     </header>
-    <Content />
-    {entry.id === 'mazo' && <StoryFragment beat={3} />}
+    <div class="prose body">
+      <Content />
+      {entry.id === 'mazo' && <StoryFragment beat={3} />}
+    </div>
   </article>
 </Base>

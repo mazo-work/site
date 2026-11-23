@@ -85,8 +85,7 @@
 .menu a { display: inline-flex; align-items: center; min-height: 44px; padding-inline: 4px; text-decoration: none; white-space: nowrap; }
 @media (min-width: 48rem) { .menu ul { gap: 0 calc(5 * var(--u)); } }
 
-/* 4. the page sits in the frame: v3's page containers lose their own side padding */
-.frame .page, .frame .prose { max-width: none; padding-inline: 0; }
+/* 4. the page: its geometry is in pages.css */
 
 /* 5. the footer: the name and region on the left, the Colophon on the right */
 .site-footer {

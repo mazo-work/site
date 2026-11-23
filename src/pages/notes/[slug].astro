@@ -10,12 +10,14 @@ const { Content } = await render(entry);
 const day = (d: Date) => d.toISOString().slice(0, 10);
 ---
 <Base title={entry.data.title} description={entry.data.description} schema={{ type: 'article', datePublished: entry.data.date, dateModified: entry.data.updated }}>
-  <article class="prose">
+  <article class="page reading">
     <header class="page-head">
       <p class="meta"><a href="/notes/">Lab notes</a> · <time datetime={day(entry.data.date)}>{day(entry.data.date)}</time></p>
-      <h1>{entry.data.title}</h1>
+      <h1 class="display display-title misreg" data-text={entry.data.title}>{entry.data.title}</h1>
       <p class="lede">{entry.data.description}</p>
     </header>
-    <Content />
+    <div class="prose body">
+      <Content />
+    </div>
   </article>
 </Base>

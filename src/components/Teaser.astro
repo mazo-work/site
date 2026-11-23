@@ -1,0 +1,13 @@
+---
+// A teaser: a label, a title that links, a line. The whole block is the link's target (the link's ::after covers it),
+// but only the title is the link, so screen readers hear a short name and find the title as a heading. Used for
+// Home's "Latest project" and "Latest note" (the mocks) and the Projects and Lab notes lists.
+interface Props { href: string; title: string; label?: string; desc?: string; level?: 2 | 3; time?: string; id?: string; }
+const { href, title, label, desc, level = 2, time, id } = Astro.props;
+const H = `h${level}`;
+---
+<div class="teaser">
+  {label && <p class="teaser-label">{time ? <time datetime={time}>{label}</time> : label}</p>}
+  <H class="teaser-title" id={id}><a href={href}>{title}</a></H>
+  {desc && <p class="teaser-desc">{desc}</p>}
+</div>

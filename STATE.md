@@ -7,8 +7,8 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 | U0 baseline | [x] | a15ed3d | 17 | 1 | `npm run check` as inherited: 55 checks, 55 passed, 0 pending, 0 failed (73 s). 15 of the 17 turns were the one-time read of §0's inputs and the install. |
 | U1 skeleton | [x] | 9d92285 | 46 | 29 | One header on every page (utility row: Replay, Pause motion, mask toggle Paper · Night; masthead: the mark, large on Home, small elsewhere, and the name; menu band: five rooms), footer (name · [JON: region], Colophon), Ask. Masks are `paper` and `night`; Profile parked. New check `skeleton.*` (4); `switcher.*` rewritten. 59 pass. 7 of the 46 turns were the one-time read of the mocks. |
 | U2 rooms | [x] | dc6c73c | 7 | 10 | Uses is a section of Now (`/now/#uses`); `public/_redirects` 301s `/uses`, `/uses/` and `/uses.md`; the local test server applies `_redirects`; the Colophon is linked from the footer only; llms.txt lists Uses as a section of Now, the sitemap drops /uses/. New check `rooms.*` (2). 61 pass. |
-| U3 type | [x] | 7978e7c | 18 | 33 | Atkinson Hyperlegible Next for body text in both masks; Paper: IM FELL English and SC, served renamed "Mazo Paper" and "Mazo Paper SC" (their licence reserves the name; `tools/fonts/rename.py`); Night: Doto and Martian Mono. Profile's faces parked (files kept, declared nowhere). Paper 208.7 KB, Night 52.0 KB, reported. `fonts.*` rewritten (6). 63 pass. |
-| U4 Paper | [ ] | | | | |
+| U3 type | [x] | 7978e7c | 18 | 24 | Atkinson Hyperlegible Next for body text in both masks; Paper: IM FELL English and SC, served renamed "Mazo Paper" and "Mazo Paper SC" (their licence reserves the name; `tools/fonts/rename.py`); Night: Doto and Martian Mono. Profile's faces parked (files kept, declared nowhere). Paper 208.7 KB, Night 52.0 KB, reported. `fonts.*` rewritten (6). 63 pass. |
+| U4 Paper | [ ] | | 19 | 19 | Paper to the mocks on every page: off-register display type, IM FELL titles and small-capital labels, Atkinson text; Home (headline, Jon's lines, latest project and note), About (the mocks' frame, portrait in a side column), For recruiters (side column), one 660 px measure for reading. Shared page geometry in `pages.css`; `Teaser` component. Design-log entry. 63 pass. |
 | U5 Night | [ ] | | | | |
 | U5b the puzzle in both masks | [ ] | | | | |
 | U6 the ring | [ ] | | | | |
@@ -23,7 +23,7 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 
 - Units done: 4 of 14 · turns so far: 88 · average turns per unit: 22 (12.5 over U2 and U3) · estimated turns left: 10 units × about 18 = 180
 - Wall clock: session started 2026-11-23 08:05 UTC; U0 done 08:11; U1 08:24; U2 08:27; U3 08:35.
-- Last updated: 2026-11-23 08:35 UTC, after U3.
+- Last updated: 2026-11-23 08:47 UTC, during U4.
 
 ## Checks not yet expected to pass
 
@@ -100,3 +100,23 @@ where the brief is silent)
   the colophon lists only the active families.
 - U3 · decision: Night sets h1 and h2 in Doto 800 (the brief: Doto for headings) and h3 in Atkinson 600, so small
   titles stay legible; Paper's labels are its small capitals as drawn, with no forced uppercase.
+- U4 · decision: Home is the mocks' Home: the headline "A child of the internet.", a `[JON: …]` slot for Jon's lines,
+  and teasers for the latest project and the latest note. The headline is the one line in the mocks that is not a
+  slot and not v2's ("Hi, I'm Jonathan Mazo" left with the masthead now carrying the name); it is kept as the mocks
+  set it, in `src/data/site.ts`, and listed for Jon to confirm or replace. v3's lists of rooms, projects and notes left
+  Home: the menu band (and U6's ring) carry the rooms.
+- U4 · decision: About takes the mocks' frame: four beats whose notes follow the mocks (beat 2 "out of reach", 3
+  "self-taught", 4 "advertising"), a pulled line between the second and the third, and a closing line ("the tools
+  caught up", v3's beat 4); the lede drops "region" (the footer carries it). The beats keep their ids, so the story
+  fragments still land.
+- U4 · decision: teasers (Home, Projects, Lab notes) are a label, a heading with the link, and a line; the link's
+  `::after` makes the whole block the target, so screen readers hear a short name and find the title by heading.
+- U4 · decision: the off-register print is the words a second time in `data-text`, drawn by Paper's `::before` in
+  riso red (`content: attr(data-text) / ""`, so screen readers skip it, and the Markdown twins never see it).
+- U4 · decision: v3 Editorial's margin column for headings is gone: the mocks stack headings over one measure (660 px).
+- U4 · check changed: `pages.reach` measured two clicks from every page, the entrance included, which rested on v3's
+  Home listing everything. v4's Home is the mocks' (the latest project and note), so from the entrance, whose way in
+  is Skip intro, the check now asks for Home in one click; every other page still reaches every page in two (the
+  menu band, then a room's list). Listed for the handoff.
+- U4 · note: between U4 and U5, Night's page styles are v3 Terminal's on v4's markup: readable, not designed. U5
+  rewrites them.

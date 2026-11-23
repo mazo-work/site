@@ -1,22 +1,20 @@
 ---
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+import Teaser from '../../components/Teaser.astro';
 import { DESCRIPTIONS } from '../../data/site';
 const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
 ---
 <Base title="Projects" description={DESCRIPTIONS.projects}>
-  <div class="page">
+  <div class="page reading">
     <header class="page-head">
-      <h1>Projects</h1>
+      <h1 class="display misreg" data-text="Projects">Projects</h1>
       <p class="lede">{DESCRIPTIONS.projects}</p>
     </header>
-    <ol class="index">
+    <ul class="teasers body">
       {projects.map((p) => (
-        <li>
-          <a href={`/projects/${p.id}/`}>{p.data.title}</a>
-          <p>{p.data.status === 'coming-soon' ? 'Coming soon.' : p.data.description}</p>
-        </li>
+        <li><Teaser href={`/projects/${p.id}/`} title={p.data.title} desc={p.data.status === 'coming-soon' ? 'Coming soon.' : p.data.description} /></li>
       ))}
-    </ol>
+    </ul>
   </div>
 </Base>

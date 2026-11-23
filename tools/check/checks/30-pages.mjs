@@ -1,5 +1,6 @@
 // The spine: every page of §3 exists, is a complete semantic document that reads without JavaScript,
-// and every page is reachable from every other in at most two clicks of plain links.
+// and every page is reachable from every other in at most two clicks of plain links (v4: the entrance, in one click
+// to Home, its way in).
 import { read, dom, DIST } from '../lib/dist.mjs';
 import { resolvePath } from '../lib/server.mjs';
 import { ROUTES, ENTRANCE, NOT_DOCUMENTS, SHELLS } from '../config.mjs';
@@ -37,6 +38,9 @@ export default {
     const reach = [];
     for (const from of graph.keys()) {
       if (from === '/404.html') continue;
+      // v4: Home follows the mocks (the latest project and note, not v3's list of everything), so the entrance, whose
+      // way in is Skip intro, must reach Home in one click; every other page still reaches every page in two
+      if (from === ENTRANCE) { if (!graph.get(from).has('/home/')) reach.push(`${from}: no link to /home/`); continue; }
       const one = graph.get(from), two = new Set(one);
       for (const u of one) for (const v of graph.get(u) || []) two.add(v);
       const far = [...graph.keys()].filter((u) => u !== from && u !== '/404.html' && !two.has(u));

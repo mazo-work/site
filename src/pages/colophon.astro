@@ -30,16 +30,17 @@ const deps = [
 const kinds = { search: 'search and answers', user: 'a person asked', training: 'training only', mixed: 'training and search or answers' };
 ---
 <Base title="Colophon" description={DESCRIPTIONS.colophon}>
-  <article class="prose">
+  <article class="page reading">
     <header class="page-head">
-      <h1>Colophon</h1>
+      <h1 class="display misreg" data-text="Colophon">Colophon</h1>
       <p class="lede">{DESCRIPTIONS.colophon}</p>
     </header>
+    <div class="prose body">
 
     <section aria-labelledby="stack">
       <h2 id="stack">Stack</h2>
-      <p>Built with Astro {version('astro').version} as static files: every page is complete HTML and CSS and reads without JavaScript. Scripts run only where a part needs one: a {BOOT.length}-byte inline script in every page's head that applies your theme before the first paint, the theme switcher, and on the entrance, after the first paint, the puzzle (three.js {version('three').version}). Markdown is rendered by Sätteri. No framework runs in your browser, no client router, no cookies.</p>
-      <p>Each build is checked by tools/check in the repository: HTML validation, links, every page in every theme in a headless browser with these headers applied (CSP violations, every network request, script errors), axe-core accessibility rules, JSON-LD, the Markdown twins, the fonts, the entrance, and a secret scan.</p>
+      <p>Built with Astro {version('astro').version} as static files: every page is complete HTML and CSS and reads without JavaScript. Scripts run only where a part needs one: a {BOOT.length}-byte inline script in every page's head that applies your mask (and Pause motion, if you pressed it) before the first paint, the mask toggle, Pause motion, the assistant's button, and on the entrance, after the first paint, the puzzle (three.js {version('three').version}). Markdown is rendered by Sätteri. No framework runs in your browser, no client router, no cookies.</p>
+      <p>Each build is checked by tools/check in the repository: HTML validation, links, every page in both masks in a headless browser with these headers applied (CSP violations, every network request, script errors), axe-core accessibility rules, JSON-LD, the Markdown twins, the fonts, the entrance, and a secret scan.</p>
     </section>
 
     <section aria-labelledby="headers">
@@ -63,7 +64,7 @@ const kinds = { search: 'search and answers', user: 'a person asked', training: 
 
     <section aria-labelledby="storage">
       <h2 id="storage">What is stored</h2>
-      <p>No cookies. In your browser only, and never sent anywhere: <code>mazo-theme</code> (the theme you chose; localStorage), <code>mazo-sound</code> (whether the entrance plays sound; localStorage), and <code>mazo-curtain</code> (a one-time flag that lets Home finish the entrance's curtain; sessionStorage, removed as soon as it is read).</p>
+      <p>No cookies. In your browser only, and never sent anywhere: <code>mazo-theme</code> (the mask you chose; localStorage), <code>mazo-motion</code> (that you paused motion, if you did; localStorage), <code>mazo-sound</code> (whether the entrance plays sound; localStorage), and <code>mazo-curtain</code> (a one-time flag that lets Home finish the entrance's curtain; sessionStorage, removed as soon as it is read).</p>
     </section>
 
     <section aria-labelledby="assistant">
@@ -109,7 +110,7 @@ const kinds = { search: 'search and answers', user: 'a person asked', training: 
 
     <section aria-labelledby="accessibility">
       <h2 id="accessibility">Accessibility</h2>
-      <p>The aim is WCAG 2.2 AA on every page, in every theme. Each build runs axe-core's WCAG 2.2 AA rules on every page in every theme, checks that the theme switcher works by keyboard and is named for screen readers, and checks that every page reads without JavaScript. The entrance is an artwork: its puzzle has keyboard controls and spoken progress but is not otherwise made accessible, and Skip intro is always the way in. Motion is the same for everyone for now (the system's Reduce Motion setting is not yet honoured); anything that moves on its own stops within five seconds.</p>
+      <p>The aim is WCAG 2.2 AA on every page, in both masks. Each build runs axe-core's WCAG 2.2 AA rules on every page in both masks, checks that the mask toggle works by keyboard and is named for screen readers, and checks that every page reads without JavaScript. The entrance is an artwork: its puzzle has keyboard controls and spoken progress but is not otherwise made accessible, and Skip intro is always the way in. Motion is the same for everyone for now (the system's Reduce Motion setting is not yet honoured). Anything that loops (the light in the mark, and more to come) stops when you press Pause motion at the top of any page, and stays stopped on every page until you press it again; page changes still animate.</p>
       <p>To report a problem: [JON: contact].</p>
     </section>
 
@@ -132,5 +133,6 @@ const kinds = { search: 'search and answers', user: 'a person asked', training: 
       <p>[JON: what you would tell someone teaching themselves to make things like this.]</p>
       <StoryFragment beat={4} />
     </section>
+    </div>
   </article>
 </Base>

@@ -1,44 +1,20 @@
 ---
-// Home: who, and every room one click away (the spine's hub; every page is two clicks from every other).
+// Home (v4): the headline and Jon's lines on the left; the latest project and the latest note on the right (the
+// mocks). The rooms are the menu band's, and (U6) the ring's, directly under the band.
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
-import { hero } from '../data/v2-words';
-import { NAV, DESCRIPTIONS } from '../data/site';
-const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
-const notes = (await getCollection('notes')).sort((a, b) => +b.data.date - +a.data.date);
-const rooms = NAV;
+import Teaser from '../components/Teaser.astro';
+import { DESCRIPTIONS, HOME_HEADLINE } from '../data/site';
+const project = (await getCollection('projects')).filter((p) => p.data.status !== 'coming-soon').sort((a, b) => a.data.order - b.data.order)[0];
+const note = (await getCollection('notes')).sort((a, b) => +b.data.date - +a.data.date)[0];
 ---
 <Base title="Home" description={DESCRIPTIONS.home} schema={{ type: 'home' }}>
-  <div class="page grid">
-    <header class="page-head span-all">
-      <h1>{hero.heading}</h1>
-      <p class="lede">[JON: one or two lines in your own voice, in place of v2's tagline (it used a phrase on the brief's banned list)]</p>
+  <div class="page home">
+    <header class="page-head home-head">
+      <h1 class="display misreg" data-text={HOME_HEADLINE}>{HOME_HEADLINE}</h1>
+      <p class="lede">[JON: one or two lines in your own voice, under your own headline]</p>
     </header>
-    <section class="span-4" aria-labelledby="rooms">
-      <h2 id="rooms" class="vh">Rooms</h2>
-      <ul class="index">
-        {rooms.map((r) => <li><a href={r.href}>{r.label}</a></li>)}
-      </ul>
-    </section>
-    <section class="span-8 flow" aria-labelledby="work">
-      <h2 id="work">Projects</h2>
-      <ul class="index">
-        {projects.map((p) => (
-          <li>
-            <a href={`/projects/${p.id}/`}>{p.data.title}</a>
-            <p>{p.data.description}</p>
-          </li>
-        ))}
-      </ul>
-      <h2 id="latest">Lab notes</h2>
-      <ul class="index">
-        {notes.slice(0, 3).map((n) => (
-          <li>
-            <a href={`/notes/${n.id}/`}>{n.data.title}</a>
-            <p>{n.data.description}</p>
-          </li>
-        ))}
-      </ul>
-    </section>
+    <Teaser href={`/projects/${project.id}/`} label="Latest project" title={project.data.title} desc={project.data.description} />
+    {note && <Teaser href={`/notes/${note.id}/`} label="Latest note" title={note.data.title} desc={note.data.description} />}
   </div>
 </Base>

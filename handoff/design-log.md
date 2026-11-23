@@ -145,3 +145,59 @@ now full ink.
 
 **Left for Jon:** Profile is the theme most likely to need his own signature (BRIEF §3: his fonts and signature per
 theme come later).
+
+---
+
+# v4
+
+The same loop (v4 BRIEF.md §4), now also against v4's additions to the banned list (glow blobs, multicolour halos,
+chromatic fringes on text, glowing gradient orbs; ornamental icons and dingbats; numbered sections, page numbers,
+datelines) and against the reviewed mocks in `docs/v4-mocks/`. Screens: `node tools/screens.mjs --themes=<mask>
+--scale=1`, every page at 390 × 844 and 1440 × 900.
+
+## U4 · Paper (2026-11-23)
+
+**Direction (the mocks, applied to every page).** v3's Editorial, cleaned to Jon's review: cream paper `#EEE7DA` under
+v3's SVG grain, ink `#1B1816`, and the riso red `#E5484D` for print effects only (the mark's light, the Ask button's
+hard offset, the underlines of here and hover, the off-register copy under display type); `#B0301B` for small red text
+(the teasers' labels). IM FELL English (served as "Mazo Paper") sets display type at the mocks' sizes (Home's headline
+120 px, a room's title 150 px, a beat 36 px, a pulled line 46 px in the italic), IM FELL English SC ("Mazo Paper SC")
+sets every label in its own small capitals, and Atkinson Hyperlegible Next sets everything read, at 19 px on a desktop
+and 17 px on a phone. Every display headline is printed twice: the ink, and a riso-red copy a few points down and to
+the right underneath (`.misreg::before`, the words from `data-text`, hidden from screen readers with `/ ""`). Home is
+the mock: the headline and Jon's lines on the left, "Latest project" and "Latest note" on the right, 7 to 4 with 88 px
+between. About is the mock's frame: the title, the opening line, four beats with a line pulled out between the second
+and third, the closing line, and the portrait in the side column (still v2's parrot until U9; the bird lands there in
+U8). For recruiters takes the same side column for the portrait and the facts. Reading pages keep one measure
+(660 px). v3's page turn between pages stays.
+
+**Screens (v1):** 12 pages × mobile and desktop (`/uses/` is now a redirect).
+
+**Critique of v1, against the banned lists:**
+- Fonts: IM FELL (renamed, as its licence requires), Atkinson Hyperlegible Next; none banned, none from a third party.
+- Gradients: one, the halftone's 5 px dot screen under a threshold filter (annotated); no washes, no gradient text,
+  no glass, no glow of any kind.
+- Containers: no cards. Hairlines and the menu band's double rule carry the structure; teasers are a label, a title
+  and a line between two hairlines, and the whole block is the title's link target.
+- No icons, dingbats or ornaments: v3's registration mark, the short red rules over headings and the roman numerals
+  before the beats are gone; so is every number in front of a list item (v3 numbered the rooms and the work). The one
+  date left is a note's own date in the Lab notes list, which is the note's metadata, not a dateline.
+- No centred hero, no button pair: Home sets its headline left, beside the two latest things.
+- Spacing is not uniform: the display type is huge and tight (line-height .85), the labels small and close to their
+  titles, the beats 42 px apart, the pulled line given the most air.
+
+**Critique of v1, against the mocks, §2 and §9:**
+- Matches: the utility row, the centred mark and italic name, the band, the footer; Home's and About's grids and
+  sizes; the off-register red; the phone layouts (one column, the band in two rows, the headline at 58 px).
+- §9's texture over gloss (grain, halftone, a second printing in red) and one hot accent hold; the page turn is a
+  threshold. "Quiet rooms": the reading pages are a single column of 19 px text under a loud headline.
+- Wrong in v1: every reading page ran its text across the whole frame (1184 px lines on the case study and the
+  colophon). U1's rule that stripped v3's containers of their padding (`.frame .prose { max-width: none }`) outranked
+  the measure.
+
+**The one revision:** that rule is gone (the pages' geometry now lives in `pages.css`), so every reading page keeps
+the 660 px measure; the colophon's own prose now says "mask" where v3 said "theme", lists `mazo-motion` among what is
+stored, and no longer claims that every loop stops within five seconds (Pause motion stops them now).
+
+**Left for later units, by design:** the ring under the band on Home (U6), the parakeet on the mark and in the
+portrait (U8), the parakeet photo, its caption and alt text (U9).

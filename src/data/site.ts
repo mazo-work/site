@@ -21,6 +21,10 @@ export const FOOTER_NAV: NavItem[] = [
   { href: '/colophon/', label: 'Colophon' },
 ];
 
+/** Home's headline. v4: from the reviewed mocks (docs/v4-mocks/Main.dc.html and the others), the one line in them that
+ *  is not a [JON: …] slot; not from v2. Listed in the handoff for Jon to confirm or replace. */
+export const HOME_HEADLINE = 'A child of the internet.';
+
 export const DESCRIPTIONS = {
   home: '[JON: one sentence for search and agents: who you are and what this site is]',
   recruiters: resume.summary,

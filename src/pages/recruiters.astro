@@ -1,45 +1,48 @@
 ---
 // For recruiters: v2's Skills and Resume folded into one fast page (BRIEF.md §3). The resume PDF came off the site at
-// Jon's review (2026-11-23): it carried his email; LinkedIn is the contact instead.
+// Jon's review (2026-11-23): it carried his email; LinkedIn is the contact instead. v4: the facts and the portrait in
+// the side column, as About's (the parakeet lands there, U8).
 import Base from '../layouts/Base.astro';
 import Portrait from '../components/Portrait.astro';
 import { name, about, skills, resume, sidebar } from '../data/v2-words';
 import { DESCRIPTIONS } from '../data/site';
 ---
 <Base title="For recruiters" description={DESCRIPTIONS.recruiters}>
-  <div class="page grid">
-    <header class="page-head span-8">
-      <h1>For recruiters</h1>
+  <div class="page reading has-side">
+    <header class="page-head">
+      <h1 class="display misreg" data-text="For recruiters">For recruiters</h1>
       <p class="lede">{resume.summary}</p>
     </header>
-    <aside class="span-4" aria-label="Facts">
+    <aside class="side" aria-label="Facts">
       <Portrait />
       <dl class="facts">
         <dt>Name</dt><dd>{name}</dd>
         <dt>Region</dt><dd>[JON: region]</dd>
         <dt>Contact</dt><dd>[JON: your LinkedIn profile link, which replaces the resume PDF; no email or phone on the site]</dd>
       </dl>
+      <section class="side-lists" aria-labelledby="strengths">
+        <h2 id="strengths">{sidebar.strengths.heading}</h2>
+        <ul>{sidebar.strengths.items.map((i) => <li>{i}</li>)}</ul>
+        <h2 id="technologies">{sidebar.technologies.heading}</h2>
+        <ul>{sidebar.technologies.items.map((i) => <li>{i}</li>)}</ul>
+      </section>
     </aside>
-    <section class="span-8 flow" aria-labelledby="skills">
-      <h2 id="skills">{skills.heading}</h2>
-      <dl class="skills">
-        {skills.items.map((s) => (
-          <div>
-            <dt>{s.title}</dt>
-            <dd>{s.description}<span class="tags">{s.tags.join(' · ')}</span></dd>
-          </div>
-        ))}
-      </dl>
-    </section>
-    <section class="span-4 flow" aria-labelledby="strengths">
-      <h2 id="strengths">{sidebar.strengths.heading}</h2>
-      <ul>{sidebar.strengths.items.map((i) => <li>{i}</li>)}</ul>
-      <h2 id="technologies">{sidebar.technologies.heading}</h2>
-      <ul>{sidebar.technologies.items.map((i) => <li>{i}</li>)}</ul>
-    </section>
-    <section class="span-8 flow" aria-labelledby="about">
-      <h2 id="about">{about.heading}</h2>
-      {about.paragraphs.map((p) => <p>{p}</p>)}
-    </section>
+    <div class="prose body">
+      <section aria-labelledby="skills">
+        <h2 id="skills">{skills.heading}</h2>
+        <dl class="skills">
+          {skills.items.map((s) => (
+            <div>
+              <dt>{s.title}</dt>
+              <dd>{s.description}<span class="tags">{s.tags.join(' · ')}</span></dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+      <section aria-labelledby="about">
+        <h2 id="about">{about.heading}</h2>
+        {about.paragraphs.map((p) => <p>{p}</p>)}
+      </section>
+    </div>
   </div>
 </Base>

@@ -25,11 +25,6 @@
   & a { text-decoration-color: var(--accent); }
   & a:hover { text-decoration-thickness: 2px; }
 
-  /* labels: the grotesque, small, spaced, in capitals */
-  & .meta, & .facts dt, & .tags, & .prose thead th, & .index time {
-    font: var(--label); letter-spacing: 0.06em;
-  }
-
   /* the skeleton: small capitals for the rows, the italic for the name, the red underline for here and hover */
   & .utility, & .site-footer { font-family: var(--font-label); font-size: 1.0625rem; letter-spacing: 0.04em; }
   & .masks legend { font-family: var(--font-display); font-style: italic; }
@@ -53,51 +48,64 @@
   }
   @media (max-width: 47.99rem) { & .utility, & .site-footer { font-size: 1rem; } & .menu { font-size: 1.125rem; } & .chat-launcher { font-size: 1.0625rem; } }
 
-  /* type */
-  & h1 { font-weight: 400; font-size: clamp(2.75rem, 1.6rem + 4.6vw, 5.25rem); line-height: 1.02; letter-spacing: -0.022em; }
-  & .lede { font-style: italic; color: var(--ink); }
-  & h2 { font-weight: 400; letter-spacing: -0.01em; }
-  & .page-head { gap: calc(4 * var(--u)); padding-bottom: calc(4 * var(--u)); border-bottom: 1px solid var(--rule); }
-  & .page-head .meta a { text-decoration: none; }
-  & .page-head .meta a:hover { text-decoration: underline; }
-
-  /* contents lists: numbered rooms and work, hairlines between, the number in the accent */
-  & .index { gap: 0; counter-reset: item; }
-  & .index > li {
-    display: grid; grid-template-columns: calc(7 * var(--u)) minmax(0, 1fr); column-gap: calc(2 * var(--u));
-    padding-block: calc(2 * var(--u)) calc(3 * var(--u)); border-top: 1px solid var(--rule);
+  /* type: IM FELL for display (its italic for the name and pulled lines), its small capitals for labels, Atkinson
+     Hyperlegible Next for everything read */
+  & a:hover { color: var(--accent-ink); }
+  & .display { font-family: var(--font-display); font-size: clamp(3.625rem, 0.6rem + 9.5vw, 9.375rem); line-height: 0.85; }
+  & .home .display { font-size: clamp(3.625rem, 0.5rem + 7.8vw, 7.5rem); line-height: 0.9; }
+  & .display-title { font-size: clamp(2.5rem, 0.5rem + 5vw, 5.5rem); line-height: 0.95; }
+  /* the off-register print: the same words in riso red, a few points down and to the right, under the ink */
+  & .misreg::before {
+    content: attr(data-text) / ""; position: absolute; left: 0; top: 0; width: 100%; z-index: -1; pointer-events: none;
+    color: var(--accent); opacity: 0.85; transform: translate(0.04em, 0.026em);
   }
-  & .index > li > * { grid-column: 2; }
-  & :is(ul, ol:not([reversed])).index > li { counter-increment: item; }
-  & :is(ul, ol:not([reversed])).index > li::before {
-    content: counter(item, decimal-leading-zero) / ""; grid-column: 1; grid-row: 1 / span 3;
-    font: var(--label); letter-spacing: 0.06em; color: var(--accent-ink); padding-top: calc(1.5 * var(--u));
+  & .lede { font-size: 1.1875rem; line-height: 1.45; }
+  & h2 { font-size: 1.75rem; line-height: 1.1; }
+  & h3 { font-size: 1.375rem; line-height: 1.2; }
+  & .prose a { text-decoration-thickness: 1px; text-underline-offset: 0.18em; }
+  & .prose a:hover { text-decoration-thickness: 2px; }
+  & .meta, & .teaser-label, & .facts dt, & .tags, & .prose thead th, & .glyph, & .glyphs figcaption {
+    font-family: var(--font-label); font-size: 1rem; letter-spacing: 0.06em; line-height: 1.4;
   }
-  & .index a { font-size: var(--step-1); line-height: calc(6 * var(--u)); text-decoration: none; }
-  & .index a:hover { text-decoration: underline; }
-  & .index p { font-size: var(--step--1); line-height: calc(4 * var(--u)); }
-  & .index time { display: block; color: var(--ink-2); }
+  & .meta { color: var(--ink-2); }
+  & .meta a { text-decoration: none; }
+  & .meta a:hover { text-decoration: underline; }
+  & .voice { font-family: var(--font-display); font-style: italic; font-size: 1.125rem; line-height: 1.4; color: var(--ink-2); }
 
-  /* reading pages: headings hang in the margin, text keeps one measure */
-  & :is(.prose, .flow) ul { list-style-type: "–  "; }
-  & .glyphs figcaption { font-style: italic; }
-  & .prose blockquote { border-left: 2px solid var(--accent); font-style: italic; color: var(--ink); }
-  & .prose pre { background: var(--paper-2); border: 0; }
+  /* teasers: a small-capital label in the red, an IM FELL title, a line in the body face */
+  & .teaser-label { color: var(--accent-ink); }
+  & .teaser-title { font-family: var(--font-display); font-size: 1.625rem; line-height: 1.12; }
+  & .teaser:hover .teaser-title a, & .teaser-title a:focus-visible { color: var(--accent-ink); }
+  & .teaser-desc { font-size: 1.0625rem; line-height: 1.5; }
+
+  /* About: the beats, a line pulled out in the italic, printed off-register, and the closing line */
+  & .pull { font-family: var(--font-display); font-style: italic; font-size: 1.875rem; line-height: 1.12; }
+  & .closing { font-size: 1.1875rem; }
+
+  /* reading */
+  & :is(.prose, .body) ul:not(.plain, .teasers, .rooms) { list-style-type: "–  "; }
+  & .prose blockquote:not(.pull) { padding-left: calc(3 * var(--u)); border-left: 1px solid var(--ink); font-style: italic; }
+  & .prose pre { background: var(--paper-2); }
   & .prose table { border-top: 1px solid var(--ink); }
-  & .prose h2 { font-size: var(--step-1); line-height: calc(5 * var(--u)); }
-  & .prose h2::before {
-    content: ""; display: block; width: calc(4 * var(--u)); height: 2px; background: var(--accent);
-    margin-bottom: calc(2 * var(--u));
-  }
-  & .beat { counter-increment: beat; }
-  & .beat > h2::before {
-    content: counter(beat, upper-roman) / ""; width: auto; height: auto; background: none;
-    font: var(--label); letter-spacing: 0.06em; color: var(--accent-ink); margin-bottom: var(--u);
-  }
-  & .prose { counter-reset: beat; }
+  & .prose th { font-weight: 400; }
+  & .prose tbody th { font-family: var(--font-text); }
 
-  /* the portrait: a halftone screen over the photo; it clears when you look closer */
-  & .portrait { position: relative; max-width: 100%; }
+  /* For recruiters */
+  & .facts { padding-top: calc(2 * var(--u)); border-top: 1px solid var(--ink); }
+  & .facts dt { color: var(--ink-2); padding-top: 2px; }
+  & .skills > div { padding-top: calc(3 * var(--u)); border-top: 1px solid var(--rule); }
+  & .skills dt { font-weight: 600; }
+  & .tags { color: var(--ink-2); }
+  & .side-lists h2 { font-size: 1.375rem; }
+  & .side-lists li { padding-block: 2px; }
+
+  /* the 404's way back: the rooms in the display face */
+  & .rooms { font-family: var(--font-display); font-size: 1.75rem; }
+  & .rooms a { text-decoration: none; }
+  & .rooms a:hover { text-decoration: underline 2px var(--accent); text-underline-offset: 6px; }
+
+  /* the portrait: a halftone screen over the photo; it clears when you look closer (v3's, kept) */
+  & .portrait { position: relative; }
   & .portrait-screen {
     display: block; position: relative; overflow: hidden; background: #fff;
     filter: grayscale(1) contrast(24); mix-blend-mode: multiply;
@@ -113,37 +121,20 @@
   }
   & .portrait-img { position: absolute; inset: 0; opacity: 0; transition: opacity 0.6s ease; }
   & .portrait:hover .portrait-img { opacity: 1; }
-
-  /* For recruiters: one door to the facts */
-  & .cta {
-    display: inline-block; font: var(--label); letter-spacing: 0.06em; text-decoration: none;
-    border: 1px solid var(--ink); padding: calc(1.5 * var(--u)) calc(3 * var(--u));
-  }
-  & .cta:hover { background: var(--ink); color: var(--paper); }
-  & .facts { margin-top: calc(3 * var(--u)); border-top: 1px solid var(--rule); padding-top: calc(2 * var(--u)); }
-  & .facts dt { padding-top: 2px; }
-  & .skills > div { padding-top: calc(2 * var(--u)); border-top: 1px solid var(--rule); }
-  & .skills dt { font-weight: 600; }
-  & .tags { color: var(--ink-2); }
-
 }
 
-/* desktop reading: a margin column for headings and labels beside one measure of text */
-@media (min-width: 62rem) {
+/* desktop: the mocks' sizes (Home's headline 120 px, a room's 150 px, the lede 26 px, a beat 36 px) */
+@media (min-width: 48rem) {
   :root:not([data-theme="night"]) {
-    & .prose {
-      display: grid; column-gap: calc(6 * var(--u));
-      grid-template-columns: [margin-start] minmax(0, 12rem) [margin-end text-start] minmax(0, var(--measure)) [text-end] minmax(0, 1fr) [end];
-    }
-    & .prose > * { grid-column: text; }
-    & .prose > .page-head { grid-column: margin-start / end; }
-    & .prose > table, & .prose > pre { grid-column: text-start / end; max-width: 100%; }
-    & .prose > section { grid-column: margin-start / text-end; display: grid; grid-template-columns: subgrid; }
-    & .prose > section > * { grid-column: text; }
-    & .prose > h2, & .prose > section > h2 { grid-column: margin; align-self: start; margin-top: calc(2 * var(--lh)); }
-    & .prose > h2 + *, & .prose > section > h2 + * { margin-top: calc(2 * var(--lh)); }
-    & .prose > section > h2 { margin-top: 0; }
-    & .prose > section > h2 + * { margin-top: 0; }
+    & .lede { font-size: 1.625rem; }
+    & h2 { font-size: 2.25rem; }
+    & h3 { font-size: 1.625rem; }
+    & .teaser-title { font-size: 2rem; }
+    & .teaser-desc { font-size: 1.125rem; }
+    & .meta, & .teaser-label, & .facts dt, & .tags { font-size: 1.0625rem; }
+    & .pull { font-size: 2.875rem; }
+    & .closing { font-size: 1.375rem; }
+    & .rooms { font-size: 2.25rem; }
   }
 }
 

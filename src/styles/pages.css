@@ -1,0 +1,100 @@
+/* Pages (v4): the geometry both masks share. The masks set type, colour and texture on top (themes/*.css). From the
+   mocks: one column on a phone; on a desktop, a 7 to 4 split with 88 px between (Home; About and For recruiters,
+   whose side column carries the portrait), and one measure of reading everywhere else. */
+
+body { font-size: 1.0625rem; line-height: 1.55; }                       /* 17 px on a phone */
+@media (min-width: 48rem) { body { font-size: 1.1875rem; line-height: 1.6; } }   /* 19 px */
+
+.page { padding-top: calc(8 * var(--u)); }
+@media (min-width: 48rem) { .page { padding-top: calc(11 * var(--u)); } }
+
+.page-head { display: grid; gap: calc(3 * var(--u)); margin-bottom: calc(6 * var(--u)); }
+.page-head > :not(.display) { max-width: var(--measure); }
+.body { max-width: var(--measure); }
+@media (min-width: 48rem) { .page-head { gap: calc(5 * var(--u)); margin-bottom: calc(9 * var(--u)); } }
+
+/* the display headline, and Paper's off-register print under it (the red copy is drawn by Paper; Night has none) */
+.display { margin: 0; line-height: 0.88; letter-spacing: -0.01em; }
+.misreg { position: relative; isolation: isolate; }
+
+/* a side column: About and For recruiters */
+.side { display: grid; gap: calc(5 * var(--u)); align-content: start; margin-bottom: calc(8 * var(--u)); max-width: 26rem; }
+.side .portrait { width: 100%; max-width: none; }
+@media (min-width: 62rem) {
+  .has-side {
+    display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); column-gap: calc(15 * var(--u));
+    grid-template-areas: "head side" "body side"; align-items: start;
+  }
+  .has-side > .page-head { grid-area: head; }
+  .has-side > .body { grid-area: body; }
+  .has-side > .side { grid-area: side; margin: calc(9 * var(--u)) 0 0; max-width: none; }
+}
+
+/* Home: the headline and Jon's lines, then the latest project and note beside them */
+.home { display: grid; align-content: start; }
+.home > .teaser:last-child { border-bottom: 1px solid var(--rule); }
+@media (min-width: 62rem) {
+  .home { grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); column-gap: calc(15 * var(--u)); }
+  .home > .page-head { grid-column: 1; grid-row: 1 / span 3; margin: 0; }
+  .home > .teaser { grid-column: 2; }
+  .home > .teaser:first-of-type { margin-top: calc(2 * var(--u)); }
+  .home > .teaser:last-child { border-bottom: 0; }
+}
+
+/* teasers: a label, a title that links, a line; the whole block is the target */
+.teasers { list-style: none; margin: 0; padding: 0; }
+.teaser { position: relative; padding-block: calc(4 * var(--u)); border-top: 1px solid var(--rule); }
+.teasers > li:last-child .teaser { border-bottom: 1px solid var(--rule); }
+.teaser-title { margin: var(--u) 0 0; }
+.teaser-title a { text-decoration: none; }
+.teaser-title a::after { content: "" / ""; position: absolute; inset: 0; }
+.teaser-desc { margin-top: var(--u); }
+
+/* reading */
+.prose > * + * { margin-top: 1em; }
+.prose h2 { margin-top: calc(7 * var(--u)); }
+.prose h3 { margin-top: calc(5 * var(--u)); }
+.prose h2 + *, .prose h3 + * { margin-top: calc(2 * var(--u)); }
+.prose > section + section { margin-top: calc(7 * var(--u)); }
+.prose section > * + * { margin-top: 1em; }
+.prose section > h2 + *, .prose section > h3 + * { margin-top: calc(2 * var(--u)); }
+.prose ul, .prose ol { padding-left: calc(4 * var(--u)); }
+.prose li + li { margin-top: calc(var(--u) / 2); }
+.prose pre { padding: calc(2 * var(--u)) calc(3 * var(--u)); overflow-x: auto; line-height: 1.5; }
+.prose table { border-collapse: collapse; width: 100%; font-size: 0.875em; line-height: 1.5; display: block; overflow-x: auto; }
+.prose th, .prose td { text-align: left; vertical-align: top; padding: var(--u) calc(2 * var(--u)) var(--u) 0; border-bottom: 1px solid var(--rule); }
+.table-scroll { overflow-x: auto; }
+.table-scroll table { display: table; }
+.prose ul.plain { list-style: none; padding-left: 0; }
+.prose ul.plain li + li { margin-top: var(--u); }
+.prose ul.plain code { word-break: break-word; }
+.beat + .beat, .beat + .pull, .pull + .beat { margin-top: calc(7 * var(--u)); }
+.pull { margin-block: calc(8 * var(--u)) calc(9 * var(--u)); }
+.closing { margin-top: calc(7 * var(--u)); }
+
+/* the MAZO case study's glyph diagrams (v3) */
+.glyphs { margin: 0; }
+.glyph-row { display: flex; flex-wrap: wrap; gap: calc(3 * var(--u)) calc(5 * var(--u)); }
+.glyph { display: grid; gap: var(--u); justify-items: start; }
+.glyph svg { width: calc(14 * var(--u)); fill: var(--ink); }
+.glyph .gap { fill: none; stroke: var(--accent); stroke-width: 0.25; }
+.glyphs figcaption { margin-top: calc(2 * var(--u)); }
+
+/* For recruiters' facts and lists */
+.facts { display: grid; grid-template-columns: max-content 1fr; gap: var(--u) calc(3 * var(--u)); margin: 0; }
+.facts dd, .skills dd { margin: 0; }
+.skills { display: grid; gap: calc(4 * var(--u)); }
+.tags { display: block; margin-top: var(--u); }
+.side-lists { display: grid; gap: calc(2 * var(--u)); }
+.side-lists ul { list-style: none; margin: 0 0 calc(2 * var(--u)); padding: 0; }
+
+/* the portrait (v3's markup; U9 changes the photo) */
+.portrait { margin: 0; width: calc(40 * var(--u)); max-width: 60%; }
+.portrait img { display: block; width: 100%; height: auto; }
+.portrait-screen { display: none; }
+
+/* the 404's way back */
+.rooms { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--u) calc(4 * var(--u)); }
+.rooms a { display: inline-flex; align-items: center; min-height: 44px; }
+
+.voice { max-width: var(--measure); }

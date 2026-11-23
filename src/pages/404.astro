@@ -4,17 +4,19 @@ import { NAV, DESCRIPTIONS } from '../data/site';
 import StoryFragment from '../components/StoryFragment.astro';
 ---
 <Base title="Not found" description={DESCRIPTIONS.notFound} noindex canonical={false} schema={{ type: 'none' }}>
-  <div class="page">
+  <div class="page reading">
     <header class="page-head">
-      <h1>Not found</h1>
+      <h1 class="display misreg" data-text="Not found">Not found</h1>
       <p class="lede">[JON: a line for the 404: the wink]</p>
     </header>
-    <nav aria-label="Rooms">
-      <ul class="index">
-        <li><a href="/home/">Home</a></li>
-        {NAV.map((r) => <li><a href={r.href}>{r.label}</a></li>)}
-      </ul>
-    </nav>
-    <StoryFragment beat={1} />
+    <div class="body">
+      <nav aria-label="Rooms">
+        <ul class="rooms">
+          <li><a href="/home/">Home</a></li>
+          {NAV.map((r) => <li><a href={r.href}>{r.label}</a></li>)}
+        </ul>
+      </nav>
+      <StoryFragment beat={1} />
+    </div>
   </div>
 </Base>
