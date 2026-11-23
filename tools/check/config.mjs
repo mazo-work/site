@@ -18,8 +18,7 @@ export const ROUTES = [
   '/projects/case-study-2/',   // the second case study: a "coming soon" shell
   '/notes/',                   // Lab notes
   '/notes/note-template/',     // the one template note
-  '/now/',
-  '/uses/',
+  '/now/',                     // Uses is a section of Now (v4): /uses/ is a 301 to /now/#uses (public/_redirects)
   '/recruiters/',              // For recruiters
   '/colophon/',
   '/404.html',

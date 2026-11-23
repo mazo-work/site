@@ -1,0 +1,5 @@
+# Cloudflare Pages redirects (v4 BRIEF.md §3, Rooms): Uses became a section of Now. Permanent, so links and
+# bookmarks follow; the Markdown twin follows too. tools/check/lib/server.mjs applies these rules locally.
+/uses /now/#uses 301
+/uses/ /now/#uses 301
+/uses.md /now.md 301

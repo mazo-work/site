@@ -34,10 +34,12 @@ export default function agentFiles({ site, siteName, summary, extras = [] }) {
           fs.writeFileSync(path.join(dist, twinOf(url)), md);
           pages.push({ url, title, description, noindex });
         }
-        const order = (u) => ['/home/', '/about/', '/projects/', '/notes/', '/now/', '/uses/', '/recruiters/', '/colophon/', '/'].indexOf(u);
+        const order = (u) => ['/home/', '/about/', '/projects/', '/notes/', '/now/', '/recruiters/', '/colophon/', '/'].indexOf(u);
         const main = pages.filter((p) => order(p.url) >= 0).sort((a, b) => order(a.url) - order(b.url));
         const group = (prefix) => pages.filter((p) => p.url.startsWith(prefix) && p.url !== prefix).sort((a, b) => a.url.localeCompare(b.url));
-        const item = (p) => `- [${p.title}](${site}${twinOf(p.url)})${p.description ? `: ${p.description}` : ''}${p.noindex ? ' (not yet published)' : ''}`;
+        const item = (p) => `- [${p.title}](${site}${twinOf(p.url)})${p.description ? `: ${p.description}` : ''}${p.noindex ? ' (not yet published)' : ''}`
+          // v4: Uses is a section of Now (/uses/ redirects there), so agents find it under its own name too
+          + (p.url === '/now/' ? `\n- [Uses](${site}/now.md#uses): a section of Now` : '');
         const llms = [`# ${siteName}`, '', `> ${summary}`, '',
           'Every page of this site has a Markdown twin at the same path ending in .md (/about/ is /about.md). This file lists them.', '',
           '## Pages', '', ...main.map(item), '',

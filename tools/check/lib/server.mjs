@@ -1,5 +1,6 @@
 // A static server for dist/ that behaves like Cloudflare Pages where it matters to the checks:
-// directory URLs, a 308 to the trailing slash, 404.html with status 404, and the headers from dist/_headers.
+// directory URLs, a 308 to the trailing slash, 404.html with status 404, the headers from dist/_headers, and (v4) the
+// static rules of dist/_redirects ("from to status", exact paths; Pages applies them before serving files).
 import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -30,11 +31,21 @@ export function resolvePath(dist, urlPath) {
   return { file: null };
 }
 
+/** dist/_redirects as [{ from, to, status }]: one rule per line, comments and blank lines skipped. */
+export function loadRedirects(file) {
+  if (!fs.existsSync(file)) return [];
+  return fs.readFileSync(file, 'utf8').split('\n').map((l) => l.trim()).filter((l) => l && !l.startsWith('#'))
+    .map((l) => { const [from, to, status = '302'] = l.split(/\s+/); return { from, to, status: Number(status) }; });
+}
+
 export function startServer(dist) {
   dist = path.resolve(dist);
   const rules = loadHeaders(path.join(dist, '_headers')) || [];
+  const redirects = loadRedirects(path.join(dist, '_redirects'));
   const server = http.createServer((req, res) => {
     const url = new URL(req.url, 'http://x');
+    const moved = redirects.find((r) => r.from === url.pathname);
+    if (moved) { for (const { name, value } of headersFor(rules, url.pathname).values()) res.setHeader(name, value); res.writeHead(moved.status, { Location: moved.to }); return res.end(); }
     const { file, redirect } = resolvePath(dist, url.pathname);
     const apply = (p) => { for (const { name, value } of headersFor(rules, p).values()) res.setHeader(name, value); };
     if (redirect) { apply(url.pathname); res.writeHead(308, { Location: redirect + url.search }); return res.end(); }

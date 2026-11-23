@@ -6,7 +6,7 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 |---|---|---|---|---|---|
 | U0 baseline | [x] | a15ed3d | 17 | 1 | `npm run check` as inherited: 55 checks, 55 passed, 0 pending, 0 failed (73 s). 15 of the 17 turns were the one-time read of §0's inputs and the install. |
 | U1 skeleton | [x] | 9d92285 | 46 | 29 | One header on every page (utility row: Replay, Pause motion, mask toggle Paper · Night; masthead: the mark, large on Home, small elsewhere, and the name; menu band: five rooms), footer (name · [JON: region], Colophon), Ask. Masks are `paper` and `night`; Profile parked. New check `skeleton.*` (4); `switcher.*` rewritten. 59 pass. 7 of the 46 turns were the one-time read of the mocks. |
-| U2 rooms | [ ] | | | | |
+| U2 rooms | [ ] | | 7 | 10 | Uses is a section of Now (`/now/#uses`); `public/_redirects` 301s `/uses`, `/uses/` and `/uses.md`; the local test server applies `_redirects`; the Colophon is linked from the footer only; llms.txt lists Uses as a section of Now, the sitemap drops /uses/. New check `rooms.*` (2). 61 pass. |
 | U3 type | [ ] | | | | |
 | U4 Paper | [ ] | | | | |
 | U5 Night | [ ] | | | | |
@@ -23,7 +23,7 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 
 - Units done: 2 of 14 · turns so far: 63 · average turns per unit: 31.5 (U0 and U1 carried the one-time reading) · estimated turns left: 12 units × about 20 = 240
 - Wall clock: session started 2026-11-23 08:05 UTC; U0 done 08:11; U1 08:24.
-- Last updated: 2026-11-23 08:24 UTC, after U1.
+- Last updated: 2026-11-23 08:27 UTC, during U2.
 
 ## Checks not yet expected to pass
 
@@ -72,3 +72,10 @@ where the brief is silent)
   button in both masks on /home/ and /about/, desktop and phone (within 1 px).
 - U1 · decision: Night's v3 chromatic fringe on headings and its glowing link hover went now, not in U5: v4 bans both.
 - U1 · decision: until U2 moves Uses into Now, Home keeps a link to /uses/ so every page stays two clicks away.
+- U2 · decision: Uses sits at the end of Now under `## Uses` (its heading's id, `uses`, is the redirect's target),
+  its old sections one level down; v3's "This site" line, which linked the Colophon, is dropped (the Colophon is reached
+  from the footer only). The old Markdown twin `/uses.md` also 301s, to `/now.md`.
+- U2 · unverified: that Cloudflare Pages keeps the `#uses` fragment of a `_redirects` destination in its `Location`
+  header (the local server does); the handoff's runbook step checks it with `curl -sI`.
+- U2 · decision: llms.txt lists "Uses" as its own line pointing at `/now.md#uses`, under Now, so agents that look for
+  Uses by name find it. JSON-LD needed no change (no page carried /uses/).
