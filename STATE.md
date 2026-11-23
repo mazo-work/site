@@ -12,7 +12,7 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 | U5 entrance | [x] | 9b2a62d | 9 | 9 | P0 ported (76 diff lines, all integration); curtain = cross-document view transition into Home; word → mark morph; 3D code only on /, after first paint (130 KB gzip). New check `entrance.*` (3) incl. a headless play-through. 37 pass, 6 pending. |
 | U6 Terminal | [x] | 2ca5e5b | 7 | 8 | Martian Mono + Atkinson Hyperlegible Next (58.5 KB); LED-panel mark, neon flicker, fringe, ## / ./ / ~/ winks, X-ray portrait, CRT transition. Design log entry. 37 pass, 6 pending. |
 | U7 Profile | [x] | bb3b20c | 9 | 6 | Bungee Shade + Nunito (78.5 KB); graph-paper tile, windows with title bars, bevel buttons, extruded mark, tilted profile pic, window-pop transition. Design log entry. 37 pass, 6 pending. |
-| U8 theme switcher | [ ] | | | | |
+| U8 theme switcher | [x] | e058cfb | 5 | 6 | Masks as a native radio group; no flash; device default followed live; keyboard; localStorage, no cookie. New check `switcher.*` (4). 41 pass, 6 pending. |
 | U9 agent layer | [ ] | | | | |
 | U10 colophon | [ ] | | | | |
 | U11 secrets | [ ] | | | | |
@@ -25,9 +25,9 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 
 ## Budget
 
-- Units done: 8 of 18 · turns so far: 110 · average turns per unit: 13.8 · estimated turns left: 10 units × 9 ≈ 90
-- Wall clock: session started 2026-11-23 02:37 UTC; U0 done 02:47; U1 02:54; U2 02:58; U3 03:06; U4 03:19; U5 03:28; U6 03:32; U7 03:38.
-- Last updated: 2026-11-23 03:38 UTC, after U7.
+- Units done: 9 of 18 · turns so far: 115 · average turns per unit: 12.8 · estimated turns left: 9 units × 8 ≈ 72
+- Wall clock: session started 2026-11-23 02:37 UTC; U0 done 02:47; U1 02:54; U2 02:58; U3 03:06; U4 03:19; U5 03:28; U6 03:32; U7 03:38; U8 03:41.
+- Last updated: 2026-11-23 03:41 UTC, after U8.
 
 ## Checks not yet expected to pass
 
@@ -115,3 +115,7 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
   readers skip them; the crumb (`~/path/`) is `aria-hidden` and shown only in Terminal.
 - U7 · decision: Profile shows Home's "Rooms" heading (visually hidden in the other themes) as a window title bar:
   a functional label, listed with the others for Jon. Its one gradient (title bars, coral to pink) is annotated.
+- U8 · decision: the switcher is a native radio group (fieldset with a visually hidden legend "Theme"), not custom
+  ARIA; it lives in the header of every content page (not on the entrance, which keeps P0's look, nor the 404's
+  header, which has none of its own). No "follow the device" option once a choice is made (the brief asks for none);
+  until then the site follows the device live.
