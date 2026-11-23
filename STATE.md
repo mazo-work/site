@@ -20,14 +20,14 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 | U13 analytics beacon | [x] | ba20fae | 9 | 5 | Beacon on every page, token as `[CF_BEACON_TOKEN]`; CSP + exactly two hosts; colophon names it. New check `beacon.*` (2). 55 pass. |
 | U14 resume PDF | [x] | 88560cc | 5 | 4 | Metadata stripped (info, XMP with IDs, file ID); text and pixels identical. Report `handoff/resume-pdf.md`: the page shows an email address (Jon's to remove). 55 pass. |
 | U15 measure | [x] | 9283d5a | 10 | 9 | Lighthouse 13.6.0 × 13 pages × 2; sizes; 78 WebP screenshots (13.8 MB); `handoff/measure.md`, `handoff/budget.md`. About's mobile LCP 1.96 s open. 55 pass. |
-| U16 deploy runbook | [ ] | | | | |
+| U16 deploy runbook | [x] | ee3082d | 4 | 3 | `handoff/deploy-runbook.md`; `tools/verify-live.mjs` (tested locally: every header matches). 55 pass. |
 | U17 HANDOFF.md | [ ] | | | | |
 
 ## Budget
 
-- Units done: 16 of 18 · turns so far: 162 · average turns per unit: 10.1 · estimated turns left: 2 units × 5 ≈ 10
-- Wall clock: session started 2026-11-23 02:37 UTC; U0 done 02:47; U1 02:54; U2 02:58; U3 03:06; U4 03:19; U5 03:28; U6 03:32; U7 03:38; U8 03:41; U9 03:47; U10 03:52; U11 03:55; U12 04:00; U13 04:08; U14 04:14; U15 04:36.
-- Last updated: 2026-11-23 04:36 UTC, after U15.
+- Units done: 17 of 18 · turns so far: 166 · average turns per unit: 9.8 · estimated turns left: 1 unit × 6 ≈ 6
+- Wall clock: session started 2026-11-23 02:37 UTC; U0 done 02:47; U1 02:54; U2 02:58; U3 03:06; U4 03:19; U5 03:28; U6 03:32; U7 03:38; U8 03:41; U9 03:47; U10 03:52; U11 03:55; U12 04:00; U13 04:08; U14 04:14; U15 04:36; U16 04:42.
+- Last updated: 2026-11-23 04:42 UTC, after U16.
 
 ## Checks not yet expected to pass
 
@@ -170,3 +170,7 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
   priority. It did not move About's LCP (1.96 s): cause open, listed in the handoff.
 - U15 · unverified: the entrance's performance on a real phone (software WebGL here inflates blocking time to
   31-160 s); the beacon's size.
+- U16 · decision: the runbook marks every step that depends on Cloudflare's dashboard wording ("check the
+  dashboard"): no Cloudflare docs or dashboard were reachable from here. The test host's noindex is proposed as a host
+  rule appended to `_headers` (reviewable in git; the checks ignore absolute-URL rules). `tools/verify-live.mjs`
+  accepts https origins, and http only for localhost (for testing).
