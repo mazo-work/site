@@ -171,6 +171,9 @@
   & .entry-rim { background: var(--accent); }
   &[data-entry="orb"] main { background-color: var(--paper); }
 
+  /* the parakeet on the portrait: on top of the ring, at its tick (the mock) */
+  & .parakeet[data-place="portrait"] { left: calc(50% - var(--bird) / 2); top: calc(var(--bird) * -0.77); }
+
   /* diagrams */
   & .glyph svg { fill: var(--ink); }
   & .glyph .gap { stroke: var(--orange); }

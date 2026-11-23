@@ -1,0 +1,21 @@
+<!-- The parakeet: a placeholder sprite (v4 BRIEF.md §3), the 12 × 12 pixel map from docs/v4-mocks/Parakeet.dc.html.
+     Jon's artist replaces this file and nothing else. The contract: viewBox 0 0 12 12 (any square grid works if the
+     viewBox says so); the bird faces right, standing, its feet on the bottom row; the head is one group with
+     class="bird-head", which turns around the neck at (6, 5) to follow the pointer; everything else is the body.
+     Colours as presentation attributes (fill="…") only: no style attributes, no <style>, no scripts, no links to other
+     files (the site's CSP refuses them, and the bird makes no network request). -->
+<svg viewBox="0 0 12 12" shape-rendering="crispEdges">
+  <g class="bird-body">
+    <path fill="#7DAEF2" d="M3 5h7v1H3zM5 6h6v1H5zM6 7h5v1H6zM5 8h5v1H5zM4 9h5v1H4z"/>
+    <path fill="#1D2233" d="M2 6h1v1h-1zM4 6h1v1h-1zM3 7h1v1h-1zM5 7h1v1h-1zM1 8h1v1h-1zM3 8h1v1h-1z"/>
+    <path fill="#F2F5FA" d="M3 6h1v1h-1zM2 7h1v1h-1zM4 7h1v1h-1zM2 8h1v1h-1zM4 8h1v1h-1z"/>
+    <path fill="#3F63B8" d="M1 9h3v1H1zM0 10h3v1H0zM0 11h2v1H0z"/>
+    <path fill="#D9909A" d="M5 10h1v1h-1zM8 10h1v1h-1z"/>
+  </g>
+  <g class="bird-head">
+    <path fill="#F2F5FA" d="M4 0h1v1h-1zM6 0h1v1h-1zM3 1h1v1h-1zM5 1h1v1h-1zM7 1h1v1h-1zM8 1h1v1h-1zM4 2h1v1h-1zM6 2h1v1h-1zM7 2h1v1h-1zM9 2h1v1h-1zM3 3h6v1H3zM4 4h1v1h-1zM5 4h1v1h-1zM7 4h1v1h-1z"/>
+    <path fill="#1D2233" d="M5 0h1v1h-1zM7 0h1v1h-1zM4 1h1v1h-1zM6 1h1v1h-1zM3 2h1v1h-1zM5 2h1v1h-1zM6 4h1v1h-1zM8 4h1v1h-1z"/>
+    <path fill="#0B0C12" d="M8 2h1v1h-1z"/>
+    <path fill="#E9B949" d="M9 3h2v1H9zM9 4h1v1h-1z"/>
+  </g>
+</svg>

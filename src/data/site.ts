@@ -16,6 +16,9 @@ export const NAV: NavItem[] = [
   { href: '/recruiters/', label: 'For recruiters' },
 ];
 
+/** Pages with the portrait (v4: the parakeet sits on its frame there, and on the mark everywhere else). */
+export const PORTRAIT_PAGES = ['/about/', '/recruiters/'];
+
 /** The footer: the Colophon is reached from here only. "Replay the intro" lives in the utility row. */
 export const FOOTER_NAV: NavItem[] = [
   { href: '/colophon/', label: 'Colophon' },

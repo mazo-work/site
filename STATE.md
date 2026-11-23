@@ -13,7 +13,7 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 | U5b the puzzle in both masks | [x] | bef1afd | 13 | 18 | The puzzle wears the mask in force when it starts, colours only (one `PALETTES` table in `puzzle.js`, 20 edits marked v4; per-mask stage variables in `entrance.css`). Night: P0 recoloured, light effects in orange. Paper: a transparent canvas over the paper and grain, ink and red with tints, glows printed as red halftone dots. The entrance check solves and skips in both masks and checks that the word and the light land in Home's mark in the same colours. 12 entrance screenshots (`tools/entrance-screens.mjs`). 64 pass. |
 | U6 the ring | [x] | 8f102a6 | 12 | 12 | `Ring.astro` (a nav of the five rooms) under the band on Home; transforms and opacity only (squashed plane, turning arm, counter-turn); one turn in 90 s (60 s on a phone); depth on the dots; holds still under the pointer, with focus inside, and with Pause motion. Night: the mock's wireframe; Paper: printed (ink orbit, ink dots turning red, a halftone sphere). A picture on a phone. New check `ring.*` (3); `layout.fit` adds 1024 px. 67 pass. |
 | U7 entering an orb | [x] | dcdbd13 | 13 | 35 | A cross-document view transition: the clicked dot and the room's main share `orb-entry`; a veil floods out from the orb as a growing circle (Paper ink; Night dark with a purple rim), the main opens out of the orb as a window of the mask's ground, the flood clears. The boot script marks the page only where cross-document view transitions exist, and unmarks it when the transition ends; the menu band keeps v3's transitions. New check `entry.*` (3). Frames in `handoff/orb-entry/` (`tools/entry-frames.mjs`). 70 pass. |
-| U8 the parakeet | [ ] | | | | |
+| U8 the parakeet | [ ] | | 10 | 12 | The mocks' 12 × 12 sprite in one file (`src/assets/parakeet.svg`, with a contract for the artist), inlined: it perches and hops on the O, sits on the portrait's frame on About and For recruiters, flies between them (one view-transition name, an arc), appears after the curtain; its head follows a mouse or pen on portrait pages (transform only; not for touch or with Pause motion; nothing stored or sent). Colophon section. New check `parakeet.*` (3). 73 pass. |
 | U9 the portrait | [ ] | | | | |
 | U10 pause motion | [ ] | | | | |
 | U11 measure and screenshots | [ ] | | | | |
@@ -22,8 +22,8 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 ## Budget
 
 - Units done: 9 of 14 · turns so far: 160 · average turns per unit: 17.8 (14.1 over U2 to U7) · estimated turns left: 5 units × about 14 = 70
-- Wall clock (read from `date`): session started 2026-11-23 08:05 UTC; U0 done 08:11; U1 about 08:23; U2 about 08:26; U3 about 08:33; U4 08:41; U5 08:49; U5b 09:00; U6 09:12; U7 09:22.
-- Last updated: 2026-11-23 09:22 UTC, after U7.
+- Wall clock (read from `date`): session started 2026-11-23 08:05 UTC; U0 done 08:11; U1 about 08:23; U2 about 08:26; U3 about 08:33; U4 08:41; U5 08:49; U5b 09:00; U6 09:12; U7 09:22; U8 09:28.
+- Last updated: 2026-11-23 09:28 UTC, during U8.
 
 ## Checks not yet expected to pass
 
@@ -195,3 +195,18 @@ where the brief is silent)
 - U7 · decision: the recording is Chrome's screencast (every painted frame) of a click on the About orb in each mask,
   ten frames kept per mask with a contact sheet (`handoff/orb-entry/`). Software rendering here paints Paper's flood
   at about 13 frames a second, so its sheet shows fewer in-between states than a real screen would.
+- U8 · decision: the sprite is one SVG file with a written contract (viewBox, the bird facing right with its feet on
+  the bottom row, a `bird-head` group that turns at the neck, presentation attributes only, no style, script or link),
+  inlined by `Parakeet.astro` (Vite's `?raw`), so the artist's file replaces it with no code change and the bird
+  makes no request. It is decorative (`aria-hidden`); the colophon says what it does and does not do.
+- U8 · decision: one bird per page, so one view-transition name works: on the mark's O everywhere but About and For
+  recruiters (`PORTRAIT_PAGES` in `src/data/site.ts`), where it sits on the portrait's frame (Paper: near the right
+  corner; Night: on top of the ring, as the mocks place it). Its size follows the mark (48, 36, 28 px). Between pages
+  the browser carries it; its image pair rises 48 px mid-flight, so it flies an arc (0.7 s; 1.2 s inside an orb's
+  entry). The mocks' wing frames are not used: a view transition moves still pictures.
+- U8 · decision: "appears beside the MAZO blocks" after the entrance: on Home opened by the curtain, the bird is held
+  back during the curtain and then appears in six steps, like a sprite (0.9 s). The mocks' twinkling ✦ sparks were not
+  built: v4 bans dingbats.
+- U8 · decision: the head turns toward a mouse or pen, at most 24° up or down, mirrored when the pointer is behind it;
+  one requestAnimationFrame per move, transform only (CSSOM, which the CSP allows), not for touch. It keeps still
+  while Pause motion is on: the brief asks only for loops to stop, but someone who asked for less motion gets less.

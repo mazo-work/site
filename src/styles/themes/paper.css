@@ -124,6 +124,9 @@
   & .entry-rim { background: transparent; }
   &[data-entry="orb"] main { background-color: var(--paper); background-image: var(--grain); }
 
+  /* the parakeet on the portrait: on the frame's top edge, near the right corner (the mock) */
+  & .parakeet[data-place="portrait"] { right: 26px; top: calc(var(--bird) * -11 / 12); }
+
   /* the portrait: a halftone screen over the photo; it clears when you look closer (v3's, kept) */
   & .portrait { position: relative; }
   & .portrait-screen {

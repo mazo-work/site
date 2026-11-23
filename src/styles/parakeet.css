@@ -1,0 +1,50 @@
+/* The parakeet's geometry and motion (v4, U8); where it sits on the portrait is each mask's (the mocks differ).
+   Its size follows the mark: 48 px over Home's large mark on a desktop, 36 px over a small one (and Home's on a phone),
+   28 px over a small one on a phone. Only transform and opacity move. Its loops (the pace and the hop) stop with Pause
+   motion; its head (scripts/parakeet.js) follows a mouse or pen on the portrait pages. */
+
+.parakeet {
+  --bird: 28px;
+  position: absolute; z-index: 2; display: block; width: var(--bird); height: var(--bird); pointer-events: none;
+  view-transition-name: parakeet;
+}
+@media (min-width: 48rem) { .parakeet { --bird: 36px; } }
+.site-header[data-size="large"] .parakeet { --bird: 36px; }
+@media (min-width: 48rem) { .site-header[data-size="large"] .parakeet { --bird: 48px; } }
+.portrait .parakeet { --bird: 36px; }
+@media (min-width: 48rem) { .portrait .parakeet { --bird: 44px; } }
+.bird-pace, .bird-hop, .bird-sprite { display: block; width: 100%; height: 100%; }
+.bird-sprite { overflow: visible; }
+.bird-head { transform-box: view-box; transform-origin: 6px 5px; }
+
+/* on the O: centred over the O's middle (the mocks: 92 % of the mark's width), feet on the mark's top edge */
+.masthead-mark { position: relative; }
+.parakeet[data-place="perch"] { left: calc(91.9% - var(--bird) / 2); top: calc(var(--bird) * -11 / 12); }
+.parakeet[data-place="perch"] .bird-pace { transform-origin: 50% 83%; animation: bird-pace 7s ease-in-out infinite; }
+.parakeet[data-place="perch"] .bird-hop { animation: bird-hop 1.4s ease-in-out infinite; }
+@keyframes bird-pace {
+  0%, 42% { transform: translateX(0) scaleX(1); }
+  50%, 92% { transform: translateX(calc(var(--bird) * -0.7)) scaleX(-1); }
+  100% { transform: translateX(0) scaleX(1); }
+}
+@keyframes bird-hop {
+  0%, 55%, 100% { transform: translateY(0); }
+  65% { transform: translateY(calc(var(--bird) * -0.146)); }
+  75% { transform: translateY(0); }
+  82% { transform: translateY(calc(var(--bird) * -0.0625)); }
+  88% { transform: translateY(0); }
+}
+
+/* on the portrait: a calmer hop (the mocks: 2.2 s) */
+.parakeet[data-place="portrait"] .bird-hop { animation: bird-settle 2.2s ease-in-out infinite; }
+@keyframes bird-settle { 0%, 70%, 100% { transform: translateY(0); } 78% { transform: translateY(calc(var(--bird) * -0.104)); } 86% { transform: translateY(0); } }
+
+/* after the entrance: the curtain opens onto Home, then the bird appears, in steps, like a sprite */
+:root[data-curtain] .parakeet { animation: bird-appear 0.9s steps(6, end) 1.5s both; }
+@keyframes bird-appear { from { opacity: 0; transform: scale(0.4); } 60% { opacity: 1; transform: scale(1); } to { opacity: 1; transform: none; } }
+:root[data-curtain][data-theme]::view-transition-new(parakeet) { animation: none; opacity: 0; }
+
+/* between pages it flies: the browser carries it from the mark to the portrait and back; it rises on the way */
+::view-transition-group(parakeet) { animation-duration: 0.7s; animation-timing-function: cubic-bezier(0.45, 0, 0.3, 1); }
+::view-transition-image-pair(parakeet) { animation: bird-flight 0.7s ease-in-out both; }
+@keyframes bird-flight { 45% { transform: translateY(-48px) rotate(-6deg); } }

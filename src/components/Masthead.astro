@@ -8,7 +8,8 @@
 // before the main, they paint over the old page and under the page coming out of the orb.
 import Utility from './Utility.astro';
 import Mark from './Mark.astro';
-import { NAV, SITE_NAME } from '../data/site';
+import Parakeet from './Parakeet.astro';
+import { NAV, SITE_NAME, PORTRAIT_PAGES } from '../data/site';
 interface Props { path: string; }
 const { path } = Astro.props;
 const home = path === '/home/';
@@ -19,6 +20,7 @@ const current = (href: string) => path === href || path.startsWith(href);
   <div class="masthead">
     <a class="masthead-mark" href="/home/" aria-current={home ? 'page' : undefined}>
       <Mark /><span class="vh">Home</span>
+      {!PORTRAIT_PAGES.includes(path) && <Parakeet place="perch" />}
     </a>
     <p class="masthead-name">{SITE_NAME}</p>
   </div>

@@ -1,0 +1,12 @@
+---
+// The parakeet (v4 BRIEF.md §3; U8): a resident. On a page without the portrait it perches on the O of the masthead's
+// mark and hops back and forth as on a branch; on About and For recruiters it sits on the portrait's frame. One
+// view-transition name, `parakeet`, so the browser carries it from the mark to the portrait and back (it flies). After
+// the entrance's curtain it appears. Decorative (screen readers skip it; the colophon says what it does). The sprite is
+// one file, src/assets/parakeet.svg, inlined here: Jon's artist replaces that file and nothing else.
+import sprite from '../assets/parakeet.svg?raw';
+interface Props { place: 'perch' | 'portrait'; }
+const { place } = Astro.props;
+const svg = sprite.replace(/<!--[\s\S]*?-->\s*/, '').replace('<svg ', '<svg class="bird-sprite" aria-hidden="true" focusable="false" ').trim();
+---
+<span class="parakeet" data-place={place} aria-hidden="true"><span class="bird-pace"><span class="bird-hop"><Fragment set:html={svg} /></span></span></span>
