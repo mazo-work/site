@@ -8,7 +8,7 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 | U1 check suite | [x] | 4e78de4 | 11 | 17 | `npm run check`: 32 checks, 22 pass, 10 pending (listed below). Proven against a broken fixture. CI workflow `check.yml` (check only). |
 | U2 headers | [x] | 1ddc1d3 | 6 | 3 | `public/_headers` (§3 CSP + `trusted-types 'none'`, HSTS no preload, COOP/CORP, XFO, Permissions-Policy denying 55 unused features), `security.txt`; check `headers.*` (4) passes. |
 | U3 spine | [x] | 03d2128 | 11 | 27 | 13 pages; every page reads without JS and is ≤ 2 clicks from every other; 30 checks pass, 6 pending (U9). `tools/screens.mjs` added. |
-| U4 Editorial | [ ] | | | | |
+| U4 Editorial | [x] | 98557fb | 29 | 26 | Literata + Libre Franklin (77.6 KB); grain, hairlines, vermilion, hanging heads, page turn, halftone portrait, glyph diagram. Design log entry. New check `fonts.*` (4). 34 pass, 6 pending. |
 | U5 entrance | [ ] | | | | |
 | U6 Terminal | [ ] | | | | |
 | U7 Profile | [ ] | | | | |
@@ -25,9 +25,9 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 
 ## Budget
 
-- Units done: 4 of 18 · turns so far: 56 · average turns per unit: 14 (11.3 without U0's one-time read) · estimated turns left: 14 × 14 ≈ 196 (design units will run above the average)
-- Wall clock: session started 2026-11-23 02:37 UTC; U0 done 02:47; U1 02:54; U2 02:58; U3 03:06.
-- Last updated: 2026-11-23 03:06 UTC, after U3.
+- Units done: 5 of 18 · turns so far: 85 · average turns per unit: 17 (14.5 without U0's one-time read) · estimated turns left: 13 × 17 ≈ 221 (design units ~28, others ~10: 2 × 28 + 11 × 10 ≈ 166)
+- Wall clock: session started 2026-11-23 02:37 UTC; U0 done 02:47; U1 02:54; U2 02:58; U3 03:06; U4 03:19.
+- Last updated: 2026-11-23 03:19 UTC, after U4.
 
 ## Checks not yet expected to pass
 
@@ -85,3 +85,14 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
   Region, Contact); listed for Jon in the handoff. v2's "Hi, I'm Jonathan Mazo" is Home's h1, as it stands.
 - U3 · found: v2's headshot (`src/assets/headshot.webp`) is a photo of a parrot, with the alt text "Jonathan Mazo".
   Kept as it stands (Jon's image and words); flagged for the handoff (a real photo, or alt text that says what it shows).
+- U4 · found: Astro 7 renders Markdown with its own processor, Sätteri, not remark; remark plugins would need the old
+  unified stack. The glyph drawing is a Sätteri mdast plugin instead, and `@astrojs/markdown-satteri` is now an
+  explicit, pinned dependency (it was only transitive).
+- U4 · decision: Editorial is scoped as "any theme but Terminal or Profile", so it is also the look without
+  JavaScript; the base tokens are the Paper palette. Without JavaScript on a dark device the page keeps Editorial's
+  structure with the dark tokens (U3's media query).
+- U4 · decision: fonts come from Fontsource's npm packages (OFL, Latin subset, WOFF2), pinned in
+  `tools/fonts/fonts.json`; `node tools/fonts/fetch.mjs` copies them and their licences to `public/fonts/` and writes
+  the @font-face block into `src/styles/fonts.css` (the one type file). `font-display: swap`; CLS is measured in U15.
+- U4 · decision: Terminal and Profile use system fonts until U6 and U7, so neither downloads Editorial's (the new
+  `fonts.loads` check enforces it).
