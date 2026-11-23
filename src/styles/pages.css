@@ -30,8 +30,9 @@ body { font-size: 1.0625rem; line-height: 1.55; }                       /* 17 px
   .has-side > .side { grid-area: side; margin: calc(9 * var(--u)) 0 0; max-width: none; }
 }
 
-/* Home: the headline and Jon's lines, then the latest project and note beside them */
+/* Home: the headline and Jon's lines, then the latest project and note beside them; the ring sits above them */
 .home { display: grid; align-content: start; }
+.ring + .home { padding-top: calc(4 * var(--u)); }
 .home > .teaser:last-child { border-bottom: 1px solid var(--rule); }
 @media (min-width: 62rem) {
   .home { grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); column-gap: calc(15 * var(--u)); }

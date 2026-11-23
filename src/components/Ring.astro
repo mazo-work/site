@@ -1,0 +1,39 @@
+---
+// The ring (v4 BRIEF.md §3; U6): Home's navigation, directly under the menu band, in both masks. Five orbs, one per
+// room, orbit a sphere whose core is the O's light, one turn in about 90 s, larger and brighter at the front, dimmer at
+// the back. The orbs are real links (a nav); the ring stops while the pointer is over it or one of them has focus, so
+// nobody chases a moving target, and the menu band above stays the plain way in. On a phone the ring is smaller and
+// decorative: its links are hidden (the band is the navigation there) and only their dots orbit.
+// One component; its geometry and motion are in src/styles/ring.css, its looks in each mask's file (Paper prints it:
+// ink lines, ink dots, a halftone sphere; Night draws the mock's wireframe). Another shape can replace the orbs here.
+// How an orb travels, with transforms only: each orb's plane is squashed to the orbit's ellipse (scaleY 0.32), an arm
+// turns in that plane, the orb sits at the arm's end, then turns back and unsquashes, so it stays upright and round.
+import { NAV } from '../data/site';
+---
+<nav class="ring" aria-label="Rooms, in orbit">
+  <div class="ring-stage">
+    <span class="ring-orbit" aria-hidden="true"></span>
+    <span class="ring-orbit ring-orbit-outer" aria-hidden="true"></span>
+    <span class="ring-sphere" aria-hidden="true">
+      <svg class="ring-wire" viewBox="0 0 240 240" focusable="false">
+        <circle cx="120" cy="120" r="118" />
+        <ellipse class="ring-meridian" cx="120" cy="120" rx="118" ry="118" />
+        <ellipse class="ring-meridian ring-meridian-b" cx="120" cy="120" rx="118" ry="118" />
+        <ellipse class="ring-meridian ring-meridian-c" cx="120" cy="120" rx="118" ry="118" />
+        <ellipse class="ring-latitude" cx="120" cy="120" rx="118" ry="32" />
+        <ellipse class="ring-latitude ring-latitude-faint" cx="120" cy="82" rx="98" ry="22" />
+        <ellipse class="ring-latitude ring-latitude-faint" cx="120" cy="158" rx="98" ry="22" />
+      </svg>
+      <span class="ring-core"></span>
+    </span>
+    <ul class="ring-orbs">
+      {NAV.map((room, k) => (
+        <li class={`orb orb-${k + 1}`}>
+          <span class="orb-arm"><span class="orb-out"><span class="orb-up"><span class="orb-depth">
+            <a class="orb-link" href={room.href}><span class="orb-dot" aria-hidden="true"></span><span class="orb-label">{room.label}</span></a>
+          </span></span></span></span>
+        </li>
+      ))}
+    </ul>
+  </div>
+</nav>

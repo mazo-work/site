@@ -145,6 +145,27 @@
     animation: night-scan 7s ease-in-out infinite;
   }
 
+  /* the ring, as the mock draws it: a thin purple orbit, neutral outlined orbs (green when pointed at or focused), a
+     wireframe sphere on the ground's own black (no gradient, no glow), the orange light at its core */
+  & .ring-orbit { border: 1px solid rgba(139, 92, 255, 0.38); }
+  & .ring-orbit-outer { border: 1px dotted rgba(218, 214, 240, 0.14); }
+  & .ring-sphere {
+    background: #0b0a12;
+    /* radius-ok: a sphere */
+    border-radius: 50%;
+  }
+  & .ring-wire * { stroke: #ece8ff; stroke-width: 1px; }
+  & .ring-wire circle { stroke-opacity: 0.38; }
+  & .ring-meridian { stroke-opacity: 0.24; }
+  & .ring-meridian-b { stroke-opacity: 0.2; }
+  & .ring-meridian-c { stroke-opacity: 0.16; }
+  & .ring-latitude { stroke-opacity: 0.22; }
+  & .ring-latitude-faint { stroke-opacity: 0.12; }
+  & .orb-dot { border: 1.5px solid rgba(218, 214, 240, 0.78); background: #0b0a12; }
+  & .orb-label { font-family: var(--font-label); font-size: 0.75rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink); }
+  & .orb-link:hover .orb-dot, & .orb-link:focus-visible .orb-dot { border-color: var(--green); background: var(--green); }
+  & .orb-link:hover .orb-label, & .orb-link:focus-visible .orb-label { color: #fff; text-decoration: underline 2px var(--accent); text-underline-offset: 6px; }
+
   /* diagrams */
   & .glyph svg { fill: var(--ink); }
   & .glyph .gap { stroke: var(--orange); }

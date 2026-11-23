@@ -1,4 +1,4 @@
-// Layout (v4; U5): on every page in both masks, on a phone (390 px) and a desktop (1440 px), nothing scrolls sideways
+// Layout (v4; U5, U6): on every page in both masks, on a phone (390 px) and a desktop (1024 and 1440 px), nothing scrolls sideways
 // (the document is no wider than the window) and no display headline's words run past its own box (a long word in a
 // wide face would spill out of its column).
 import { THEMES, ENTRANCE } from '../config.mjs';
@@ -12,7 +12,7 @@ export default {
     const { origin } = await ctx.server();
     const browser = await ctx.browser();
     await Promise.all(THEMES.map(async (t) => {
-      for (const [size, viewport] of [['phone', { width: 390, height: 844 }], ['desktop', { width: 1440, height: 900 }]]) {
+      for (const [size, viewport] of [['phone', { width: 390, height: 844 }], ['small desktop', { width: 1024, height: 768 }], ['desktop', { width: 1440, height: 900 }]]) {
         const c = await themedContext(browser, t, { viewport });
         for (const p of ctx.pages) {
           if (p.url === ENTRANCE) continue;

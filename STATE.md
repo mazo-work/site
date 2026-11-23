@@ -11,7 +11,7 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 | U4 Paper | [x] | 3ec576c | 19 | 19 | Paper to the mocks on every page: off-register display type, IM FELL titles and small-capital labels, Atkinson text; Home (headline, Jon's lines, latest project and note), About (the mocks' frame, portrait in a side column), For recruiters (side column), one 660 px measure for reading. Shared page geometry in `pages.css`; `Teaser` component. Design-log entry. 63 pass. |
 | U5 Night | [x] | 2d8b318 | 15 | 12 | Night to the mocks on every page: Doto display headlines, Atkinson 600 titles, Martian Mono capitals for labels; purple rules and underlines, green hover and focus; Home in three columns; the portrait as an X-ray in a round window with a ring and a scanning line. New check `layout.fit` (every page, both masks, phone and desktop: no sideways scroll, no headline spilling). Design-log entry. 64 pass. |
 | U5b the puzzle in both masks | [x] | bef1afd | 13 | 18 | The puzzle wears the mask in force when it starts, colours only (one `PALETTES` table in `puzzle.js`, 20 edits marked v4; per-mask stage variables in `entrance.css`). Night: P0 recoloured, light effects in orange. Paper: a transparent canvas over the paper and grain, ink and red with tints, glows printed as red halftone dots. The entrance check solves and skips in both masks and checks that the word and the light land in Home's mark in the same colours. 12 entrance screenshots (`tools/entrance-screens.mjs`). 64 pass. |
-| U6 the ring | [ ] | | | | |
+| U6 the ring | [ ] | | 12 | 12 | `Ring.astro` (a nav of the five rooms) under the band on Home; transforms and opacity only (squashed plane, turning arm, counter-turn); one turn in 90 s (60 s on a phone); depth on the dots; holds still under the pointer, with focus inside, and with Pause motion. Night: the mock's wireframe; Paper: printed (ink orbit, ink dots turning red, a halftone sphere). A picture on a phone. New check `ring.*` (3); `layout.fit` adds 1024 px. 67 pass. |
 | U7 entering an orb | [ ] | | | | |
 | U8 the parakeet | [ ] | | | | |
 | U9 the portrait | [ ] | | | | |
@@ -22,8 +22,8 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 ## Budget
 
 - Units done: 7 of 14 · turns so far: 135 · average turns per unit: 19.3 (14.5 over U2 to U5b) · estimated turns left: 7 units × about 16 = 112
-- Wall clock (read from `date`): session started 2026-11-23 08:05 UTC; U0 done 08:11; U1 about 08:23; U2 about 08:26; U3 about 08:33; U4 08:41; U5 08:49; U5b 09:00.
-- Last updated: 2026-11-23 09:00 UTC, after U5b.
+- Wall clock (read from `date`): session started 2026-11-23 08:05 UTC; U0 done 08:11; U1 about 08:23; U2 about 08:26; U3 about 08:33; U4 08:41; U5 08:49; U5b 09:00; U6 09:12.
+- Last updated: 2026-11-23 09:12 UTC, during U6.
 
 ## Checks not yet expected to pass
 
@@ -159,3 +159,22 @@ where the brief is silent)
   the word's ink and the light's colour (read-only).
 - U5b · decision: `tools/entrance-screens.mjs` captures the puzzle, the hold and the word in each mask, phone and
   desktop at 2x, as WebP; it holds Home's response so the curtain cannot take the page away mid-shot.
+- U6 · decision: the orbit is transforms only: each orb's plane is squashed to the ellipse (scaleY 0.32), an arm turns
+  in it, the orb sits at the arm's end and turns back and unsquashes, so it stays round and upright (no motion path,
+  which would animate `offset-distance`). Sizes are container units, so the drawing scales with its column. The orbs
+  never cross the sphere (the orbit's half-height is larger than the sphere's radius), so no stacking is needed.
+- U6 · decision: a room's name is centred under its dot, not to its right as in the mocks: on the right, "For
+  recruiters" reaches about 150 px past its orb and would leave the frame on any desktop narrower than about 1400 px
+  (found by reasoning, then guarded: `layout.fit` now also runs at 1024 px).
+- U6 · decision: depth (the mocks: scale 1.1 to 0.74, opacity 1 to 0.45, front to back) moves the dots only; the
+  names keep their size and dim to 0.68 at most, so they stay above 4.5:1 in both masks.
+- U6 · decision: on a phone the links are hidden (`visibility`, so out of the tab order and the accessibility tree)
+  and their names removed from layout; the dots orbit, one turn in 60 s (the phone mock). The band is the navigation.
+- U6 · decision: Night's sphere is the mock's wireframe on a flat dark disc, without the mock's radial gradient and
+  without the glow on the core (the brief: no glowing gradient orbs); its meridians turn (10 s, transform only).
+  Paper's sphere is a halftone print: 805 dots on a 45° screen, their area following the shade of a sphere lit from
+  the top left (`tools/ring/halftone-sphere.mjs` writes `public/ring/halftone-sphere.svg`, 45.8 KB, 8.4 KB gzip),
+  used as a mask so the dots take Paper's ink. The core is the mark's light and blinks in step with it.
+- U6 · decision: the orbit and its outer ring are rounded boxes (`border-radius: 50%`, annotated), the outer one
+  dotted (CSS cannot draw the mock's 2-and-10 dashes). The ring's landmark is named "Rooms, in orbit" (a functional
+  label, listed for Jon). The ring is part of Home's main, so Home's Markdown twin lists the five rooms.

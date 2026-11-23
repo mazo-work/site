@@ -104,6 +104,20 @@
   & .rooms a { text-decoration: none; }
   & .rooms a:hover { text-decoration: underline 2px var(--accent); text-underline-offset: 6px; }
 
+  /* the ring, printed: ink lines for the orbit, ink dots for the orbs (red when pointed at or focused), a halftone
+     sphere (dots, not shading; public/ring/halftone-sphere.svg as a mask, so the dots are the ink), the red light */
+  & .ring-orbit { border: 1px solid rgba(27, 24, 22, 0.7); }
+  & .ring-orbit-outer { border: 1px dotted rgba(27, 24, 22, 0.3); }
+  & .ring-wire { display: none; }
+  & .ring-sphere::before {
+    content: "" / ""; position: absolute; inset: 0; background: var(--ink);
+    mask: url("/ring/halftone-sphere.svg") center / contain no-repeat;
+  }
+  & .orb-dot { background: var(--ink); }
+  & .orb-label { font-family: var(--font-label); font-size: 1.0625rem; letter-spacing: 0.04em; color: var(--ink); }
+  & .orb-link:hover .orb-dot, & .orb-link:focus-visible .orb-dot { background: var(--accent); }
+  & .orb-link:hover .orb-label, & .orb-link:focus-visible .orb-label { color: var(--accent-ink); text-decoration: underline 2px var(--accent); text-underline-offset: 5px; }
+
   /* the portrait: a halftone screen over the photo; it clears when you look closer (v3's, kept) */
   & .portrait { position: relative; }
   & .portrait-screen {

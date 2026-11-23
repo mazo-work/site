@@ -1,0 +1,88 @@
+/* The ring's geometry and motion (v4, U6), shared by both masks; its looks are in themes/paper.css and night.css.
+   Sizes are container units (cqi: a hundredth of the ring's width), so the whole drawing scales with its column. From
+   the mocks: on a desktop a 1200 × 560 stage, the orbit 500 × 160 around a 240 sphere, 18 px orbs, one turn in 90 s;
+   on a phone a 340 × 236 stage, the orbit 160 × 52 around a 120 sphere, 10 px dots, one turn in 60 s. Only transform
+   and opacity move. Pause motion (skeleton.css) stops it; so do the pointer over it and focus inside it. */
+
+.ring {
+  container-type: inline-size; margin: calc(3 * var(--u)) auto 0; max-width: 75rem;
+  --turn: 60s; --rx: 47cqi; --squash: 0.325; --unsquash: 3.0769; --orb: 10px; --sphere: 35.3cqi; --core: 12px;
+}
+.ring-stage { position: relative; width: 100%; aspect-ratio: 340 / 236; }
+@media (min-width: 48rem) {
+  .ring { --turn: 90s; --rx: 41.667cqi; --squash: 0.32; --unsquash: 3.125; --orb: 18px; --sphere: 20cqi; --core: 14px; }
+  .ring-stage { aspect-ratio: 1200 / 560; }
+}
+
+/* the orbit: an ellipse drawn as a rounded box (no image), and a fainter one outside it */
+.ring-orbit {
+  position: absolute; left: 50%; top: 50%; width: calc(2 * var(--rx)); height: calc(2 * var(--rx) * var(--squash));
+  translate: -50% -50%;
+  /* radius-ok: an ellipse, the orbit itself */
+  border-radius: 50%;
+}
+.ring-orbit-outer { width: calc(2.16 * var(--rx)); height: calc(2.16 * var(--rx) * var(--squash) * 1.065); }
+
+/* the sphere and its core, the O's light (it blinks with the mark's) */
+.ring-sphere { position: absolute; left: 50%; top: 50%; width: var(--sphere); aspect-ratio: 1; translate: -50% -50%; }
+.ring-wire { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.ring-wire * { fill: none; vector-effect: non-scaling-stroke; }
+.ring-meridian { transform-box: view-box; transform-origin: 120px 120px; animation: ring-meridian 10s ease-in-out infinite alternate; }
+.ring-meridian-b { animation-delay: -3.3s; }
+.ring-meridian-c { animation-delay: -6.6s; }
+@keyframes ring-meridian { from { transform: scaleX(0.08); } to { transform: scaleX(1); } }
+.ring-core { position: absolute; left: 50%; top: 50%; width: var(--core); height: var(--core); translate: -50% -50%; background: var(--mark-light); animation: mark-blink 2.6s steps(1, end) infinite; }
+
+/* the orbs: plane (squashed), arm (turns), out (to the orbit), up (turns back, unsquashes); the dot and the name
+   carry the depth */
+.ring-orbs { list-style: none; margin: 0; padding: 0; }
+.orb { position: absolute; left: 50%; top: 50%; width: 0; height: 0; transform: scaleY(var(--squash)); }
+.orb > span, .orb-out, .orb-up, .orb-depth { position: absolute; left: 0; top: 0; width: 0; height: 0; display: block; }
+.orb-arm { animation: ring-arm var(--turn) linear infinite; animation-delay: var(--at); }
+.orb-out { transform: translateX(var(--rx)); }
+.orb-up { animation: ring-up var(--turn) linear infinite; animation-delay: var(--at); }
+.orb-dot { animation: ring-dot var(--turn) linear infinite; animation-delay: var(--at); }
+.orb-label { animation: ring-label var(--turn) linear infinite; animation-delay: var(--at); }
+.orb-1 { --at: 0s; } .orb-2 { --at: calc(var(--turn) / -5); } .orb-3 { --at: calc(var(--turn) * -2 / 5); }
+.orb-4 { --at: calc(var(--turn) * -3 / 5); } .orb-5 { --at: calc(var(--turn) * -4 / 5); }
+/* the front of the orbit is its bottom; the arm turns counter-clockwise on screen (the front moves right) */
+@keyframes ring-arm { from { transform: rotate(90deg); } to { transform: rotate(-270deg); } }
+@keyframes ring-up { from { transform: rotate(-90deg) scaleY(var(--unsquash)); } to { transform: rotate(270deg) scaleY(var(--unsquash)); } }
+/* depth: a dot's scale is 0.92 + 0.18 sin and its opacity 0.725 + 0.275 sin of its angle (the mock: front 1.1 and 1,
+   back 0.74 and 0.45). The room's name keeps its size and dims only to 0.68, so it stays above 4.5:1 in both masks. */
+@keyframes ring-dot {
+  0%, 100% { transform: scale(1.1); opacity: 1; }
+  12.5%, 87.5% { transform: scale(1.047); opacity: 0.919; }
+  25%, 75% { transform: scale(0.92); opacity: 0.725; }
+  37.5%, 62.5% { transform: scale(0.793); opacity: 0.531; }
+  50% { transform: scale(0.74); opacity: 0.45; }
+}
+@keyframes ring-label {
+  0%, 100% { opacity: 1; }
+  12.5%, 87.5% { opacity: 0.953; }
+  25%, 75% { opacity: 0.84; }
+  37.5%, 62.5% { opacity: 0.727; }
+  50% { opacity: 0.68; }
+}
+/* the dot sits on the orbit; the room's name is centred under it, so the ring never reaches past its column, at
+   any width (the mocks put names to the right, where "For recruiters" would leave the frame on most desktops) */
+.orb-link {
+  position: absolute; left: 0; top: calc(var(--orb) / -2); transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 6px; padding-bottom: 4px;
+  white-space: nowrap; text-decoration: none;
+}
+.orb-dot {
+  flex: none; width: var(--orb); height: var(--orb); box-sizing: border-box;
+  /* radius-ok: an orb is round */
+  border-radius: 50%;
+}
+
+/* hold still while someone points at it or tabs through it; all three motions stop together, so they stay in step */
+.ring:hover :is(.orb-arm, .orb-up, .orb-dot, .orb-label), .ring:focus-within :is(.orb-arm, .orb-up, .orb-dot, .orb-label) { animation-play-state: paused; }
+
+/* on a phone it is a picture: the links and labels are hidden (the menu band is the navigation), their dots orbit */
+@media (max-width: 47.99rem) {
+  .orb-link { visibility: hidden; }
+  .orb-dot { visibility: visible; }
+  .orb-label { display: none; }
+}
