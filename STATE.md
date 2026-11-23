@@ -17,13 +17,13 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 | U9 the portrait | [x] | ea527a5 | 9 | 8 | The CC0 parakeet photo (rawpixel; `widths` 400 and 800) replaces v2's parrot (removed); alt "A parakeet, standing in for Jon"; a caption under a frame (hidden from screen readers: it repeats the alt). Paper's halftone lifted for this darker photo; Night's X-ray is now a soft duotone, muted violet to pale cyan (an inline SVG filter, drawn live). Colophon credit. 73 pass. |
 | U10 pause motion | [x] | 7d006f4 | 4 | 2 | The control (built with the skeleton in U1) now covers every loop: on Home, About and Now in both masks every infinite animation stops, stays stopped on the next page, and runs again; page transitions still play while paused; without JavaScript nothing loops (no button to press). Keyboard and axe in both states. Every @keyframes and transition in the built CSS moves transform, opacity or clip-path only. New check `motion.*` (5). 78 pass. |
 | U11 measure and screenshots | [x] | 7d3af71 | 27 | 131 | Lighthouse 13.6.0 on every page in both masks, mobile and desktop (`handoff/measure.md`): content pages 92 to 100 for performance, 100 for accessibility and best practices everywhere; About and For recruiters' mobile LCP 3.0 and 3.3 s in Paper, 2.1 and 2.4 s in Night; CLS at most 0.076 (Paper's 404); SEO 63 to 69 (the deliberate noindex until launch). Before fonts 11 to 16 KB a page (84 KB with the portrait); fonts Paper 208.7 KB, Night 52 KB. 60 screenshots (48 pages plus 12 entrance moments), 10.2 MB, replacing v3's 78. CI on `v4` (run #36) passed. 14 of the 27 turns were waiting on background runs. |
-| U12 HANDOFF.md | [ ] | | | | |
+| U12 HANDOFF.md | [x] | 4fe338e | 9 | 5 | v3's §8, seven sections: scope, crossing, measured (78 checks; sizes; Lighthouse in both masks; v3's budget line by line), claims ([UNVERIFIED]), misses, attached, open (every slot by page from `tools/slots.mjs`, words that are not slots, decisions to change, before launch). Claims checked against the code and the checks; two passages corrected before committing. README and package at v4. `MANIFEST.sha256` at the tip. 78 pass. |
 
 ## Budget
 
-- Units done: 13 of 14 · turns so far: 210 · average turns per unit: 16.2 · estimated turns left: 1 unit, about 8
-- Wall clock (read from `date`): session started 2026-11-23 08:05 UTC; U0 done 08:11; U1 about 08:23; U2 about 08:26; U3 about 08:33; U4 08:41; U5 08:49; U5b 09:00; U6 09:12; U7 09:22; U8 09:28; U9 09:36; restart; U10 14:07; U11 14:20.
-- Last updated: 2026-11-23 14:20 UTC, after U11.
+- Units done: 14 of 14 · turns so far: 219 · average turns per unit: 15.6 · estimated turns left: 0
+- Wall clock (read from `date`): session started 2026-11-23 08:05 UTC; U0 done 08:11; U1 about 08:23; U2 about 08:26; U3 about 08:33; U4 08:41; U5 08:49; U5b 09:00; U6 09:12; U7 09:22; U8 09:28; U9 09:36; restart; U10 14:07; U11 14:20; U12 14:25.
+- Last updated: 2026-11-23 14:25 UTC, after U12. Every unit is done; nothing is pending.
 
 ## Checks not yet expected to pass
 
@@ -243,3 +243,10 @@ where the brief is silent)
   checked on GitHub); its first run on v4 (#36, a3367b2) passed. `tools/slots.mjs` lists every slot by page.
 - U11 · decision: the screens replace v3's 78 (`node tools/measure.mjs --screens`; v3's remain in the `v3` branch);
   the entrance's twelve moments from U5b are kept beside them.
+- U12 · decision: `HANDOFF.md` follows v3's §8; the slot list is generated from the build (`tools/slots.mjs`), with the
+  footer's `[JON: region]` listed once. Checking its claims against the code found two to correct before committing:
+  the labels taken from the brief and the mocks had been listed as mine, and one sentence credited a new check with
+  a catch an old one made. The package's version is 4.0.0. `MANIFEST.sha256` (every tracked file at the tip, itself
+  excluded) is written after this tick, in the same commit.
+- 2026-11-23 14:25 UTC · session end: all 14 units done, `npm run check` 78 of 78, nothing pending; CI on `v4`
+  passed runs #36 and #37 (later ones were running at the end).
