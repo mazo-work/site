@@ -56,7 +56,7 @@ export default function measure({ fontsManifest }) {
           .map((f) => sizesOf(fs.readFileSync(f)));
         const manifest = JSON.parse(fs.readFileSync(fontsManifest, 'utf8'));
         const themes = {};
-        for (const fam of manifest.families) for (const t of fam.themes) for (const [w, s] of fam.faces) {
+        for (const fam of manifest.families.filter((f) => !f.parked)) for (const t of fam.themes) for (const [w, s] of fam.faces) {
           const f = path.join(dist, 'fonts', fam.id, `${fam.id}-${w}-${s}.woff2`);
           themes[t] = (themes[t] || 0) + (fs.existsSync(f) ? fs.statSync(f).size : 0);
         }
@@ -65,7 +65,7 @@ export default function measure({ fontsManifest }) {
           `<thead><tr><th scope="col">Page</th><th scope="col">HTML</th><th scope="col">CSS</th><th scope="col">JS</th><th scope="col">Images</th><th scope="col">Total</th><th scope="col">Total, gzip</th></tr></thead><tbody>` +
           rows.map((r) => `<tr><th scope="row">${r.url}</th>${td(r.html)}${td(r.css)}${td(r.js)}${td(r.img)}${td(r.total)}<td>${kb(r.total.gzip)}</td></tr>`).join('') +
           `</tbody></table></div>` +
-          `<p>Fonts, per theme (WOFF2, loaded only by the theme that uses them): ${Object.entries(themes).map(([t, b]) => `${t} ${kb(b)} KB`).join(', ')}. ` +
+          `<p>Fonts, per mask (WOFF2, loaded only by the mask that uses them): ${Object.entries(themes).map(([t, b]) => `${t} ${kb(b)} KB`).join(', ')}. ` +
           `The entrance loads the puzzle after first paint: ${lazy.map((s) => `${kb(s.br)} KB brotli (${kb(s.raw)} KB raw)`).join(', ')}, three.js included. ` +
           `The colophon's own row is measured before this table was added to it.</p>`;
         const colophon = path.join(dist, 'colophon', 'index.html');

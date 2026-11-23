@@ -49,10 +49,12 @@ body {
   font: var(--step-0) / var(--lh) var(--font-text);
   font-kerning: normal;
   text-rendering: optimizeLegibility;
+  font-synthesis: none;                          /* v4: no faux bold or italic: each face ships only the weights it uses */
 }
+b, strong { font-weight: 600; }
 main { flex: 1; outline: none; }
 img, svg { max-width: 100%; height: auto; }
-h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.15; margin: 0; text-wrap: balance; }
+h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 400; line-height: 1.15; margin: 0; text-wrap: balance; }
 h1 { font-size: var(--step-4); letter-spacing: -0.01em; }
 h2 { font-size: var(--step-2); }
 h3 { font-size: var(--step-1); }
@@ -140,7 +142,7 @@ hr { border: 0; border-top: 1px solid var(--rule); margin: calc(2 * var(--lh)) 0
 .facts { display: grid; grid-template-columns: max-content 1fr; gap: var(--u) calc(3 * var(--u)); }
 .facts dt { font-family: var(--font-ui); font-size: var(--step--1); color: var(--ink-2); }
 .skills { display: grid; gap: calc(3 * var(--u)); }
-.skills dt { font-weight: 700; }
+.skills dt { font-weight: 600; }
 .skills dd, .facts dd { margin: 0; }
 .tags { display: block; margin-top: var(--u); font-family: var(--font-ui); font-size: var(--step--1); color: var(--ink-2); }
 

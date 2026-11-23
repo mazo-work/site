@@ -1,4 +1,10 @@
-Copyright 2017 The Literata Project Authors (https://github.com/googlefonts/literata) Literata-Italic[opsz,wght].ttf: Copyright 2017 The Literata Project Authors (https://github.com/googlefonts/literata)
+IM FELL English, by Igino Marini. The font's own copyright notices:
+  © 2007 Igino Marini (www.iginomarini.com) With Reserved Font Name IM FELL English Roman
+  © 2007 Igino Marini (www.iginomarini.com) With Reserved Font Name IM FELL English Italic
+
+This site serves a Modified Version: the Latin subset published by Fontsource (@fontsource/im-fell-english 5.3.0), renamed "Mazo Paper" because the licence below reserves the original name (condition 3). Glyphs unchanged.
+
+Google Inc.
 
 This Font Software is licensed under the SIL Open Font License, Version 1.1.
 This license is copied below, and is also available with a FAQ at:

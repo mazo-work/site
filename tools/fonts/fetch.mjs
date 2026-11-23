@@ -2,6 +2,9 @@
 // Copies the fonts named in tools/fonts/fonts.json from their pinned Fontsource npm packages into public/fonts/<id>/
 // (Latin-subset WOFF2 plus the family's licence as OFL.txt), and regenerates the @font-face block between the
 // markers in src/styles/fonts.css. Needs the npm registry. Prints the size of each theme's fonts.
+// v4: a family with `served` is renamed by tools/fonts/rename.py (its licence reserves its name; needs Python 3 with
+// fontTools 4.60.1 and brotli 1.1.0), and its @font-face uses the served name. A `parked` family keeps its files and
+// licence in public/fonts/ but gets no @font-face, so no page can load it.
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -22,15 +25,22 @@ for (const f of manifest.families) {
   const license = fs.readFileSync(path.join(pkg, 'LICENSE'), 'utf8');
   if (!/SIL Open Font License/.test(license)) throw new Error(`${f.family}: not OFL`);
   fs.mkdirSync(path.join(out, f.id), { recursive: true });
-  fs.writeFileSync(path.join(out, f.id, 'OFL.txt'), license);
+  // a renamed family's licence file starts with the font's own notice (the package's header is generic) and says what
+  // was modified, as the OFL asks of a Modified Version
+  const head = f.served ? `${f.family}, by Igino Marini. The font's own copyright notice${f.notice.length > 1 ? 's' : ''}:\n` +
+    f.notice.map((n) => `  ${n}\n`).join('') + `\nThis site serves a Modified Version: the Latin subset published by Fontsource (${f.package} ${f.version}), ` +
+    `renamed "${f.served}" because the licence below reserves the original name (condition 3). Glyphs unchanged.\n\n` : '';
+  fs.writeFileSync(path.join(out, f.id, 'OFL.txt'), head + license);
   for (const [weight, style] of f.faces) {
     const name = `${f.id}-latin-${weight}-${style}.woff2`;
     const dest = `${f.id}-${weight}-${style}.woff2`;
-    fs.copyFileSync(path.join(pkg, 'files', name), path.join(out, f.id, dest));
+    if (f.served) execFileSync('python3', ['-I', path.join(ROOT, 'tools/fonts/rename.py'), path.join(pkg, 'files', name), path.join(out, f.id, dest), f.served, f.rfn[f.faces.findIndex((x) => x[0] === weight && x[1] === style)] || f.family], { stdio: 'inherit' });
+    else fs.copyFileSync(path.join(pkg, 'files', name), path.join(out, f.id, dest));
     const range = JSON.parse(fs.readFileSync(path.join(pkg, 'unicode.json'), 'utf8')).latin.replace(/,/g, ', ');
     const bytes = fs.statSync(path.join(out, f.id, dest)).size;
     for (const t of f.themes) perTheme[t] = (perTheme[t] || 0) + bytes;
-    faces.push(`@font-face {\n  font-family: "${f.family}";\n  font-style: ${style};\n  font-weight: ${weight};\n  font-display: swap;\n  src: url("/fonts/${f.id}/${dest}") format("woff2");\n  unicode-range: ${range};\n}`);
+    if (f.parked) continue;
+    faces.push(`@font-face {\n  font-family: "${f.served || f.family}";\n  font-style: ${style};\n  font-weight: ${weight};\n  font-display: swap;\n  src: url("/fonts/${f.id}/${dest}") format("woff2");\n  unicode-range: ${range};\n}`);
   }
 }
 const cssFile = path.join(ROOT, 'src', 'styles', 'fonts.css');

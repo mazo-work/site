@@ -7,7 +7,7 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 | U0 baseline | [x] | a15ed3d | 17 | 1 | `npm run check` as inherited: 55 checks, 55 passed, 0 pending, 0 failed (73 s). 15 of the 17 turns were the one-time read of §0's inputs and the install. |
 | U1 skeleton | [x] | 9d92285 | 46 | 29 | One header on every page (utility row: Replay, Pause motion, mask toggle Paper · Night; masthead: the mark, large on Home, small elsewhere, and the name; menu band: five rooms), footer (name · [JON: region], Colophon), Ask. Masks are `paper` and `night`; Profile parked. New check `skeleton.*` (4); `switcher.*` rewritten. 59 pass. 7 of the 46 turns were the one-time read of the mocks. |
 | U2 rooms | [x] | dc6c73c | 7 | 10 | Uses is a section of Now (`/now/#uses`); `public/_redirects` 301s `/uses`, `/uses/` and `/uses.md`; the local test server applies `_redirects`; the Colophon is linked from the footer only; llms.txt lists Uses as a section of Now, the sitemap drops /uses/. New check `rooms.*` (2). 61 pass. |
-| U3 type | [ ] | | | | |
+| U3 type | [ ] | | 18 | 33 | Atkinson Hyperlegible Next for body text in both masks; Paper: IM FELL English and SC, served renamed "Mazo Paper" and "Mazo Paper SC" (their licence reserves the name; `tools/fonts/rename.py`); Night: Doto and Martian Mono. Profile's faces parked (files kept, declared nowhere). Paper 208.7 KB, Night 52.0 KB, reported. `fonts.*` rewritten (6). 63 pass. |
 | U4 Paper | [ ] | | | | |
 | U5 Night | [ ] | | | | |
 | U5b the puzzle in both masks | [ ] | | | | |
@@ -23,7 +23,7 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 
 - Units done: 3 of 14 · turns so far: 70 · average turns per unit: 23.3 (U0 and U1 carried the one-time reading; U2 took 7) · estimated turns left: 11 units × about 18 = 200
 - Wall clock: session started 2026-11-23 08:05 UTC; U0 done 08:11; U1 08:24; U2 08:27.
-- Last updated: 2026-11-23 08:27 UTC, after U2.
+- Last updated: 2026-11-23 08:34 UTC, during U3.
 
 ## Checks not yet expected to pass
 
@@ -79,3 +79,24 @@ where the brief is silent)
   header (the local server does); the handoff's runbook step checks it with `curl -sI`.
 - U2 · decision: llms.txt lists "Uses" as its own line pointing at `/now.md#uses`, under Now, so agents that look for
   Uses by name find it. JSON-LD needed no change (no page carried /uses/).
+- U3 · found: IM FELL's reserved names are in each font's own copyright notice (name ID 0: "With Reserved Font Name IM
+  FELL English Roman", "… Italic", "… SC"); Fontsource's licence file only says "Google Inc.". Doto, Atkinson
+  Hyperlegible Next and Martian Mono declare no reserved name, so they keep their names, as in v3.
+- U3 · decision: IM FELL is served as Fontsource's Latin subset (a Modified Version), renamed "Mazo Paper" and "Mazo
+  Paper SC" (no part of the reserved names) by `tools/fonts/rename.py` (fontTools 4.60.1, brotli 1.1.0, called by
+  `tools/fonts/fetch.mjs`): only the shown names change (IDs 1, 3, 4, 6, 16, 17, 21, 22); the copyright notice, the
+  licence and the glyphs are the originals; ID 10 says what was done. Each renamed family's `OFL.txt` starts with the
+  font's own notices; the colophon names both names. The check `fonts.rfn` reads the served files' name tables (a
+  small WOFF2 reader, Node's brotli) and fails on a reserved name; tested against the unrenamed file.
+- U3 · decision: faces: Atkinson 400, 400 italic, 600 (the mocks' bold is 600; v3's 700 dropped); IM FELL English 400
+  and 400 italic; IM FELL English SC 400; Doto 800 (the mocks' weight); Martian Mono 400 (v3's 700 dropped).
+  `font-synthesis: none`, so no face is faked bold or italic.
+- U3 · decision: three families per mask is the brief's own choice, so v3's "at most two families, about 60-80 KB"
+  check becomes "exactly the brief's families"; sizes are reported (v4: no size budget). Paper's IM FELL faces weigh
+  about 58 KB each (detailed outlines), so Paper's fonts are 208.7 KB against Night's 52.0 KB: for U11's report and
+  the performance session.
+- U3 · decision: Literata and Libre Franklin (v3's Editorial) are retired. Profile's Bungee Shade and Nunito are
+  `parked` in fonts.json: their files and licences stay in public/fonts/, no @font-face declares them (checked), and
+  the colophon lists only the active families.
+- U3 · decision: Night sets h1 and h2 in Doto 800 (the brief: Doto for headings) and h3 in Atkinson 600, so small
+  titles stay legible; Paper's labels are its small capitals as drawn, with no forced uppercase.

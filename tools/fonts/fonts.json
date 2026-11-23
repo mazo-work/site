@@ -1,10 +1,39 @@
 {
-  "about": "The site's fonts: OFL placeholders (BRIEF.md \u00a73, Type), at most two families per theme, about 60-80 KB per theme. Each comes from its Fontsource npm package at the pinned version, Latin subset (Basic Latin, Latin-1, general punctuation), as WOFF2. Run `node tools/fonts/fetch.mjs` after editing; it rewrites public/fonts/ and the @font-face block in src/styles/fonts.css. Jon swaps a font here and in that file's tokens.",
+  "about": "The site's fonts (v4 BRIEF.md §3, Type): Atkinson Hyperlegible Next sets body text in both masks; Paper's display faces are IM FELL English and IM FELL English SC, Night's are Doto (headings, the name) and Martian Mono (labels, the menu). Each comes from its Fontsource npm package at the pinned version, Latin subset (Basic Latin, Latin-1, general punctuation), as WOFF2. A family with `served` is a Modified Version renamed as its licence's Reserved Font Name requires (tools/fonts/rename.py, fontTools). A `parked` family keeps its files for a parked mask (Profile) and is not declared in the CSS, so it is never loaded. Run `node tools/fonts/fetch.mjs` after editing; it rewrites public/fonts/ and the @font-face block in src/styles/fonts.css. Jon swaps a font here and in that file's tokens.",
   "families": [
     {
-      "family": "Literata",
-      "id": "literata",
-      "package": "@fontsource/literata",
+      "family": "Atkinson Hyperlegible Next",
+      "id": "atkinson-hyperlegible-next",
+      "package": "@fontsource/atkinson-hyperlegible-next",
+      "version": "5.3.0",
+      "themes": [
+        "paper",
+        "night"
+      ],
+      "faces": [
+        [
+          "400",
+          "normal"
+        ],
+        [
+          "400",
+          "italic"
+        ],
+        [
+          "600",
+          "normal"
+        ]
+      ]
+    },
+    {
+      "family": "IM FELL English",
+      "served": "Mazo Paper",
+      "rfn": [
+        "IM FELL English Roman",
+        "IM FELL English Italic"
+      ],
+      "id": "im-fell-english",
+      "package": "@fontsource/im-fell-english",
       "version": "5.3.0",
       "themes": [
         "paper"
@@ -17,24 +46,46 @@
         [
           "400",
           "italic"
-        ],
-        [
-          "700",
-          "normal"
         ]
+      ],
+      "notice": [
+        "© 2007 Igino Marini (www.iginomarini.com) With Reserved Font Name IM FELL English Roman",
+        "© 2007 Igino Marini (www.iginomarini.com) With Reserved Font Name IM FELL English Italic"
       ]
     },
     {
-      "family": "Libre Franklin",
-      "id": "libre-franklin",
-      "package": "@fontsource/libre-franklin",
+      "family": "IM FELL English SC",
+      "served": "Mazo Paper SC",
+      "rfn": [
+        "IM FELL English SC"
+      ],
+      "id": "im-fell-english-sc",
+      "package": "@fontsource/im-fell-english-sc",
       "version": "5.3.0",
       "themes": [
         "paper"
       ],
       "faces": [
         [
-          "500",
+          "400",
+          "normal"
+        ]
+      ],
+      "notice": [
+        "© 2007 Igino Marini (www.iginomarini.com) With Reserved Font Name IM FELL English SC"
+      ]
+    },
+    {
+      "family": "Doto",
+      "id": "doto",
+      "package": "@fontsource/doto",
+      "version": "5.3.0",
+      "themes": [
+        "night"
+      ],
+      "faces": [
+        [
+          "800",
           "normal"
         ]
       ]
@@ -51,33 +102,6 @@
         [
           "400",
           "normal"
-        ],
-        [
-          "700",
-          "normal"
-        ]
-      ]
-    },
-    {
-      "family": "Atkinson Hyperlegible Next",
-      "id": "atkinson-hyperlegible-next",
-      "package": "@fontsource/atkinson-hyperlegible-next",
-      "version": "5.3.0",
-      "themes": [
-        "night"
-      ],
-      "faces": [
-        [
-          "400",
-          "normal"
-        ],
-        [
-          "400",
-          "italic"
-        ],
-        [
-          "700",
-          "normal"
         ]
       ]
     },
@@ -89,6 +113,7 @@
       "themes": [
         "profile"
       ],
+      "parked": true,
       "faces": [
         [
           "400",
@@ -104,6 +129,7 @@
       "themes": [
         "profile"
       ],
+      "parked": true,
       "faces": [
         [
           "400",

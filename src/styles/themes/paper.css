@@ -15,9 +15,9 @@
   --accent-ink: #b0301b;                         /* small accent text (5.2:1 on the paper) */
   --focus: var(--accent-ink);
   --mark-light: var(--accent);
+  --label: 400 1rem / calc(4 * var(--u)) var(--font-label);   /* small capitals, as drawn (no forced uppercase) */
   /* newsprint grain: SVG noise as a tile (img-src allows data:), multiplied onto the paper */
   --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .11 0 0 0 0 .1 0 0 0 0 .08 0 0 0 .1 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
-  --label: 500 0.75rem / calc(3 * var(--u)) var(--font-ui);
 
   & body { background-color: var(--paper); background-image: var(--grain); }
   & ::selection { background: #f6c1b3; color: var(--ink); }
@@ -27,7 +27,7 @@
 
   /* labels: the grotesque, small, spaced, in capitals */
   & .meta, & .facts dt, & .tags, & .prose thead th, & .index time {
-    font: var(--label); letter-spacing: 0.1em; text-transform: uppercase;
+    font: var(--label); letter-spacing: 0.06em;
   }
 
   /* the skeleton: small capitals for the rows, the italic for the name, the red underline for here and hover */
@@ -71,7 +71,7 @@
   & :is(ul, ol:not([reversed])).index > li { counter-increment: item; }
   & :is(ul, ol:not([reversed])).index > li::before {
     content: counter(item, decimal-leading-zero) / ""; grid-column: 1; grid-row: 1 / span 3;
-    font: var(--label); letter-spacing: 0.08em; color: var(--accent-ink); padding-top: calc(1.5 * var(--u));
+    font: var(--label); letter-spacing: 0.06em; color: var(--accent-ink); padding-top: calc(1.5 * var(--u));
   }
   & .index a { font-size: var(--step-1); line-height: calc(6 * var(--u)); text-decoration: none; }
   & .index a:hover { text-decoration: underline; }
@@ -92,7 +92,7 @@
   & .beat { counter-increment: beat; }
   & .beat > h2::before {
     content: counter(beat, upper-roman) / ""; width: auto; height: auto; background: none;
-    font: var(--label); letter-spacing: 0.1em; color: var(--accent-ink); margin-bottom: var(--u);
+    font: var(--label); letter-spacing: 0.06em; color: var(--accent-ink); margin-bottom: var(--u);
   }
   & .prose { counter-reset: beat; }
 
@@ -116,14 +116,14 @@
 
   /* For recruiters: one door to the facts */
   & .cta {
-    display: inline-block; font: var(--label); letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none;
+    display: inline-block; font: var(--label); letter-spacing: 0.06em; text-decoration: none;
     border: 1px solid var(--ink); padding: calc(1.5 * var(--u)) calc(3 * var(--u));
   }
   & .cta:hover { background: var(--ink); color: var(--paper); }
   & .facts { margin-top: calc(3 * var(--u)); border-top: 1px solid var(--rule); padding-top: calc(2 * var(--u)); }
   & .facts dt { padding-top: 2px; }
   & .skills > div { padding-top: calc(2 * var(--u)); border-top: 1px solid var(--rule); }
-  & .skills dt { font-weight: 700; }
+  & .skills dt { font-weight: 600; }
   & .tags { color: var(--ink-2); }
 
 }

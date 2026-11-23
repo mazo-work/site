@@ -20,7 +20,7 @@ const cspHeader = headers.find((h) => h.name.toLowerCase() === 'content-security
 const csp = parseCsp(cspHeader?.value ?? '');
 const other = headers.filter((h) => h !== cspHeader);
 const beacon = (csp.get('script-src') || []).includes('https://static.cloudflareinsights.com');
-const fonts = JSON.parse(fs.readFileSync(path.join(root, 'tools', 'fonts', 'fonts.json'), 'utf8')).families.map((f: any) => ({
+const fonts = JSON.parse(fs.readFileSync(path.join(root, 'tools', 'fonts', 'fonts.json'), 'utf8')).families.filter((f: any) => !f.parked).map((f: any) => ({
   ...f, kb: f.faces.reduce((a: number, [w, s]: string[]) => a + fs.statSync(path.join(root, 'public', 'fonts', f.id, `${f.id}-${w}-${s}.woff2`)).size, 0) / 1024,
 }));
 const deps = [
@@ -78,13 +78,14 @@ const kinds = { search: 'search and answers', user: 'a person asked', training: 
 
     <section aria-labelledby="fonts">
       <h2 id="fonts">Fonts</h2>
-      <p>Self-hosted, Latin subset, WOFF2, from the Fontsource packages; each theme loads only its own. All are under the SIL Open Font License 1.1; each licence sits beside its files.</p>
+      <p>Self-hosted, Latin subset, WOFF2, from the Fontsource packages; each mask loads only its own. Atkinson Hyperlegible Next sets the body text in both masks. All are under the SIL Open Font License 1.1; each licence sits beside its files.</p>
+      <p>IM FELL English and IM FELL English SC, by Igino Marini, reserve their names (the licence's Reserved Font Name). A subset is a modified version, and a modified version may not use a reserved name, so this site serves them renamed: {fonts.filter((f: any) => f.served).map((f: any, i: number, all: any[]) => <Fragment>{i ? (i === all.length - 1 ? ' and ' : ', ') : ''}<em>{f.family}</em> as <em>{f.served}</em></Fragment>)}. Only their names changed: the glyphs, the copyright notice and the licence are the originals, and each font's own notice heads its licence file.</p>
       <div class="table-scroll">
         <table>
-          <thead><tr><th scope="col">Family</th><th scope="col">Theme</th><th scope="col">Faces</th><th scope="col">KB</th><th scope="col">Licence</th></tr></thead>
+          <thead><tr><th scope="col">Family</th><th scope="col">Mask</th><th scope="col">Faces</th><th scope="col">KB</th><th scope="col">Licence</th></tr></thead>
           <tbody>
             {fonts.map((f: any) => (
-              <tr><th scope="row">{f.family}</th><td>{f.themes.join(', ')}</td><td>{f.faces.map(([w, s]: string[]) => `${w}${s === 'italic' ? ' italic' : ''}`).join(', ')}</td><td>{f.kb.toFixed(1)}</td><td><a href={`/fonts/${f.id}/OFL.txt`}>OFL 1.1</a></td></tr>
+              <tr><th scope="row">{f.family}{f.served && <Fragment> (served as {f.served})</Fragment>}</th><td>{f.themes.map((t: string) => t[0].toUpperCase() + t.slice(1)).join(', ')}</td><td>{f.faces.map(([w, s]: string[]) => `${w}${s === 'italic' ? ' italic' : ''}`).join(', ')}</td><td>{f.kb.toFixed(1)}</td><td><a href={`/fonts/${f.id}/OFL.txt`}>OFL 1.1</a></td></tr>
             ))}
           </tbody>
         </table>
