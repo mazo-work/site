@@ -9,7 +9,7 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 | U2 headers | [x] | 1ddc1d3 | 6 | 3 | `public/_headers` (§3 CSP + `trusted-types 'none'`, HSTS no preload, COOP/CORP, XFO, Permissions-Policy denying 55 unused features), `security.txt`; check `headers.*` (4) passes. |
 | U3 spine | [x] | 03d2128 | 11 | 27 | 13 pages; every page reads without JS and is ≤ 2 clicks from every other; 30 checks pass, 6 pending (U9). `tools/screens.mjs` added. |
 | U4 Editorial | [x] | 98557fb | 29 | 26 | Literata + Libre Franklin (77.6 KB); grain, hairlines, vermilion, hanging heads, page turn, halftone portrait, glyph diagram. Design log entry. New check `fonts.*` (4). 34 pass, 6 pending. |
-| U5 entrance | [ ] | | | | |
+| U5 entrance | [x] | 9b2a62d | 9 | 9 | P0 ported (76 diff lines, all integration); curtain = cross-document view transition into Home; word → mark morph; 3D code only on /, after first paint (130 KB gzip). New check `entrance.*` (3) incl. a headless play-through. 37 pass, 6 pending. |
 | U6 Terminal | [ ] | | | | |
 | U7 Profile | [ ] | | | | |
 | U8 theme switcher | [ ] | | | | |
@@ -25,9 +25,9 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 
 ## Budget
 
-- Units done: 5 of 18 · turns so far: 85 · average turns per unit: 17 (14.5 without U0's one-time read) · estimated turns left: 13 × 17 ≈ 221 (design units ~28, others ~10: 2 × 28 + 11 × 10 ≈ 166)
-- Wall clock: session started 2026-11-23 02:37 UTC; U0 done 02:47; U1 02:54; U2 02:58; U3 03:06; U4 03:19.
-- Last updated: 2026-11-23 03:19 UTC, after U4.
+- Units done: 6 of 18 · turns so far: 94 · average turns per unit: 15.7 · estimated turns left: 2 design units × 28 + 10 others × 10 ≈ 156
+- Wall clock: session started 2026-11-23 02:37 UTC; U0 done 02:47; U1 02:54; U2 02:58; U3 03:06; U4 03:19; U5 03:28.
+- Last updated: 2026-11-23 03:28 UTC, after U5.
 
 ## Checks not yet expected to pass
 
@@ -96,3 +96,17 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
   the @font-face block into `src/styles/fonts.css` (the one type file). `font-display: swap`; CLS is measured in U15.
 - U4 · decision: Terminal and Profile use system fonts until U6 and U7, so neither downloads Editorial's (the new
   `fonts.loads` check enforces it).
+- U5 · decision: the curtain is a cross-document view transition, not P0's iframe: the CSP (`default-src 'none'`,
+  `frame-ancestors 'none'`) allows no frames, and Home is a page of its own. The entrance sets a one-time
+  sessionStorage flag; the boot script (new hash in `_headers`) turns it into `data-curtain` on Home; Home's CSS raises
+  the old page's still picture over 1.4 s on P0's curve with Home underneath. Browsers without cross-document view
+  transitions get P0's stage lift on the entrance, then Home opens (a cut).
+- U5 · decision: MAZO into the mark: at the curtain the 3D word is swapped for an image of its own texture
+  (`toDataURL`, allowed by `img-src data:`) at the same screen rectangle, named `mark` like Home's header mark, so the
+  page change morphs one into the other. The view-transition group animates size as well as position: the one place a
+  property other than transform or opacity animates, and it is the platform's own; noted for the handoff.
+- U5 · decision: P0's preview-only controls (Shape, Letter colors, Debug) show only with `#debug`; P0's done card
+  and Replay stay in the markup, hidden and unreachable, so its logic runs unchanged; "Replay the intro" is the site's
+  footer link. Back from Home (bfcache) reloads the entrance for a fresh puzzle. P0's `window.__mazo` test hook is kept.
+- U5 · decision: the word's stand-in font drops P0's named families (one was on the banned list); the look is P0's
+  dark stage on every theme until the puzzle's own looks are chosen (spec, P2).
