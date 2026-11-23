@@ -21,13 +21,13 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 | U14 resume PDF | [x] | 88560cc | 5 | 4 | Metadata stripped (info, XMP with IDs, file ID); text and pixels identical. Report `handoff/resume-pdf.md`: the page shows an email address (Jon's to remove). 55 pass. |
 | U15 measure | [x] | 9283d5a | 10 | 9 | Lighthouse 13.6.0 × 13 pages × 2; sizes; 78 WebP screenshots (13.8 MB); `handoff/measure.md`, `handoff/budget.md`. About's mobile LCP 1.96 s open. 55 pass. |
 | U16 deploy runbook | [x] | ee3082d | 4 | 3 | `handoff/deploy-runbook.md`; `tools/verify-live.mjs` (tested locally: every header matches). 55 pass. |
-| U17 HANDOFF.md | [ ] | | | | |
+| U17 HANDOFF.md | [x] | 3e89c00 | 6 | 3 | §8's seven sections; claims checked against code and checks; CI verified green on GitHub (30/30 completed runs); `MANIFEST.sha256` in the next commit (the tip). |
 
 ## Budget
 
-- Units done: 17 of 18 · turns so far: 166 · average turns per unit: 9.8 · estimated turns left: 1 unit × 6 ≈ 6
-- Wall clock: session started 2026-11-23 02:37 UTC; U0 done 02:47; U1 02:54; U2 02:58; U3 03:06; U4 03:19; U5 03:28; U6 03:32; U7 03:38; U8 03:41; U9 03:47; U10 03:52; U11 03:55; U12 04:00; U13 04:08; U14 04:14; U15 04:36; U16 04:42.
-- Last updated: 2026-11-23 04:42 UTC, after U16.
+- Units done: 18 of 18 · turns so far: 172 · average turns per unit: 9.6 · estimated turns left: 0
+- Wall clock: session started 2026-11-23 02:37 UTC; U0 done 02:47; U1 02:54; U2 02:58; U3 03:06; U4 03:19; U5 03:28; U6 03:32; U7 03:38; U8 03:41; U9 03:47; U10 03:52; U11 03:55; U12 04:00; U13 04:08; U14 04:14; U15 04:36; U16 04:42; U17 04:50.
+- Last updated: 2026-11-23 04:50 UTC, after U17. Every unit is done; nothing is pending.
 
 ## Checks not yet expected to pass
 
@@ -174,3 +174,6 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
   dashboard"): no Cloudflare docs or dashboard were reachable from here. The test host's noindex is proposed as a host
   rule appended to `_headers` (reviewable in git; the checks ignore absolute-URL rules). `tools/verify-live.mjs`
   accepts https origins, and http only for localhost (for testing).
+- U17 · verified: GitHub Actions ran `check.yml` after every push to `v3`; all 30 completed runs (#1 to #30) succeeded.
+  `MANIFEST.sha256` is generated after this tick, over every tracked file at the tip (itself excluded).
+- 2026-11-23 04:50 UTC · session end: all 18 units done, `npm run check` 55/55, nothing pending.
