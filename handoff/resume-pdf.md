@@ -44,3 +44,8 @@ poppler. The original is in git history (and was already public on `v2`).
    ```
 
    It prints what it finds (values redacted; add `--show` to see them) and writes the stripped copy.
+
+## After review (2026-11-23)
+
+Jon took the PDF off the site: `public/Profile.pdf` is deleted and nothing links to it. The recruiter page asks for his
+LinkedIn link instead. The file stays in git history (it was already public on `v2`).

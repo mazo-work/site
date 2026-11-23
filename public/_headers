@@ -13,6 +13,9 @@
   Cross-Origin-Resource-Policy: same-origin
   Permissions-Policy: accelerometer=(), aria-notify=(), bluetooth=(), browsing-topics=(), camera=(), captured-surface-control=(), clipboard-read=(), clipboard-write=(), compute-pressure=(), cross-origin-isolated=(), deferred-fetch=(), deferred-fetch-minimal=(), digital-credentials-create=(), digital-credentials-get=(), display-capture=(), encrypted-media=(), fullscreen=(), gamepad=(), geolocation=(), gyroscope=(), hid=(), identity-credentials-get=(), idle-detection=(), interest-cohort=(), keyboard-map=(), language-detector=(), language-model=(), local-fonts=(), local-network=(), local-network-access=(), loopback-network=(), magnetometer=(), media-playback-while-not-visible=(), microphone=(), midi=(), on-device-speech-recognition=(), otp-credentials=(), payment=(), picture-in-picture=(), private-state-token-issuance=(), private-state-token-redemption=(), publickey-credentials-create=(), publickey-credentials-get=(), screen-wake-lock=(), serial=(), speaker-selection=(), storage-access=(), summarizer=(), sync-xhr=(), translator=(), unload=(), usb=(), web-share=(), window-management=(), xr-spatial-tracking=()
   X-Frame-Options: DENY
+  # Until launch (Jon's review, 2026-11-23): every host this builds to (the pages.dev preview, a test subdomain) asks
+  # search engines not to index it. Remove this line at launch (handoff/deploy-runbook.md, step 6).
+  X-Robots-Tag: noindex
 
 # Astro's built assets carry a content hash in their names, so they never change under the same URL.
 /_astro/*

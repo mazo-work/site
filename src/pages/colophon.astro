@@ -93,7 +93,7 @@ const kinds = { search: 'search and answers', user: 'a person asked', training: 
 
     <section aria-labelledby="crawlers">
       <h2 id="crawlers">Crawlers</h2>
-      <p>Search and answer engines, and fetches a person asks for, are welcome; crawlers that only gather AI training data are refused in <a href="/robots.txt">robots.txt</a>. Crawlers that do both are allowed for now. Every page also has a Markdown twin, listed in <a href="/llms.txt">llms.txt</a>. Names and purposes from each vendor's documentation, checked {CHECKED}:</p>
+      <p>Search and answer engines, and fetches a person asks for, are welcome; crawlers that gather AI training data are refused in <a href="/robots.txt">robots.txt</a>, including those that also feed search or answers. robots.txt is a request, not a lock: a crawler can ignore it. Every page also has a Markdown twin, listed in <a href="/llms.txt">llms.txt</a>. Names and purposes from each vendor's documentation, checked {CHECKED}:</p>
       <div class="table-scroll">
         <table>
           <thead><tr><th scope="col">Crawler</th><th scope="col">Vendor</th><th scope="col">What it is for</th><th scope="col">Here</th></tr></thead>

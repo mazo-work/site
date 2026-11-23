@@ -4,7 +4,6 @@
 import { name, resume } from './v2-words';
 
 export const SITE_NAME = name;
-export const RESUME_PDF = `/${resume.file}`;
 
 export interface NavItem { href: string; label: string; }
 

@@ -177,3 +177,9 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 - U17 · verified: GitHub Actions ran `check.yml` after every push to `v3`; all 30 completed runs (#1 to #30) succeeded.
   `MANIFEST.sha256` is generated after this tick, over every tracked file at the tip (itself excluded).
 - 2026-11-23 04:50 UTC · session end: all 18 units done, `npm run check` 55/55, nothing pending.
+- Post-handoff, main-seat review (2026-11-23), Jon's rulings applied by the reviewing session: (1) crawlers: every
+  crawler whose purpose includes AI training is disallowed, mixed ones included (Jon: "Block all"); Meta-WebIndexer
+  added (search, allowed), Bytespider added (mixed, disallowed); robots.txt and the colophon say so. (2) The resume PDF
+  is off the site (it carried his email); the recruiter page's contact slot asks for his LinkedIn link instead.
+  (3) The portrait's alt text is honest: "A parrot, standing in for Jon". (4) `X-Robots-Tag: noindex` on every
+  response until launch, for the Cloudflare Pages preview (runbook step 6 removes it).

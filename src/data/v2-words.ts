@@ -85,7 +85,7 @@ export const resume = {
 
 /** Sidebar.jsx */
 export const sidebar = {
-  headshotAlt: 'Jonathan Mazo',
+  headshotAlt: 'A parrot, standing in for Jon', // Jon's review, 2026-11-23: v2's alt text named him, under a parrot
   strengths: {
     heading: 'Key Strengths',
     items: [

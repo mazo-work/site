@@ -6,14 +6,14 @@ const GROUPS: [Kind, string, 'Allow' | 'Disallow'][] = [
   ['search', 'Search and answer engines', 'Allow'],
   ['user', 'A person asked for the page', 'Allow'],
   ['training', 'Training only', 'Disallow'],
-  ['mixed', 'Training as well as search or answers (allowed: the policy disallows training-only crawlers)', 'Allow'],
+  ['mixed', 'Training as well as search or answers (disallowed: no crawler that trains, whatever else it does)', 'Disallow'],
 ];
 
 export const GET: APIRoute = ({ site }) => {
   const base = site!.href.replace(/\/$/, '');
   const lines = [
-    '# The policy: search and answer engines, and fetches a person asks for, are allowed; crawlers that only gather',
-    `# AI training data are not. Names and purposes from each vendor's documentation, checked ${CHECKED}; sources in`,
+    '# The policy: search and answer engines, and fetches a person asks for, are allowed; crawlers that gather AI',
+    `# training data, alone or alongside search, are not. Names and purposes from each vendor's documentation, checked ${CHECKED}; sources in`,
     `# the colophon: ${base}/colophon/`,
     '',
   ];

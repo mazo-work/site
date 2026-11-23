@@ -1,5 +1,6 @@
-// The crawler policy (BRIEF.md §3): search and answer-engine crawlers, and fetches a person asks for, are allowed;
-// crawlers that only gather AI training data are disallowed, per crawler. Names and purposes come from each vendor's
+// The crawler policy (BRIEF.md §3, tightened by Jon at review, 2026-11-23: "Block all"): search and answer-engine
+// crawlers, and fetches a person asks for, are allowed; any crawler whose purpose includes AI training is disallowed,
+// whether it only trains or also feeds search or answers, per crawler. Names and purposes come from each vendor's
 // own documentation, checked 2026-11-23 (U9): Anthropic's page read directly; the others through search results that
 // quote the official pages (this environment could not reach those hosts). robots.txt and the colophon both read this.
 
@@ -19,6 +20,7 @@ export const SOURCES = {
   bing: { vendor: 'Microsoft', url: 'https://www.bing.com/webmasters/help/which-crawlers-does-bing-use-8c184ec0', read: 'search' },
   duckduckgo: { vendor: 'DuckDuckGo', url: 'https://duckduckgo.com/duckduckgo-help-pages/results/duckassistbot', read: 'search' },
   mistral: { vendor: 'Mistral', url: 'https://docs.mistral.ai/robots', read: 'search' },
+  bytedance: { vendor: 'ByteDance', url: 'https://zhanzhang.toutiao.com/', read: 'search' },
   cohere: { vendor: 'Cohere', url: 'https://docs.cohere.com/docs/cohere-web-crawlers', read: 'search' },
 } satisfies Record<string, Source>;
 
@@ -32,6 +34,7 @@ export const CRAWLERS: Crawler[] = [
   { token: 'Claude-SearchBot', source: 'anthropic', kind: 'search', purpose: 'search result quality for Claude users' },
   { token: 'PerplexityBot', source: 'perplexity', kind: 'search', purpose: 'Perplexity search results; not used for model training' },
   { token: 'Amzn-SearchBot', source: 'amazon', kind: 'search', purpose: 'search features such as Alexa' },
+  { token: 'Meta-WebIndexer', source: 'meta', kind: 'search', purpose: 'Meta AI search results, and citing and linking to pages in its answers' },
   // a person asked for the page
   { token: 'ChatGPT-User', source: 'openai', kind: 'user', purpose: 'a visit a ChatGPT user asks for; not automatic crawling' },
   { token: 'Claude-User', source: 'anthropic', kind: 'user', purpose: 'a visit a Claude user asks for' },
@@ -44,12 +47,14 @@ export const CRAWLERS: Crawler[] = [
   { token: 'ClaudeBot', source: 'anthropic', kind: 'training', purpose: 'content that may contribute to model training' },
   { token: 'Applebot-Extended', source: 'apple', kind: 'training', purpose: "a control: training Apple's generative models (search is unaffected)" },
   { token: 'MistralAI-Training', source: 'mistral', kind: 'training', purpose: 'training' },
-  // mixed: training as well as search or answers; allowed, because the brief disallows training-only crawlers
+  // mixed: training as well as search or answers; disallowed since Jon's review (2026-11-23). Each vendor below except
+  // Google and ByteDance runs a separate search or answer crawler that stays allowed.
   { token: 'Google-Extended', source: 'google', kind: 'mixed', purpose: 'a control: Gemini training, and grounding in Gemini Apps and Vertex AI (not Search)' },
   { token: 'CCBot', source: 'commoncrawl', kind: 'mixed', purpose: 'the Common Crawl archive, used for training and for search indexes' },
   { token: 'Meta-ExternalAgent', source: 'meta', kind: 'mixed', purpose: 'training foundation models or improving products by indexing content' },
   { token: 'Amazonbot', source: 'amazon', kind: 'mixed', purpose: "improving Amazon's products and services; may train Amazon AI models" },
+  { token: 'Bytespider', source: 'bytedance', kind: 'mixed', purpose: 'Toutiao search, and reported to gather AI training data; its robots.txt compliance is reported as inconsistent' },
 ];
 
 export const CHECKED = '2026-11-23';
-export const allowed = (c: Crawler) => c.kind !== 'training';
+export const allowed = (c: Crawler) => c.kind === 'search' || c.kind === 'user';

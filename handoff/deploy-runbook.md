@@ -33,7 +33,9 @@ Throughout, `example.com` stands for Jon's domain and `test.example.com` for the
 
 1. Pages project → **Custom domains → Set up a domain** → `test.example.com` (Cloudflare adds the CNAME to
    `<project>.pages.dev` if the zone is on Cloudflare).
-2. Tell crawlers not to index it. Add this block to the **end** of `public/_headers` (a rule for one host; the
+2. *(After review, 2026-11-23: `public/_headers` now sends `X-Robots-Tag: noindex` on every response until launch, so
+   this step is already done for every host, the `pages.dev` preview included; step 6 removes it.)* Tell crawlers not
+   to index it. Add this block to the **end** of `public/_headers` (a rule for one host; the
    rest of the file stays as it is), commit, push:
 
    ```text

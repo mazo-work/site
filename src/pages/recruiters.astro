@@ -1,23 +1,23 @@
 ---
-// For recruiters: v2's Skills and Resume folded into one fast page, the resume PDF linked (BRIEF.md §3).
+// For recruiters: v2's Skills and Resume folded into one fast page (BRIEF.md §3). The resume PDF came off the site at
+// Jon's review (2026-11-23): it carried his email; LinkedIn is the contact instead.
 import Base from '../layouts/Base.astro';
 import Portrait from '../components/Portrait.astro';
 import { name, about, skills, resume, sidebar } from '../data/v2-words';
-import { RESUME_PDF, DESCRIPTIONS } from '../data/site';
+import { DESCRIPTIONS } from '../data/site';
 ---
 <Base title="For recruiters" description={DESCRIPTIONS.recruiters}>
   <div class="page grid">
     <header class="page-head span-8">
       <h1>For recruiters</h1>
       <p class="lede">{resume.summary}</p>
-      <p><a class="cta" href={RESUME_PDF}>{resume.linkText}</a></p>
     </header>
     <aside class="span-4" aria-label="Facts">
       <Portrait />
       <dl class="facts">
         <dt>Name</dt><dd>{name}</dd>
         <dt>Region</dt><dd>[JON: region]</dd>
-        <dt>Contact</dt><dd>[JON: contact: a profile link; no email or phone on the site]</dd>
+        <dt>Contact</dt><dd>[JON: your LinkedIn profile link, which replaces the resume PDF; no email or phone on the site]</dd>
       </dl>
     </aside>
     <section class="span-8 flow" aria-labelledby="skills">

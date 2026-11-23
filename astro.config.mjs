@@ -6,7 +6,7 @@ import { glyphs } from './src/lib/markdown-glyphs.mjs';
 import agentFiles from './src/integrations/agent-files.mjs';
 import measure from './src/integrations/measure.mjs';
 import { SITE } from './src/data/origin.mjs';
-import { SITE_NAME, DESCRIPTIONS, RESUME_PDF } from './src/data/site.ts';
+import { SITE_NAME, DESCRIPTIONS } from './src/data/site.ts';
 
 // The public origin. Jon's domain is not in this repository: set SITE_URL when building for real.
 // `.invalid` is a reserved TLD (RFC 2606), so the placeholder can never resolve. [JON: domain]
@@ -25,7 +25,6 @@ export default defineConfig({
   // No syntax highlighting: Shiki writes inline style attributes, which the CSP (style-src 'self') blocks.
   markdown: { syntaxHighlight: false, processor: satteri({ mdastPlugins: [glyphs] }) },
   integrations: [measure({ fontsManifest: './tools/fonts/fonts.json' }), agentFiles({ site: SITE, siteName: SITE_NAME, summary: DESCRIPTIONS.home, extras: [
-    { title: 'Resume (PDF)', href: RESUME_PDF },
     { title: 'Lab notes feed (RSS)', href: '/notes/rss.xml' },
   ] })],
   devToolbar: { enabled: false },
