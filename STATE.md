@@ -15,15 +15,15 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 | U7 entering an orb | [x] | dcdbd13 | 13 | 35 | A cross-document view transition: the clicked dot and the room's main share `orb-entry`; a veil floods out from the orb as a growing circle (Paper ink; Night dark with a purple rim), the main opens out of the orb as a window of the mask's ground, the flood clears. The boot script marks the page only where cross-document view transitions exist, and unmarks it when the transition ends; the menu band keeps v3's transitions. New check `entry.*` (3). Frames in `handoff/orb-entry/` (`tools/entry-frames.mjs`). 70 pass. |
 | U8 the parakeet | [x] | 793f7c3 | 10 | 12 | The mocks' 12 × 12 sprite in one file (`src/assets/parakeet.svg`, with a contract for the artist), inlined: it perches and hops on the O, sits on the portrait's frame on About and For recruiters, flies between them (one view-transition name, an arc), appears after the curtain; its head follows a mouse or pen on portrait pages (transform only; not for touch or with Pause motion; nothing stored or sent). Colophon section. New check `parakeet.*` (3). 73 pass. |
 | U9 the portrait | [x] | ea527a5 | 9 | 8 | The CC0 parakeet photo (rawpixel; `widths` 400 and 800) replaces v2's parrot (removed); alt "A parakeet, standing in for Jon"; a caption under a frame (hidden from screen readers: it repeats the alt). Paper's halftone lifted for this darker photo; Night's X-ray is now a soft duotone, muted violet to pale cyan (an inline SVG filter, drawn live). Colophon credit. 73 pass. |
-| U10 pause motion | [ ] | | 4 | 2 | The control (built with the skeleton in U1) now covers every loop: on Home, About and Now in both masks every infinite animation stops, stays stopped on the next page, and runs again; page transitions still play while paused; without JavaScript nothing loops (no button to press). Keyboard and axe in both states. Every @keyframes and transition in the built CSS moves transform, opacity or clip-path only. New check `motion.*` (5). 78 pass. |
+| U10 pause motion | [x] | 7d006f4 | 4 | 2 | The control (built with the skeleton in U1) now covers every loop: on Home, About and Now in both masks every infinite animation stops, stays stopped on the next page, and runs again; page transitions still play while paused; without JavaScript nothing loops (no button to press). Keyboard and axe in both states. Every @keyframes and transition in the built CSS moves transform, opacity or clip-path only. New check `motion.*` (5). 78 pass. |
 | U11 measure and screenshots | [ ] | | | | |
 | U12 HANDOFF.md | [ ] | | | | |
 
 ## Budget
 
-- Units done: 11 of 14 · turns so far: 179 · average turns per unit: 16.3 (13.3 over U2 to U9) · estimated turns left: 3 units × about 10 = 30
+- Units done: 12 of 14 · turns so far: 183 · average turns per unit: 15.3 (12.4 over U2 to U10) · estimated turns left: 2 units × about 10 = 20
 - Wall clock (read from `date`): session started 2026-11-23 08:05 UTC; U0 done 08:11; U1 about 08:23; U2 about 08:26; U3 about 08:33; U4 08:41; U5 08:49; U5b 09:00; U6 09:12; U7 09:22; U8 09:28; U9 09:36; restart; U10 14:07.
-- Last updated: 2026-11-23 14:07 UTC, during U10.
+- Last updated: 2026-11-23 14:07 UTC, after U10.
 
 ## Checks not yet expected to pass
 
