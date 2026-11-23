@@ -112,8 +112,10 @@
 @keyframes mark-blink { 0%, 62% { opacity: 1; } 63%, 88% { opacity: 0.12; } 89%, 100% { opacity: 1; } }
 
 /* Pause motion (WCAG 2.2.2): every looping animation stops where it is; page transitions (pseudo-elements of the
-   view transition, which `*` does not match) still play */
-:root[data-motion="paused"] *, :root[data-motion="paused"] *::before, :root[data-motion="paused"] *::after {
+   view transition, which `*` does not match) still play. Without JavaScript there is no button to press, so nothing
+   loops: every animation rests on its first frame (U10). */
+:root[data-motion="paused"] *, :root[data-motion="paused"] *::before, :root[data-motion="paused"] *::after,
+:root:not([data-js]) *, :root:not([data-js]) *::before, :root:not([data-js]) *::after {
   animation-play-state: paused !important;
 }
 
