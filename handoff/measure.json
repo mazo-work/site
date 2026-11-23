@@ -1,503 +1,922 @@
 {
   "meta": {
-    "when": "2026-11-23T04:25:41.177Z",
+    "when": "2026-11-23T14:18:00.536Z",
     "lighthouse": "13.6.0",
     "chrome": "1243",
     "cpus": 4,
     "command": "npm run build && node tools/measure.mjs --lighthouse"
   },
+  "fonts": {
+    "paper": 213740,
+    "night": 53248
+  },
   "rows": [
     {
       "url": "/",
       "bytes": {
-        "html": 1640,
-        "css": 7210,
-        "js": 888,
+        "html": 1909,
+        "css": 8898,
+        "js": 864,
         "img": 0,
-        "total": 9738,
-        "totalGzip": 11179
+        "total": 11671,
+        "totalGzip": 13396
       },
-      "mobile": {
-        "performance": 60,
-        "accessibility": 100,
-        "bestPractices": 100,
-        "seo": 100,
-        "fcp": 1053,
-        "lcp": 1053,
-        "cls": 0.002,
-        "tbt": 160499,
-        "si": 19336,
-        "weight": 570072,
-        "failing": []
+      "paper": {
+        "mobile": {
+          "performance": 60,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 66,
+          "fcp": 1053,
+          "lcp": 1053,
+          "cls": 0.002,
+          "tbt": 159648,
+          "si": 19074,
+          "weight": 578873,
+          "failing": [
+            "valid-source-maps",
+            "is-crawlable"
+          ]
+        },
+        "desktop": {
+          "performance": 60,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 66,
+          "fcp": 288,
+          "lcp": 288,
+          "cls": 0,
+          "tbt": 30709,
+          "si": 6290,
+          "weight": 578873,
+          "failing": [
+            "valid-source-maps",
+            "is-crawlable"
+          ]
+        }
       },
-      "desktop": {
-        "performance": 60,
-        "accessibility": 100,
-        "bestPractices": 100,
-        "seo": 100,
-        "fcp": 247,
-        "lcp": 247,
-        "cls": 0,
-        "tbt": 31677,
-        "si": 6140,
-        "weight": 570072,
-        "failing": []
+      "night": {
+        "mobile": {
+          "performance": 60,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 66,
+          "fcp": 1064,
+          "lcp": 1064,
+          "cls": 0.002,
+          "tbt": 159923,
+          "si": 20512,
+          "weight": 578873,
+          "failing": [
+            "valid-source-maps",
+            "is-crawlable"
+          ]
+        },
+        "desktop": {
+          "performance": 60,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 66,
+          "fcp": 287,
+          "lcp": 287,
+          "cls": 0,
+          "tbt": 30827,
+          "si": 6253,
+          "weight": 578873,
+          "failing": [
+            "valid-source-maps",
+            "is-crawlable"
+          ]
+        }
       }
     },
     {
       "url": "/404.html",
       "bytes": {
-        "html": 1640,
-        "css": 6003,
-        "js": 1289,
+        "html": 2079,
+        "css": 7525,
+        "js": 1544,
         "img": 0,
-        "total": 8932,
-        "totalGzip": 10346
+        "total": 11148,
+        "totalGzip": 12885
       },
-      "mobile": {
-        "performance": 100,
-        "accessibility": 100,
-        "bestPractices": 100,
-        "seo": 63,
-        "fcp": 907,
-        "lcp": 907,
-        "cls": 0.001,
-        "tbt": 0,
-        "si": 907,
-        "weight": 117772,
-        "failing": [
-          "is-crawlable"
-        ]
+      "paper": {
+        "mobile": {
+          "performance": 99,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 63,
+          "fcp": 905,
+          "lcp": 905,
+          "cls": 0.076,
+          "tbt": 0,
+          "si": 905,
+          "weight": 258960,
+          "failing": [
+            "is-crawlable"
+          ]
+        },
+        "desktop": {
+          "performance": 100,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 63,
+          "fcp": 245,
+          "lcp": 245,
+          "cls": 0.004,
+          "tbt": 0,
+          "si": 245,
+          "weight": 258960,
+          "failing": [
+            "is-crawlable"
+          ]
+        }
       },
-      "desktop": {
-        "performance": 100,
-        "accessibility": 100,
-        "bestPractices": 100,
-        "seo": 63,
-        "fcp": 245,
-        "lcp": 245,
-        "cls": 0.004,
-        "tbt": 0,
-        "si": 245,
-        "weight": 117772,
-        "failing": [
-          "is-crawlable"
-        ]
+      "night": {
+        "mobile": {
+          "performance": 100,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 63,
+          "fcp": 903,
+          "lcp": 903,
+          "cls": 0.004,
+          "tbt": 0,
+          "si": 903,
+          "weight": 96451,
+          "failing": [
+            "is-crawlable"
+          ]
+        },
+        "desktop": {
+          "performance": 100,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 63,
+          "fcp": 246,
+          "lcp": 246,
+          "cls": 0.002,
+          "tbt": 0,
+          "si": 246,
+          "weight": 96451,
+          "failing": [
+            "is-crawlable"
+          ]
+        }
       }
     },
     {
       "url": "/about/",
       "bytes": {
-        "html": 2271,
-        "css": 6003,
-        "js": 1289,
-        "img": 8418,
-        "total": 17981,
-        "totalGzip": 19537
+        "html": 3127,
+        "css": 7525,
+        "js": 1879,
+        "img": 72663,
+        "total": 85194,
+        "totalGzip": 87226
       },
-      "mobile": {
-        "performance": 99,
-        "accessibility": 100,
-        "bestPractices": 100,
-        "seo": 100,
-        "fcp": 904,
-        "lcp": 1957,
-        "cls": 0.001,
-        "tbt": 0,
-        "si": 904,
-        "weight": 130155,
-        "failing": []
+      "paper": {
+        "mobile": {
+          "performance": 95,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 69,
+          "fcp": 903,
+          "lcp": 3004,
+          "cls": 0.002,
+          "tbt": 0,
+          "si": 903,
+          "weight": 339947,
+          "failing": [
+            "is-crawlable"
+          ]
+        },
+        "desktop": {
+          "performance": 100,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 69,
+          "fcp": 249,
+          "lcp": 609,
+          "cls": 0.003,
+          "tbt": 0,
+          "si": 249,
+          "weight": 339947,
+          "failing": [
+            "is-crawlable"
+          ]
+        }
       },
-      "desktop": {
-        "performance": 100,
-        "accessibility": 100,
-        "bestPractices": 100,
-        "seo": 100,
-        "fcp": 245,
-        "lcp": 488,
-        "cls": 0.024,
-        "tbt": 0,
-        "si": 245,
-        "weight": 130155,
-        "failing": []
+      "night": {
+        "mobile": {
+          "performance": 99,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 69,
+          "fcp": 907,
+          "lcp": 2107,
+          "cls": 0.001,
+          "tbt": 0,
+          "si": 907,
+          "weight": 208294,
+          "failing": [
+            "is-crawlable"
+          ]
+        },
+        "desktop": {
+          "performance": 100,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 69,
+          "fcp": 246,
+          "lcp": 529,
+          "cls": 0.002,
+          "tbt": 0,
+          "si": 246,
+          "weight": 208294,
+          "failing": [
+            "is-crawlable"
+          ]
+        }
       }
     },
     {
       "url": "/colophon/",
       "bytes": {
-        "html": 5665,
-        "css": 6003,
-        "js": 1289,
+        "html": 6966,
+        "css": 7525,
+        "js": 1544,
         "img": 0,
-        "total": 12957,
-        "totalGzip": 15114
+        "total": 16035,
+        "totalGzip": 18642
       },
-      "mobile": {
-        "performance": 100,
-        "accessibility": 100,
-        "bestPractices": 100,
-        "seo": 100,
-        "fcp": 1054,
-        "lcp": 1054,
-        "cls": 0.003,
-        "tbt": 0,
-        "si": 1054,
-        "weight": 158710,
-        "failing": []
+      "paper": {
+        "mobile": {
+          "performance": 100,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 66,
+          "fcp": 1054,
+          "lcp": 1054,
+          "cls": 0.006,
+          "tbt": 0,
+          "si": 1054,
+          "weight": 294839,
+          "failing": [
+            "is-crawlable"
+          ]
+        },
+        "desktop": {
+          "performance": 100,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 66,
+          "fcp": 287,
+          "lcp": 287,
+          "cls": 0.004,
+          "tbt": 0,
+          "si": 287,
+          "weight": 294839,
+          "failing": [
+            "is-crawlable"
+          ]
+        }
       },
-      "desktop": {
-        "performance": 100,
-        "accessibility": 100,
-        "bestPractices": 100,
-        "seo": 100,
-        "fcp": 290,
-        "lcp": 290,
-        "cls": 0.039,
-        "tbt": 0,
-        "si": 290,
-        "weight": 158710,
-        "failing": []
+      "night": {
+        "mobile": {
+          "performance": 100,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 66,
+          "fcp": 1055,
+          "lcp": 1055,
+          "cls": 0.003,
+          "tbt": 0,
+          "si": 1055,
+          "weight": 147018,
+          "failing": [
+            "is-crawlable"
+          ]
+        },
+        "desktop": {
+          "performance": 100,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 66,
+          "fcp": 284,
+          "lcp": 284,
+          "cls": 0.003,
+          "tbt": 0,
+          "si": 284,
+          "weight": 147018,
+          "failing": [
+            "is-crawlable"
+          ]
+        }
       }
     },
     {
       "url": "/home/",
       "bytes": {
-        "html": 2066,
-        "css": 6003,
-        "js": 1289,
+        "html": 2687,
+        "css": 7525,
+        "js": 1874,
         "img": 0,
-        "total": 9358,
-        "totalGzip": 10824
+        "total": 12086,
+        "totalGzip": 13941
       },
-      "mobile": {
-        "performance": 100,
-        "accessibility": 100,
-        "bestPractices": 100,
-        "seo": 100,
-        "fcp": 913,
-        "lcp": 913,
-        "cls": 0.001,
-        "tbt": 0,
-        "si": 913,
-        "weight": 119167,
-        "failing": []
+      "paper": {
+        "mobile": {
+          "performance": 100,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 66,
+          "fcp": 903,
+          "lcp": 903,
+          "cls": 0.002,
+          "tbt": 0,
+          "si": 903,
+          "weight": 313905,
+          "failing": [
+            "is-crawlable"
+          ]
+        },
+        "desktop": {
+          "performance": 100,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 66,
+          "fcp": 252,
+          "lcp": 252,
+          "cls": 0,
+          "tbt": 0,
+          "si": 252,
+          "weight": 313905,
+          "failing": [
+            "is-crawlable"
+          ]
+        }
       },
-      "desktop": {
-        "performance": 100,
-        "accessibility": 100,
-        "bestPractices": 100,
-        "seo": 100,
-        "fcp": 258,
-        "lcp": 258,
-        "cls": 0.004,
-        "tbt": 0,
-        "si": 258,
-        "weight": 119167,
-        "failing": []
+      "night": {
+        "mobile": {
+          "performance": 100,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 66,
+          "fcp": 904,
+          "lcp": 904,
+          "cls": 0.002,
+          "tbt": 0,
+          "si": 904,
+          "weight": 117147,
+          "failing": [
+            "is-crawlable"
+          ]
+        },
+        "desktop": {
+          "performance": 100,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 66,
+          "fcp": 246,
+          "lcp": 246,
+          "cls": 0.001,
+          "tbt": 0,
+          "si": 246,
+          "weight": 117147,
+          "failing": [
+            "is-crawlable"
+          ]
+        }
       }
     },
     {
       "url": "/notes/",
       "bytes": {
-        "html": 1825,
-        "css": 6003,
-        "js": 1289,
+        "html": 2308,
+        "css": 7525,
+        "js": 1544,
         "img": 0,
-        "total": 9117,
-        "totalGzip": 10551
+        "total": 11377,
+        "totalGzip": 13120
       },
-      "mobile": {
-        "performance": 100,
-        "accessibility": 100,
-        "bestPractices": 100,
-        "seo": 100,
-        "fcp": 904,
-        "lcp": 904,
-        "cls": 0.002,
-        "tbt": 0,
-        "si": 904,
-        "weight": 118114,
-        "failing": []
+      "paper": {
+        "mobile": {
+          "performance": 100,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 66,
+          "fcp": 903,
+          "lcp": 903,
+          "cls": 0.002,
+          "tbt": 0,
+          "si": 903,
+          "weight": 259460,
+          "failing": [
+            "is-crawlable"
+          ]
+        },
+        "desktop": {
+          "performance": 100,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 66,
+          "fcp": 243,
+          "lcp": 243,
+          "cls": 0.003,
+          "tbt": 0,
+          "si": 243,
+          "weight": 259460,
+          "failing": [
+            "is-crawlable"
+          ]
+        }
       },
-      "desktop": {
-        "performance": 100,
-        "accessibility": 100,
-        "bestPractices": 100,
-        "seo": 100,
-        "fcp": 242,
-        "lcp": 242,
-        "cls": 0.002,
-        "tbt": 0,
-        "si": 242,
-        "weight": 118114,
-        "failing": []
+      "night": {
+        "mobile": {
+          "performance": 100,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 66,
+          "fcp": 902,
+          "lcp": 902,
+          "cls": 0,
+          "tbt": 0,
+          "si": 902,
+          "weight": 111639,
+          "failing": [
+            "is-crawlable"
+          ]
+        },
+        "desktop": {
+          "performance": 100,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 66,
+          "fcp": 245,
+          "lcp": 245,
+          "cls": 0.004,
+          "tbt": 0,
+          "si": 245,
+          "weight": 111639,
+          "failing": [
+            "is-crawlable"
+          ]
+        }
       }
     },
     {
       "url": "/notes/note-template/",
       "bytes": {
-        "html": 2007,
-        "css": 6003,
-        "js": 1289,
+        "html": 2464,
+        "css": 7525,
+        "js": 1544,
         "img": 0,
-        "total": 9299,
-        "totalGzip": 10726
+        "total": 11533,
+        "totalGzip": 13299
       },
-      "mobile": {
-        "performance": 100,
-        "accessibility": 100,
-        "bestPractices": 100,
-        "seo": 100,
-        "fcp": 904,
-        "lcp": 904,
-        "cls": 0.001,
-        "tbt": 0,
-        "si": 904,
-        "weight": 118810,
-        "failing": []
+      "paper": {
+        "mobile": {
+          "performance": 100,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 66,
+          "fcp": 904,
+          "lcp": 904,
+          "cls": 0.002,
+          "tbt": 0,
+          "si": 904,
+          "weight": 276253,
+          "failing": [
+            "is-crawlable"
+          ]
+        },
+        "desktop": {
+          "performance": 100,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 66,
+          "fcp": 245,
+          "lcp": 245,
+          "cls": 0.006,
+          "tbt": 0,
+          "si": 245,
+          "weight": 276253,
+          "failing": [
+            "is-crawlable"
+          ]
+        }
       },
-      "desktop": {
-        "performance": 100,
-        "accessibility": 100,
-        "bestPractices": 100,
-        "seo": 100,
-        "fcp": 246,
-        "lcp": 246,
-        "cls": 0.013,
-        "tbt": 0,
-        "si": 246,
-        "weight": 118810,
-        "failing": []
+      "night": {
+        "mobile": {
+          "performance": 100,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 66,
+          "fcp": 903,
+          "lcp": 903,
+          "cls": 0.002,
+          "tbt": 74,
+          "si": 903,
+          "weight": 128432,
+          "failing": [
+            "is-crawlable"
+          ]
+        },
+        "desktop": {
+          "performance": 100,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 66,
+          "fcp": 246,
+          "lcp": 246,
+          "cls": 0.004,
+          "tbt": 0,
+          "si": 246,
+          "weight": 128432,
+          "failing": [
+            "is-crawlable"
+          ]
+        }
       }
     },
     {
       "url": "/now/",
       "bytes": {
-        "html": 1756,
-        "css": 6003,
-        "js": 1289,
+        "html": 2551,
+        "css": 7525,
+        "js": 1544,
         "img": 0,
-        "total": 9048,
-        "totalGzip": 10464
+        "total": 11620,
+        "totalGzip": 13432
       },
-      "mobile": {
-        "performance": 100,
-        "accessibility": 100,
-        "bestPractices": 100,
-        "seo": 100,
-        "fcp": 903,
-        "lcp": 903,
-        "cls": 0.013,
-        "tbt": 0,
-        "si": 903,
-        "weight": 117804,
-        "failing": []
+      "paper": {
+        "mobile": {
+          "performance": 100,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 66,
+          "fcp": 905,
+          "lcp": 905,
+          "cls": 0.033,
+          "tbt": 0,
+          "si": 905,
+          "weight": 259848,
+          "failing": [
+            "is-crawlable"
+          ]
+        },
+        "desktop": {
+          "performance": 100,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 66,
+          "fcp": 247,
+          "lcp": 247,
+          "cls": 0.004,
+          "tbt": 0,
+          "si": 247,
+          "weight": 259848,
+          "failing": [
+            "is-crawlable"
+          ]
+        }
       },
-      "desktop": {
-        "performance": 100,
-        "accessibility": 100,
-        "bestPractices": 100,
-        "seo": 100,
-        "fcp": 246,
-        "lcp": 246,
-        "cls": 0.002,
-        "tbt": 0,
-        "si": 246,
-        "weight": 117804,
-        "failing": []
+      "night": {
+        "mobile": {
+          "performance": 100,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 66,
+          "fcp": 914,
+          "lcp": 914,
+          "cls": 0.028,
+          "tbt": 0,
+          "si": 914,
+          "weight": 112027,
+          "failing": [
+            "is-crawlable"
+          ]
+        },
+        "desktop": {
+          "performance": 100,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 66,
+          "fcp": 246,
+          "lcp": 246,
+          "cls": 0.003,
+          "tbt": 0,
+          "si": 246,
+          "weight": 112027,
+          "failing": [
+            "is-crawlable"
+          ]
+        }
       }
     },
     {
       "url": "/projects/",
       "bytes": {
-        "html": 1792,
-        "css": 6003,
-        "js": 1289,
+        "html": 2262,
+        "css": 7525,
+        "js": 1544,
         "img": 0,
-        "total": 9084,
-        "totalGzip": 10507
+        "total": 11331,
+        "totalGzip": 13085
       },
-      "mobile": {
-        "performance": 100,
-        "accessibility": 100,
-        "bestPractices": 100,
-        "seo": 100,
-        "fcp": 904,
-        "lcp": 904,
-        "cls": 0.045,
-        "tbt": 0,
-        "si": 904,
-        "weight": 117971,
-        "failing": []
+      "paper": {
+        "mobile": {
+          "performance": 100,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 66,
+          "fcp": 903,
+          "lcp": 903,
+          "cls": 0.016,
+          "tbt": 0,
+          "si": 903,
+          "weight": 259364,
+          "failing": [
+            "is-crawlable"
+          ]
+        },
+        "desktop": {
+          "performance": 100,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 66,
+          "fcp": 244,
+          "lcp": 244,
+          "cls": 0.003,
+          "tbt": 0,
+          "si": 244,
+          "weight": 259364,
+          "failing": [
+            "is-crawlable"
+          ]
+        }
       },
-      "desktop": {
-        "performance": 100,
-        "accessibility": 100,
-        "bestPractices": 100,
-        "seo": 100,
-        "fcp": 246,
-        "lcp": 246,
-        "cls": 0.002,
-        "tbt": 0,
-        "si": 246,
-        "weight": 117971,
-        "failing": []
+      "night": {
+        "mobile": {
+          "performance": 100,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 66,
+          "fcp": 903,
+          "lcp": 903,
+          "cls": 0.002,
+          "tbt": 0,
+          "si": 903,
+          "weight": 111543,
+          "failing": [
+            "is-crawlable"
+          ]
+        },
+        "desktop": {
+          "performance": 100,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 66,
+          "fcp": 245,
+          "lcp": 245,
+          "cls": 0.003,
+          "tbt": 0,
+          "si": 245,
+          "weight": 111543,
+          "failing": [
+            "is-crawlable"
+          ]
+        }
       }
     },
     {
       "url": "/projects/case-study-2/",
       "bytes": {
-        "html": 1701,
-        "css": 6003,
-        "js": 1289,
+        "html": 2152,
+        "css": 7525,
+        "js": 1544,
         "img": 0,
-        "total": 8993,
-        "totalGzip": 10390
+        "total": 11221,
+        "totalGzip": 12960
       },
-      "mobile": {
-        "performance": 100,
-        "accessibility": 100,
-        "bestPractices": 100,
-        "seo": 66,
-        "fcp": 902,
-        "lcp": 902,
-        "cls": 0.001,
-        "tbt": 0,
-        "si": 902,
-        "weight": 117818,
-        "failing": [
-          "is-crawlable"
-        ]
+      "paper": {
+        "mobile": {
+          "performance": 100,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 66,
+          "fcp": 903,
+          "lcp": 903,
+          "cls": 0.002,
+          "tbt": 0,
+          "si": 903,
+          "weight": 259111,
+          "failing": [
+            "is-crawlable"
+          ]
+        },
+        "desktop": {
+          "performance": 100,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 66,
+          "fcp": 284,
+          "lcp": 284,
+          "cls": 0.002,
+          "tbt": 0,
+          "si": 284,
+          "weight": 259111,
+          "failing": [
+            "is-crawlable"
+          ]
+        }
       },
-      "desktop": {
-        "performance": 100,
-        "accessibility": 100,
-        "bestPractices": 100,
-        "seo": 66,
-        "fcp": 248,
-        "lcp": 248,
-        "cls": 0.002,
-        "tbt": 0,
-        "si": 248,
-        "weight": 117818,
-        "failing": [
-          "is-crawlable"
-        ]
+      "night": {
+        "mobile": {
+          "performance": 100,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 66,
+          "fcp": 903,
+          "lcp": 903,
+          "cls": 0.002,
+          "tbt": 0,
+          "si": 903,
+          "weight": 96602,
+          "failing": [
+            "is-crawlable"
+          ]
+        },
+        "desktop": {
+          "performance": 100,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 66,
+          "fcp": 243,
+          "lcp": 243,
+          "cls": 0.001,
+          "tbt": 0,
+          "si": 243,
+          "weight": 96602,
+          "failing": [
+            "is-crawlable"
+          ]
+        }
       }
     },
     {
       "url": "/projects/mazo/",
       "bytes": {
-        "html": 4855,
-        "css": 6003,
-        "js": 1289,
+        "html": 5298,
+        "css": 7525,
+        "js": 1544,
         "img": 0,
-        "total": 12147,
-        "totalGzip": 14118
+        "total": 14367,
+        "totalGzip": 16680
       },
-      "mobile": {
-        "performance": 100,
-        "accessibility": 100,
-        "bestPractices": 100,
-        "seo": 100,
-        "fcp": 1053,
-        "lcp": 1053,
-        "cls": 0.009,
-        "tbt": 0,
-        "si": 1053,
-        "weight": 153884,
-        "failing": [
-          "td-has-header"
-        ]
+      "paper": {
+        "mobile": {
+          "performance": 100,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 66,
+          "fcp": 1056,
+          "lcp": 1056,
+          "cls": 0.002,
+          "tbt": 0,
+          "si": 1056,
+          "weight": 285864,
+          "failing": [
+            "td-has-header",
+            "is-crawlable"
+          ]
+        },
+        "desktop": {
+          "performance": 100,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 66,
+          "fcp": 284,
+          "lcp": 284,
+          "cls": 0.009,
+          "tbt": 0,
+          "si": 284,
+          "weight": 285864,
+          "failing": [
+            "td-has-header",
+            "is-crawlable"
+          ]
+        }
       },
-      "desktop": {
-        "performance": 100,
-        "accessibility": 100,
-        "bestPractices": 100,
-        "seo": 100,
-        "fcp": 288,
-        "lcp": 288,
-        "cls": 0.003,
-        "tbt": 0,
-        "si": 288,
-        "weight": 153884,
-        "failing": [
-          "td-has-header"
-        ]
+      "night": {
+        "mobile": {
+          "performance": 100,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 66,
+          "fcp": 1053,
+          "lcp": 1053,
+          "cls": 0.001,
+          "tbt": 0,
+          "si": 1053,
+          "weight": 123355,
+          "failing": [
+            "td-has-header",
+            "is-crawlable"
+          ]
+        },
+        "desktop": {
+          "performance": 100,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 66,
+          "fcp": 288,
+          "lcp": 288,
+          "cls": 0.006,
+          "tbt": 0,
+          "si": 288,
+          "weight": 123355,
+          "failing": [
+            "td-has-header",
+            "is-crawlable"
+          ]
+        }
       }
     },
     {
       "url": "/recruiters/",
       "bytes": {
-        "html": 2886,
-        "css": 6003,
-        "js": 1289,
-        "img": 8418,
-        "total": 18596,
-        "totalGzip": 20414
+        "html": 3655,
+        "css": 7525,
+        "js": 1879,
+        "img": 72663,
+        "total": 85722,
+        "totalGzip": 87993
       },
-      "mobile": {
-        "performance": 100,
-        "accessibility": 100,
-        "bestPractices": 100,
-        "seo": 100,
-        "fcp": 903,
-        "lcp": 903,
-        "cls": 0.017,
-        "tbt": 0,
-        "si": 903,
-        "weight": 156358,
-        "failing": []
+      "paper": {
+        "mobile": {
+          "performance": 92,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 69,
+          "fcp": 1054,
+          "lcp": 3306,
+          "cls": 0.015,
+          "tbt": 0,
+          "si": 1054,
+          "weight": 356533,
+          "failing": [
+            "is-crawlable"
+          ]
+        },
+        "desktop": {
+          "performance": 100,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 69,
+          "fcp": 288,
+          "lcp": 685,
+          "cls": 0.004,
+          "tbt": 0,
+          "si": 288,
+          "weight": 356533,
+          "failing": [
+            "is-crawlable"
+          ]
+        }
       },
-      "desktop": {
-        "performance": 100,
-        "accessibility": 100,
-        "bestPractices": 100,
-        "seo": 100,
-        "fcp": 250,
-        "lcp": 250,
-        "cls": 0.021,
-        "tbt": 0,
-        "si": 250,
-        "weight": 156358,
-        "failing": []
-      }
-    },
-    {
-      "url": "/uses/",
-      "bytes": {
-        "html": 1908,
-        "css": 6003,
-        "js": 1289,
-        "img": 0,
-        "total": 9200,
-        "totalGzip": 10663
-      },
-      "mobile": {
-        "performance": 100,
-        "accessibility": 100,
-        "bestPractices": 100,
-        "seo": 100,
-        "fcp": 903,
-        "lcp": 903,
-        "cls": 0.001,
-        "tbt": 0,
-        "si": 903,
-        "weight": 118248,
-        "failing": []
-      },
-      "desktop": {
-        "performance": 100,
-        "accessibility": 100,
-        "bestPractices": 100,
-        "seo": 100,
-        "fcp": 249,
-        "lcp": 249,
-        "cls": 0.012,
-        "tbt": 0,
-        "si": 249,
-        "weight": 118248,
-        "failing": []
+      "night": {
+        "mobile": {
+          "performance": 98,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 69,
+          "fcp": 1055,
+          "lcp": 2405,
+          "cls": 0.001,
+          "tbt": 0,
+          "si": 1055,
+          "weight": 194024,
+          "failing": [
+            "is-crawlable"
+          ]
+        },
+        "desktop": {
+          "performance": 100,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 69,
+          "fcp": 288,
+          "lcp": 565,
+          "cls": 0.001,
+          "tbt": 0,
+          "si": 288,
+          "weight": 194024,
+          "failing": [
+            "is-crawlable"
+          ]
+        }
       }
     }
   ]
