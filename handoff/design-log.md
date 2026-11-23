@@ -62,3 +62,44 @@ light as material (only as the accent, as the Paper family should), diagrams (we
 
 **Left for Jon:** the straight apostrophe in "Hi, I'm" is his text as it stands; the portrait is a parrot (see the
 handoff). Terminal and Profile show the neutral structure with system fonts until U6 and U7.
+
+## U6 · Terminal (2026-11-23)
+
+**Direction.** The Night family: the engineer's side as a dark instrument. Near-black ground (`#0b0c10`), cool
+off-white text, and light as the highlight: a cyan-teal signal (`#36e3d0`) for links, numbers and markers, violet for
+tags and quotes, magenta and cyan split slightly behind the headline like a chromatic fringe, and the mark's light
+block in the finale's warm white, flickering on once like a neon tube. Martian Mono (wide, square; 400 and 700) sets
+the structure: headings, labels, code, navigation. Atkinson Hyperlegible Next (built for legibility; 400, italic, 700)
+sets the reading text, because reading pages stay quiet in every theme. 58.5 KB of fonts. Its winks are the site's own
+facts: every page has a Markdown twin, so headings carry Markdown's `##`; rooms are `./About`; the masthead shows the
+page's path, `~/about/`; lists read like a listing (`[01]`). The portrait is an X-ray, a cyan negative, that clears to
+the photo when you look closer. Between pages, the old page powers off to a line and the new one powers on from it, a
+CRT in transform and opacity only. Loops stay under five seconds (the neon flicker once, a cursor that blinks four
+times then rests), so nothing needs a pause control.
+
+**Screens (v1):** all 13 pages × mobile and desktop.
+
+**Critique of v1, against §4's banned list:** no banned font; no gradient at all; no gradient text (the fringe is two
+offset text shadows behind solid text, not a fill); no glass; no cards, radius or soft shadows (dashed rules carry the
+structure; the one bordered element is the resume link); no icon grids, bento, logo wall, skill bars; no centred hero;
+no line icons; no emoji; no scroll fades; spacing on the unit, varied by role; words unchanged. **Against §2:** precise
+(the unit, the listing); quiet where people read (one column, the measure, a legible sans); the wink is strongest here
+(`##`, `./`, `~/`). **Against §9:** light as material (signal, fringe, neon flicker), what lies under the surface
+(X-ray), thresholds (the CRT), loops (short, by rule); the wireframe idea failed in v1 (see 1).
+
+**Problems in v1:**
+1. The mark drawn as outlines became a mesh at header size: unreadable as MAZO.
+2. The `~/home/` crumb floated in the middle of the masthead, detached from anything.
+3. Footer links were set larger than the name beside them.
+4. About's beat headings sat glued to their text (no space after a heading inside a section).
+5. The headline's fringe was slightly too strong at display sizes.
+
+**Revision (once):**
+1. The mark is an LED panel: filled cells split by hairline gaps in the ground colour. Readable at any size, and it
+   matches the case study's glyph drawing.
+2. The crumb sits beside the name; the rooms are pushed to the right.
+3. Footer links take the label size.
+4. Base rule: a line of space between a section's children, two units after a heading.
+5. Fringe reduced to 0.03 em at lower opacity.
+
+**Left for Jon:** none beyond Editorial's notes.

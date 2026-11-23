@@ -10,6 +10,7 @@ const current = (href: string) => path === href || (href !== '/' && path.startsW
     <Mark />
     <span class="brand-name">{SITE_NAME}</span>
   </a>
+  <span class="crumb" aria-hidden="true">~{path}</span>
   <nav class="site-nav" aria-label="Main">
     <ul>
       {NAV.map((item) => (

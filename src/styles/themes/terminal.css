@@ -1,0 +1,129 @@
+/* Terminal (U6): the Night family. The engineer's side, as a dark instrument: near-black ground, light as the
+   highlight. From BRIEF.md §9: light as material (a cyan signal, a warm light block that flickers on like a neon tube,
+   a chromatic fringe on the headline); an LED panel (the mark, cell by cell); diagrams; loops kept short (WCAG
+   2.2.2: nothing moves on its own for more than 5 s); what lies under the surface (an X-ray portrait); thresholds (a
+   CRT power-off and power-on between pages). Its winks are the site's own: Markdown's ## before headings (every page
+   has a Markdown twin), ./ before rooms, ~/path in the masthead. */
+
+:root[data-theme="terminal"] {
+  --paper: #0b0c10;
+  --paper-2: #12141a;
+  --ink: #e7e4f2;
+  --ink-2: #a09cb4;                      /* 6.9:1 on the ground */
+  --rule: #2b2e3a;
+  --accent: #36e3d0;                     /* cyan-teal: the signal */
+  --accent-ink: #36e3d0;
+  --violet: #9d7bff;
+  --magenta: #ff4fd8;
+  --focus: #36e3d0;
+  --mark-light: #ffd9a0;                 /* the light that completes the O: warm, as in the finale */
+  --label: 400 0.6875rem / calc(3 * var(--u)) var(--font-ui);
+  color-scheme: dark;
+
+  & body { background: var(--paper); }
+  & ::selection { background: #3d2b6b; color: #fff; }
+  & :focus-visible { outline: 1px solid var(--accent); outline-offset: 3px; }
+  & a { text-decoration-color: rgba(54, 227, 208, 0.55); }
+  & a:hover { color: var(--accent); text-shadow: 0 0 0.6em rgba(54, 227, 208, 0.55); }
+
+  & .meta, & .brand-name, & .site-nav a, & .site-footer, & .facts dt, & .tags, & .prose th, & .index time, & .crumb {
+    font: var(--label); letter-spacing: 0.02em;
+  }
+
+  /* masthead: the mark as an LED panel (cells split by hairlines); the light block flickers on once, like neon */
+  & .site-header { view-transition-name: masthead; border-bottom: 1px solid var(--rule); align-items: center; }
+  & .brand .mark { width: calc(18 * var(--u)); overflow: visible; }
+  & .brand .mark-body { fill: var(--ink); stroke: var(--paper); stroke-width: 0.28; }
+  & .brand .mark-light { fill: var(--mark-light); filter: drop-shadow(0 0 1.2px var(--mark-light)); animation: terminal-flicker 1.1s steps(1, end) 0.3s 1 both; }
+  & .brand-name { color: var(--ink); }
+  & .site-header { justify-content: flex-start; }
+  & .site-nav { margin-left: auto; }
+  & .crumb { display: inline; color: var(--ink-2); }
+  & .site-nav ul { gap: 0 calc(3 * var(--u)); }
+  & .site-nav a { text-decoration: none; color: var(--ink-2); }
+  & .site-nav a::before { content: "./" / ""; color: var(--rule); }
+  & .site-nav a:hover { color: var(--accent); }
+  & .site-nav a[aria-current="page"] { color: var(--accent); text-decoration: none; }
+  & .site-nav a[aria-current="page"]::before { color: var(--accent); }
+
+  /* type: mono structure, legible text */
+  & h1 {
+    font-weight: 700; font-size: clamp(1.875rem, 1.1rem + 3.4vw, 3.5rem); line-height: 1.12; letter-spacing: -0.03em;
+    text-shadow: -0.03em 0 0 rgba(255, 79, 216, 0.45), 0.03em 0 0 rgba(54, 227, 208, 0.42);
+  }
+  & h2 { font-weight: 400; font-size: var(--step-1); letter-spacing: -0.01em; }
+  & h3 { font-weight: 700; font-size: var(--step-0); }
+  & .prose h2::before, & .flow > h2::before { content: "## " / ""; color: var(--accent); }
+  & .prose h3::before { content: "### " / ""; color: var(--accent); }
+  & .lede { color: var(--ink); }
+  & .page-head { padding-bottom: calc(4 * var(--u)); border-bottom: 1px dashed var(--rule); }
+  & .page-head .meta a { text-decoration: none; color: var(--accent); }
+  & .page-head .meta a::before { content: "../" / ""; color: var(--ink-2); }
+  & code { color: var(--accent); }
+  & .prose pre { background: var(--paper-2); border: 1px dashed var(--rule); }
+  & .prose pre code { color: var(--ink); }
+  & .prose blockquote { border-left: 2px solid var(--violet); color: var(--ink); }
+  & .prose table { border-top: 1px dashed var(--rule); }
+  & .prose th, & .prose td { border-bottom: 1px dashed var(--rule); }
+  & :is(.prose, .flow) ul { list-style-type: "- "; }
+  & :is(.prose, .flow) ul li::marker { color: var(--accent); }
+  & .voice { font-family: var(--font-ui); font-style: normal; font-size: 0.75rem; }
+  & .voice::before { content: "// " / ""; color: var(--accent); }
+
+  /* lists as a listing: [01] in the signal colour, dashed rules */
+  & .index { gap: 0; counter-reset: item; }
+  & .index > li {
+    display: grid; grid-template-columns: calc(8 * var(--u)) minmax(0, 1fr); column-gap: calc(2 * var(--u));
+    padding-block: calc(2 * var(--u)) calc(3 * var(--u)); border-top: 1px dashed var(--rule);
+  }
+  & .index > li > * { grid-column: 2; }
+  & :is(ul, ol:not([reversed])).index > li { counter-increment: item; }
+  & :is(ul, ol:not([reversed])).index > li::before {
+    content: "[" counter(item, decimal-leading-zero) "]" / ""; grid-column: 1; grid-row: 1 / span 3;
+    font: var(--label); color: var(--accent); padding-top: calc(1.5 * var(--u));
+  }
+  & .index a { font-size: var(--step-1); line-height: calc(6 * var(--u)); text-decoration: none; }
+  & .index p { font-size: var(--step--1); line-height: calc(4 * var(--u)); }
+  & .index time { display: block; color: var(--ink-2); }
+
+  /* For recruiters */
+  & .cta {
+    display: inline-block; font: var(--label); font-size: 0.8125rem; color: var(--accent); text-decoration: none;
+    border: 1px solid var(--accent); padding: calc(1.5 * var(--u)) calc(3 * var(--u));
+  }
+  & .cta::before { content: "> " / ""; }
+  & .cta:hover { background: var(--accent); color: var(--paper); text-shadow: none; }
+  & .facts { margin-top: calc(3 * var(--u)); border-top: 1px dashed var(--rule); padding-top: calc(2 * var(--u)); }
+  & .skills > div { padding-top: calc(2 * var(--u)); border-top: 1px dashed var(--rule); }
+  & .tags { color: var(--violet); }
+
+  /* the portrait: an X-ray (a cyan negative) over the photo; it clears when you look closer */
+  & .portrait { position: relative; }
+  & .portrait-screen { display: block; }
+  & .portrait-screen img { filter: grayscale(1) invert(1) sepia(1) saturate(3.5) hue-rotate(125deg) contrast(1.15) brightness(0.9); }
+  & .portrait-img { position: absolute; inset: 0; opacity: 0; transition: opacity 0.5s ease; }
+  & .portrait:hover .portrait-img { opacity: 1; }
+
+  /* diagrams */
+  & .glyph svg { fill: var(--ink); }
+  & .glyph .gap { stroke: var(--magenta); }
+
+  /* footer: a cursor that blinks four times (4 s), then rests */
+  & .site-footer { border-top: 1px solid var(--rule); align-items: center; }
+  & .site-footer a { font: var(--label); }
+  & .footer-name::after { content: "\2590" / ""; margin-left: 0.4em; color: var(--accent); animation: terminal-blink 1s steps(1, end) 4; }
+}
+
+/* desktop reading: one column, the measure, a little more air */
+@media (min-width: 62rem) {
+  :root[data-theme="terminal"] .prose { padding-top: calc(3 * var(--lh)); }
+}
+
+@keyframes terminal-flicker { 0% { opacity: 0; } 12% { opacity: 1; } 18% { opacity: 0.2; } 26% { opacity: 1; } 40% { opacity: 0.35; } 46% { opacity: 1; } }
+@keyframes terminal-blink { 50% { opacity: 0; } }
+
+/* thresholds: the old page powers off to a line, the new one powers on from it (transform and opacity only) */
+:root[data-theme="terminal"]::view-transition-old(root) { animation: terminal-off 240ms cubic-bezier(0.6, 0, 0.9, 0.4) both; }
+:root[data-theme="terminal"]::view-transition-new(root) { animation: terminal-on 320ms cubic-bezier(0.1, 0.7, 0.3, 1) 140ms both; }
+@keyframes terminal-off { 70% { transform: scaleY(0.006); opacity: 1; } to { transform: scale(0.4, 0.006); opacity: 0; } }
+@keyframes terminal-on { from { transform: scale(0.4, 0.006); opacity: 0; } 35% { transform: scaleY(0.006); opacity: 1; } to { transform: none; opacity: 1; } }

@@ -35,15 +35,10 @@
 /* dark: Terminal's family; without JavaScript it follows the device (the boot script sets data-theme otherwise) */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme]) {
-    --paper: #0f1012; --paper-2: #17181b; --ink: #e9e6df; --ink-2: #aaa69c; --rule: #3a3c41; --accent: #ff8f6b;
-    --accent-ink: #ff8f6b; --focus: #8ab4f8;
+    --paper: #0b0c10; --paper-2: #12141a; --ink: #e7e4f2; --ink-2: #a09cb4; --rule: #2b2e3a; --accent: #36e3d0;
+    --accent-ink: #36e3d0; --focus: #36e3d0; --mark-light: #ffd9a0;
     color-scheme: dark;
   }
-}
-:root[data-theme="terminal"] {
-  --paper: #0f1012; --paper-2: #17181b; --ink: #e9e6df; --ink-2: #aaa69c; --rule: #3a3c41; --accent: #ff8f6b;
-  --accent-ink: #ff8f6b; --focus: #8ab4f8;
-  color-scheme: dark;
 }
 
 /* Page-to-page: the browser's cross-document View Transitions, in CSS only (no router). */
@@ -153,7 +148,8 @@ hr { border: 0; border-top: 1px solid var(--rule); margin: calc(2 * var(--lh)) 0
 .portrait { margin: 0; width: calc(40 * var(--u)); max-width: 60%; }
 .portrait img { display: block; width: 100%; height: auto; }
 .portrait-screen { display: none; }
-.regmark { display: none; }               /* a theme may draw the portrait another way (Editorial: halftone) */
+.regmark { display: none; }
+.crumb { display: none; }               /* a theme may draw the portrait another way (Editorial: halftone) */
 .prose > :not(.page-head), .measure { max-width: var(--measure); }
 .prose > * + *, .flow > * + * { margin-top: var(--lh); }
 .prose h2 { margin-top: calc(2 * var(--lh)); }
@@ -164,6 +160,8 @@ hr { border: 0; border-top: 1px solid var(--rule); margin: calc(2 * var(--lh)) 0
 .prose table { border-collapse: collapse; width: 100%; font-size: var(--step--1); line-height: calc(4 * var(--u)); display: block; overflow-x: auto; }
 .prose th, .prose td { text-align: left; vertical-align: top; padding: var(--u) calc(2 * var(--u)) var(--u) 0; border-bottom: 1px solid var(--rule); }
 .prose section + section { margin-top: calc(2 * var(--lh)); }
+.prose section > * + * { margin-top: var(--lh); }
+.prose section > h2 + * { margin-top: calc(2 * var(--u)); }
 .meta { font-family: var(--font-ui); font-size: var(--step--1); color: var(--ink-2); }
 
 /* lists of things: rooms, projects, notes */
