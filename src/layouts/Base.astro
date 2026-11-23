@@ -9,6 +9,7 @@ import '../styles/themes/profile.css';
 import '../styles/switcher.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import Chat from '../components/Chat.astro';
 import { BOOT } from '../data/theme-boot.mjs';
 import { SITE_NAME } from '../data/site';
 import { jsonldFor, type Schema } from '../data/jsonld';
@@ -60,5 +61,6 @@ const sourceNote = `<!--\n\n  ${art}\n\n  [JON: a message for whoever reads the 
       <slot />
     </main>
     {!bare && <Footer path={path} />}
+    {!bare && <Chat />}
   </body>
 </html>

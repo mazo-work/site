@@ -29,6 +29,20 @@
 .fragment[open] summary { margin-bottom: var(--u); }
 .fragment p + p { margin-top: var(--u); }
 
+/* the assistant's launcher (U12): a support widget's bubble, in the theme's colours; the panel's styles load with it */
+.chat-launcher { display: none; }
+[data-js] .chat-launcher {
+  position: fixed; z-index: 19; right: calc(3 * var(--u)); bottom: calc(3 * var(--u)); display: grid; place-items: center;
+  width: calc(9 * var(--u)); height: calc(9 * var(--u)); padding: 0; border: 0; cursor: pointer;
+  color: var(--paper); background: var(--ink);
+  /* radius-ok: a round launcher, as support widgets have (the gag is played straight) */
+  border-radius: 50%;
+  /* shadow-ok: the support widget's own look, played straight */
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
+}
+.chat-launcher svg { width: calc(4 * var(--u)); height: calc(4 * var(--u)); fill: currentColor; }
+.chat-launcher:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+
 /* putting on a mask: a cross-fade, whatever the theme's page transition is */
 :root.theme-switching[data-theme]::view-transition-old(root) { animation: mask-off 0.35s ease both; }
 :root.theme-switching[data-theme]::view-transition-new(root) { animation: mask-on 0.45s ease both; }
