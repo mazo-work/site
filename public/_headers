@@ -1,0 +1,19 @@
+# Response headers for Cloudflare Pages (BRIEF.md §3, Security). `npm run check` asserts every directive below
+# (tools/check/checks/15-headers.mjs) and that each inline script's sha256 is listed in script-src, no more, no fewer.
+# `trusted-types 'none'` completes `require-trusted-types-for 'script'`: no script may create a policy, because
+# none needs one. Permissions-Policy denies every feature Chrome 157 knows that the site does not use; `autoplay`
+# stays at its default (this origin only) because the entrance's sound starts on a tap; client hints (ch-*) are left
+# alone (they only delegate hints to other origins, and there are none).
+/*
+  Content-Security-Policy: default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; media-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'; object-src 'none'; upgrade-insecure-requests; require-trusted-types-for 'script'; trusted-types 'none'
+  Strict-Transport-Security: max-age=63072000; includeSubDomains
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Resource-Policy: same-origin
+  Permissions-Policy: accelerometer=(), aria-notify=(), bluetooth=(), browsing-topics=(), camera=(), captured-surface-control=(), clipboard-read=(), clipboard-write=(), compute-pressure=(), cross-origin-isolated=(), deferred-fetch=(), deferred-fetch-minimal=(), digital-credentials-create=(), digital-credentials-get=(), display-capture=(), encrypted-media=(), fullscreen=(), gamepad=(), geolocation=(), gyroscope=(), hid=(), identity-credentials-get=(), idle-detection=(), interest-cohort=(), keyboard-map=(), language-detector=(), language-model=(), local-fonts=(), local-network=(), local-network-access=(), loopback-network=(), magnetometer=(), media-playback-while-not-visible=(), microphone=(), midi=(), on-device-speech-recognition=(), otp-credentials=(), payment=(), picture-in-picture=(), private-state-token-issuance=(), private-state-token-redemption=(), publickey-credentials-create=(), publickey-credentials-get=(), screen-wake-lock=(), serial=(), speaker-selection=(), storage-access=(), summarizer=(), sync-xhr=(), translator=(), unload=(), usb=(), web-share=(), window-management=(), xr-spatial-tracking=()
+  X-Frame-Options: DENY
+
+# Astro's built assets carry a content hash in their names, so they never change under the same URL.
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable

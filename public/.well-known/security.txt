@@ -1,0 +1,4 @@
+# RFC 9116. Renew Expires before it passes (at most a year ahead).
+Contact: [JON: contact]
+Expires: 2027-11-22T23:59:59.000Z
+Preferred-Languages: en, es
