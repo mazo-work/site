@@ -1,6 +1,8 @@
 // Astro config for the v3 site: static output, zero JavaScript by default.
 // See BRIEF.md §3 (Stack, Security) for why each setting is here.
 import { defineConfig } from 'astro/config';
+import { satteri } from '@astrojs/markdown-satteri';
+import { glyphs } from './src/lib/markdown-glyphs.mjs';
 
 // The public origin. Jon's domain is not in this repository: set SITE_URL when building for real.
 // `.invalid` is a reserved TLD (RFC 2606), so the placeholder can never resolve. [JON: domain]
@@ -17,7 +19,7 @@ export default defineConfig({
   },
   // No dev toolbar, no client prefetching: nothing the site did not ask for.
   // No syntax highlighting: Shiki writes inline style attributes, which the CSP (style-src 'self') blocks.
-  markdown: { syntaxHighlight: false },
+  markdown: { syntaxHighlight: false, processor: satteri({ mdastPlugins: [glyphs] }) },
   devToolbar: { enabled: false },
   prefetch: false,
   vite: {

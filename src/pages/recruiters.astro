@@ -1,8 +1,7 @@
 ---
 // For recruiters: v2's Skills and Resume folded into one fast page, the resume PDF linked (BRIEF.md §3).
-import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
-import headshot from '../assets/headshot.webp';
+import Portrait from '../components/Portrait.astro';
 import { name, about, skills, resume, sidebar } from '../data/v2-words';
 import { RESUME_PDF, DESCRIPTIONS } from '../data/site';
 ---
@@ -14,7 +13,7 @@ import { RESUME_PDF, DESCRIPTIONS } from '../data/site';
       <p><a class="cta" href={RESUME_PDF}>{resume.linkText}</a></p>
     </header>
     <aside class="span-4" aria-label="Facts">
-      <Image class="portrait" src={headshot} alt={sidebar.headshotAlt} width={320} />
+      <Portrait />
       <dl class="facts">
         <dt>Name</dt><dd>{name}</dd>
         <dt>Region</dt><dd>[JON: region]</dd>

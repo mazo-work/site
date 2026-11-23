@@ -16,7 +16,7 @@ const shell = entry.data.status === 'coming-soon';
       <p class="meta"><a href="/projects/">Projects</a></p>
       <h1>{entry.data.title}</h1>
       {shell ? <p class="lede">Coming soon.</p> : <p class="lede">{entry.data.description}</p>}
-      {entry.data.voice && <p class="meta">{entry.data.voice}</p>}
+      {entry.data.voice && <p class="voice">{entry.data.voice}</p>}
     </header>
     <Content />
   </article>

@@ -1,0 +1,9 @@
+{
+  "about": "The site's fonts: OFL placeholders (BRIEF.md §3, Type), at most two families per theme, about 60-80 KB per theme. Each comes from its Fontsource npm package at the pinned version, Latin subset (Basic Latin, Latin-1, general punctuation), as WOFF2. Run `node tools/fonts/fetch.mjs` after editing; it rewrites public/fonts/ and the @font-face block in src/styles/fonts.css. Jon swaps a font here and in that file's tokens.",
+  "families": [
+    { "family": "Literata", "id": "literata", "package": "@fontsource/literata", "version": "5.3.0", "themes": ["editorial"],
+      "faces": [["400", "normal"], ["400", "italic"], ["700", "normal"]] },
+    { "family": "Libre Franklin", "id": "libre-franklin", "package": "@fontsource/libre-franklin", "version": "5.3.0", "themes": ["editorial"],
+      "faces": [["500", "normal"]] }
+  ]
+}

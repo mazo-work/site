@@ -1,0 +1,143 @@
+/* Editorial (U4): the Paper family. Paper and ink, quiet, built for reading.
+   It applies whenever the theme is not Terminal or Profile, so it is also the look without JavaScript.
+   From BRIEF.md §9: texture over gloss (paper grain, a halftone portrait); the hand-made line (hairlines, a printer's
+   registration mark); thresholds (a page turn between pages); what lies under the surface (the halftone clears to
+   the colour photo when you look closer); one hot accent, used the way a riso uses its second drum. */
+
+:root:not([data-theme="terminal"], [data-theme="profile"]) {
+  /* newsprint grain: SVG noise as a tile (img-src allows data:), multiplied onto the paper */
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .11 0 0 0 0 .1 0 0 0 0 .08 0 0 0 .1 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  --label: 500 0.75rem / calc(3 * var(--u)) var(--font-ui);
+
+  & body { background-color: var(--paper); background-image: var(--grain); }
+  & ::selection { background: #f6c1b3; color: var(--ink); }
+  & :focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 3px; }
+  & a { text-decoration-color: var(--accent); }
+  & a:hover { text-decoration-thickness: 2px; }
+
+  /* labels: the grotesque, small, spaced, in capitals */
+  & .meta, & .brand-name, & .site-nav a, & .site-footer, & .facts dt, & .tags, & .prose th, & .index time {
+    font: var(--label); letter-spacing: 0.1em; text-transform: uppercase;
+  }
+
+  /* the masthead: the mark, the name, the rooms; a single ink rule */
+  & .site-header {
+    view-transition-name: masthead;
+    align-items: end; border-bottom: 1px solid var(--ink);
+    padding-block: calc(4 * var(--u)) calc(2 * var(--u));
+  }
+  & .brand { align-items: end; gap: calc(3 * var(--u)); }
+  & .brand .mark { width: calc(18 * var(--u)); }
+  & .brand .mark-light { transition: transform 0.4s cubic-bezier(0.3, 1.6, 0.5, 1); }
+  & .brand:hover .mark-light, & .brand:focus-visible .mark-light { transform: translate(0.6px, -0.6px); }
+  & .brand-name { padding-bottom: 1px; }
+  & .site-nav ul { gap: 0 calc(4 * var(--u)); }
+  & .site-nav a { padding-block: var(--u); }
+  & .site-nav a[aria-current="page"] { text-decoration: none; box-shadow: inset 0 -2px 0 var(--accent); }
+
+  /* type */
+  & h1 { font-weight: 400; font-size: clamp(2.75rem, 1.6rem + 4.6vw, 5.25rem); line-height: 1.02; letter-spacing: -0.022em; }
+  & .lede { font-style: italic; color: var(--ink); }
+  & h2 { font-weight: 400; letter-spacing: -0.01em; }
+  & .page-head { gap: calc(4 * var(--u)); padding-bottom: calc(4 * var(--u)); border-bottom: 1px solid var(--rule); }
+  & .page-head .meta a { text-decoration: none; }
+  & .page-head .meta a:hover { text-decoration: underline; }
+
+  /* contents lists: numbered rooms and work, hairlines between, the number in the accent */
+  & .index { gap: 0; counter-reset: item; }
+  & .index > li {
+    display: grid; grid-template-columns: calc(7 * var(--u)) minmax(0, 1fr); column-gap: calc(2 * var(--u));
+    padding-block: calc(2 * var(--u)) calc(3 * var(--u)); border-top: 1px solid var(--rule);
+  }
+  & .index > li > * { grid-column: 2; }
+  & :is(ul, ol:not([reversed])).index > li { counter-increment: item; }
+  & :is(ul, ol:not([reversed])).index > li::before {
+    content: counter(item, decimal-leading-zero) / ""; grid-column: 1; grid-row: 1 / span 3;
+    font: var(--label); letter-spacing: 0.08em; color: var(--accent-ink); padding-top: calc(1.5 * var(--u));
+  }
+  & .index a { font-size: var(--step-1); line-height: calc(6 * var(--u)); text-decoration: none; }
+  & .index a:hover { text-decoration: underline; }
+  & .index p { font-size: var(--step--1); line-height: calc(4 * var(--u)); }
+  & .index time { display: block; color: var(--ink-2); }
+
+  /* reading pages: headings hang in the margin, text keeps one measure */
+  & :is(.prose, .flow) ul { list-style-type: "–  "; }
+  & .glyphs figcaption { font-style: italic; }
+  & .prose blockquote { border-left: 2px solid var(--accent); font-style: italic; color: var(--ink); }
+  & .prose pre { background: var(--paper-2); border: 0; }
+  & .prose table { border-top: 1px solid var(--ink); }
+  & .prose h2 { font-size: var(--step-1); line-height: calc(5 * var(--u)); }
+  & .prose h2::before {
+    content: ""; display: block; width: calc(4 * var(--u)); height: 2px; background: var(--accent);
+    margin-bottom: calc(2 * var(--u));
+  }
+  & .beat { counter-increment: beat; }
+  & .beat > h2::before {
+    content: counter(beat, upper-roman) / ""; width: auto; height: auto; background: none;
+    font: var(--label); letter-spacing: 0.1em; color: var(--accent-ink); margin-bottom: var(--u);
+  }
+  & .prose { counter-reset: beat; }
+
+  /* the portrait: a halftone screen over the photo; it clears when you look closer */
+  & .portrait { position: relative; max-width: 100%; }
+  & .portrait-screen {
+    display: block; position: relative; overflow: hidden; background: #fff;
+    filter: grayscale(1) contrast(24); mix-blend-mode: multiply;
+  }
+  & .portrait-screen img { filter: grayscale(1) contrast(1.25) brightness(0.92); }
+  & .portrait-screen::after {
+    content: ""; position: absolute; inset: 0;
+    /* Averaged 50/50 with the photo and thresholded at mid-grey, a dot's radius grows with the tone's darkness,
+       from nothing (white) to the whole cell (black). */
+    /* gradient-ok: a halftone dot screen (texture under a threshold filter), not a colour wash */
+    background: radial-gradient(circle farthest-corner, #000, #fff) 0 0 / 5px 5px;
+    opacity: 0.5;
+  }
+  & .portrait-img { position: absolute; inset: 0; opacity: 0; transition: opacity 0.6s ease; }
+  & .portrait:hover .portrait-img { opacity: 1; }
+
+  /* For recruiters: one door to the facts */
+  & .cta {
+    display: inline-block; font: var(--label); letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none;
+    border: 1px solid var(--ink); padding: calc(1.5 * var(--u)) calc(3 * var(--u));
+  }
+  & .cta:hover { background: var(--ink); color: var(--paper); }
+  & .facts { margin-top: calc(3 * var(--u)); border-top: 1px solid var(--rule); padding-top: calc(2 * var(--u)); }
+  & .facts dt { padding-top: 2px; }
+  & .skills > div { padding-top: calc(2 * var(--u)); border-top: 1px solid var(--rule); }
+  & .skills dt { font-weight: 700; }
+  & .tags { color: var(--ink-2); }
+
+  /* the footer: a hairline, the name, a printer's registration mark */
+  & .site-footer { border-top: 1px solid var(--ink); align-items: center; }
+  & .regmark { display: block; width: calc(4 * var(--u)); height: calc(4 * var(--u)); color: var(--accent); }
+}
+
+/* desktop reading: a margin column for headings and labels beside one measure of text */
+@media (min-width: 62rem) {
+  :root:not([data-theme="terminal"], [data-theme="profile"]) {
+    & .prose {
+      display: grid; column-gap: calc(6 * var(--u));
+      grid-template-columns: [margin-start] minmax(0, 12rem) [margin-end text-start] minmax(0, var(--measure)) [text-end] minmax(0, 1fr) [end];
+    }
+    & .prose > * { grid-column: text; }
+    & .prose > .page-head { grid-column: margin-start / end; }
+    & .prose > table, & .prose > pre { grid-column: text-start / end; max-width: 100%; }
+    & .prose > section { grid-column: margin-start / text-end; display: grid; grid-template-columns: subgrid; }
+    & .prose > section > * { grid-column: text; }
+    & .prose > h2, & .prose > section > h2 { grid-column: margin; align-self: start; margin-top: calc(2 * var(--lh)); }
+    & .prose > h2 + *, & .prose > section > h2 + * { margin-top: calc(2 * var(--lh)); }
+    & .prose > section > h2 { margin-top: 0; }
+    & .prose > section > h2 + * { margin-top: 0; }
+  }
+}
+
+/* thresholds: a page turn between pages; the masthead stays where it is */
+:root:not([data-theme="terminal"], [data-theme="profile"])::view-transition-old(root) {
+  animation: editorial-leave 220ms cubic-bezier(0.4, 0, 1, 1) both;
+}
+:root:not([data-theme="terminal"], [data-theme="profile"])::view-transition-new(root) {
+  animation: editorial-enter 380ms cubic-bezier(0, 0, 0.2, 1) both;
+}
+@keyframes editorial-leave { to { opacity: 0; transform: translateX(-1.5%); } }
+@keyframes editorial-enter { from { opacity: 0; transform: translateX(2.5%); } }

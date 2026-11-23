@@ -1,0 +1,13 @@
+---
+// Jon's photo. The real image carries the alt text; a decorative copy (alt="", hidden from assistive tech) lets a
+// theme draw the photo another way on top (Editorial: a halftone screen that clears when you look closer).
+import { Image } from 'astro:assets';
+import headshot from '../assets/headshot.webp';
+import { sidebar } from '../data/v2-words';
+interface Props { width?: number; class?: string; }
+const { width = 320, class: cls } = Astro.props;
+---
+<figure class:list={['portrait', cls]}>
+  <span class="portrait-screen" aria-hidden="true"><Image src={headshot} alt="" width={width} /></span>
+  <Image class="portrait-img" src={headshot} alt={sidebar.headshotAlt} width={width} />
+</figure>

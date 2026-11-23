@@ -1,7 +1,9 @@
 ---
 // Every page's document. Head order matters: the theme boot runs before the stylesheet so the first paint is
 // already in the right theme. `bare` drops the header and footer (the entrance).
+import '../styles/fonts.css';
 import '../styles/base.css';
+import '../styles/themes/editorial.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { BOOT } from '../data/theme-boot.mjs';

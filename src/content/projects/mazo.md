@@ -15,7 +15,7 @@ The site's front door is a 3D puzzle made of the letters M, A, Z and O, locked t
 
 Each letter is a 5 by 5 block glyph, one block thick, and every letter is a single solid piece, with no corner-only joins. They come out in the spelling order: M, then A, then Z, then O.
 
-```
+```glyphs M, A, Z and the stencil O, each a 5 by 5 block glyph. The O's gap is in its bottom bar, second cell from the left.
 M       A       Z       O
 XX.XX   .XXX.   XXXXX   XXXXX
 XXXXX   XX.XX   ...XX   X...X

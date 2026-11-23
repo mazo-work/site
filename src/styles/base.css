@@ -19,18 +19,15 @@
   --step-3: 2.375rem;
   --step-4: clamp(2.5rem, 7vw, 4rem);
 
-  --font-text: ui-serif, Georgia, serif;
-  --font-display: var(--font-text);
-  --font-ui: system-ui, sans-serif;
-  --font-mono: ui-monospace, Menlo, Consolas, monospace;
-
-  /* light: the device default for light screens (Editorial's family) */
-  --paper: #fbfaf7;
-  --ink: #161514;
-  --ink-2: #4b4944;
-  --rule: #cfccc4;
-  --accent: #9b2c1f;
-  --focus: #0b57d0;
+  /* colour: the Paper family (Editorial's), the default; themes override these */
+  --paper: #f5f0e6;
+  --paper-2: #ece5d7;
+  --ink: #1d1b18;
+  --ink-2: #5a544b;
+  --rule: #cfc6b5;
+  --accent: #e5442d;                             /* graphics and large type only (3.6:1 on paper) */
+  --accent-ink: #b0301b;                         /* the accent for small text (5.6:1 on paper) */
+  --focus: var(--accent-ink);
   --mark-light: var(--accent);
   color-scheme: light;
 }
@@ -38,12 +35,14 @@
 /* dark: Terminal's family; without JavaScript it follows the device (the boot script sets data-theme otherwise) */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme]) {
-    --paper: #0f1012; --ink: #e9e6df; --ink-2: #aaa69c; --rule: #3a3c41; --accent: #ff8f6b; --focus: #8ab4f8;
+    --paper: #0f1012; --paper-2: #17181b; --ink: #e9e6df; --ink-2: #aaa69c; --rule: #3a3c41; --accent: #ff8f6b;
+    --accent-ink: #ff8f6b; --focus: #8ab4f8;
     color-scheme: dark;
   }
 }
 :root[data-theme="terminal"] {
-  --paper: #0f1012; --ink: #e9e6df; --ink-2: #aaa69c; --rule: #3a3c41; --accent: #ff8f6b; --focus: #8ab4f8;
+  --paper: #0f1012; --paper-2: #17181b; --ink: #e9e6df; --ink-2: #aaa69c; --rule: #3a3c41; --accent: #ff8f6b;
+  --accent-ink: #ff8f6b; --focus: #8ab4f8;
   color-scheme: dark;
 }
 
@@ -136,9 +135,25 @@ hr { border: 0; border-top: 1px solid var(--rule); margin: calc(2 * var(--lh)) 0
 }
 
 /* reading: one measure, one rhythm */
+.page-title { display: grid; gap: var(--lh); }
+@media (min-width: 52rem) {
+  .page-head.has-photo { grid-template-columns: minmax(0, 1fr) auto; align-items: end; column-gap: calc(6 * var(--u)); }
+  .page-head.has-photo .portrait { width: calc(36 * var(--u)); max-width: none; }
+}
+.grid > .page-head { margin-bottom: 0; }
+.voice { font-size: var(--step--1); line-height: calc(4 * var(--u)); color: var(--ink-2); max-width: var(--measure); font-style: italic; }
+.glyphs { margin: 0; }
+.glyph-row { display: flex; flex-wrap: wrap; gap: calc(3 * var(--u)) calc(5 * var(--u)); }
+.glyph { display: grid; gap: var(--u); justify-items: start; font-family: var(--font-ui); font-size: var(--step--1); color: var(--ink-2); }
+.glyph svg { width: calc(14 * var(--u)); fill: var(--ink); }
+.glyph .gap { fill: none; stroke: var(--accent); stroke-width: 0.25; }
+.glyphs figcaption { margin-top: calc(2 * var(--u)); font-size: var(--step--1); line-height: calc(4 * var(--u)); color: var(--ink-2); }
 .page-head { display: grid; gap: var(--lh); margin-bottom: calc(2 * var(--lh)); }
 .lede { font-size: var(--step-1); line-height: calc(6 * var(--u)); max-width: var(--measure); color: var(--ink-2); }
-.portrait { width: calc(40 * var(--u)); max-width: 60%; height: auto; }
+.portrait { margin: 0; width: calc(40 * var(--u)); max-width: 60%; }
+.portrait img { display: block; width: 100%; height: auto; }
+.portrait-screen { display: none; }
+.regmark { display: none; }               /* a theme may draw the portrait another way (Editorial: halftone) */
 .prose > :not(.page-head), .measure { max-width: var(--measure); }
 .prose > * + *, .flow > * + * { margin-top: var(--lh); }
 .prose h2 { margin-top: calc(2 * var(--lh)); }
