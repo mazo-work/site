@@ -2,12 +2,20 @@
 // referenced only by the entrance's loader (a dynamic import after first paint); (2) the puzzle data still verifies
 // (tools/burr/check.py); (3) it plays in a headless browser with WebGL: Show me pulls the four letters in order, the
 // finale runs, the hold ends, and the curtain opens Home with data-curtain set; Skip intro opens Home too. No script
-// errors or CSP violations on the way.
+// errors or CSP violations on the way. v4 (U5b): all of it in both masks, the puzzle wearing the mask in force (its
+// letters in that mask's colours), and the word's ink and the light landing in Home's mark in the same colours.
 import fs from 'node:fs';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { ROOT, DIST, read, dom, walk } from '../lib/dist.mjs';
-import { ENTRANCE } from '../config.mjs';
+import { ENTRANCE, THEMES } from '../config.mjs';
+
+// v4: what each mask's puzzle wears (src/entrance/puzzle.js, PALETTES), and the rule: its word and light are the mark's
+const WEARS = {
+  night: { letters: ['#ff6a2b', '#46d98a', '#8b5cff', '#dad6f0'], word: '#ece8ff', light: '#ff6a2b' },
+  paper: { letters: ['#1b1816', '#e5484d', '#9c948a', '#f2a19c'], word: '#1b1816', light: '#e5484d' },
+};
+const hex = (rgb) => '#' + (rgb.match(/\d+/g) || []).slice(0, 3).map((n) => Number(n).toString(16).padStart(2, '0')).join('');
 import { chromium } from 'playwright';
 import { themedContext } from './50-browser.mjs';
 
@@ -64,8 +72,9 @@ export default {
     // so the run stays off the network; failed beacon loads are ignored below by their source.
     const browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader',
       '--ignore-gpu-blocklist', '--host-resolver-rules=MAP static.cloudflareinsights.com ~NOTFOUND, MAP cloudflareinsights.com ~NOTFOUND'] });
-    const run = async (label, drive) => {
-      const context = await themedContext(browser, 'paper');
+    const run = async (label, mask, drive) => {
+      label = `${label} [${mask}]`;
+      const context = await themedContext(browser, mask);
       const page = await context.newPage();
       const errs = [];
       page.on('pageerror', (e) => errs.push(`uncaught: ${e.message}`));
@@ -73,24 +82,39 @@ export default {
       try {
         await page.goto(origin + ENTRANCE, { waitUntil: 'load' });
         await page.waitForFunction(() => window.__mazo && window.__mazo.state().stage === 0, null, { timeout: 30000 });
-        await drive(page);
+        const s0 = await page.evaluate(() => window.__mazo.state());
+        if (s0.mask !== mask || JSON.stringify(s0.letters) !== JSON.stringify(WEARS[mask].letters)) r.play.push(`${label}: the puzzle wears ${s0.mask} ${s0.letters.join(' ')}`);
+        const seen = await drive(page);
         await page.waitForURL(origin + '/home/', { timeout: 30000 });
         const curtain = await page.evaluate(() => document.documentElement.getAttribute('data-curtain'));
         if (curtain !== 'rise') r.play.push(`${label}: Home opened without the curtain (data-curtain=${curtain})`);
         if (await page.evaluate(() => document.querySelector('h1')?.textContent || '') === '') r.play.push(`${label}: Home has no h1`);
+        if (seen) {   // the rule: the word and the light land in Home's mark without changing colour
+          const mark = await page.evaluate((m) => {
+            const fill = (sel) => getComputedStyle(document.querySelector(sel)).fill;
+            return m === 'night' ? { ink: fill('#mark-led circle'), light: fill('#mark-led-light circle') }
+              : { ink: fill('.masthead-mark .mark-body'), light: fill('.masthead-mark .mark-light') };
+          }, mask);
+          if (seen.word !== WEARS[mask].word || hex(mark.ink) !== seen.word) r.play.push(`${label}: the word is ${seen.word}, Home's mark is ${hex(mark.ink)}`);
+          if (seen.light !== WEARS[mask].light || hex(mark.light) !== seen.light) r.play.push(`${label}: the light is ${seen.light}, Home's mark's is ${hex(mark.light)}`);
+        }
       } catch (e) { r.play.push(`${label}: ${e.message.split('\n')[0]}`); }
       errs.forEach((e) => r.play.push(`${label}: ${e}`));
       await context.close();
     };
-    await run('the solve', async (page) => {
-      for (let i = 1; i <= 4; i++) {
-        await page.evaluate(() => window.__mazo.showMe());
-        await page.waitForFunction((n) => window.__mazo.state().stage === n, i, { timeout: 15000 });
-      }
-      const s = await page.evaluate(() => window.__mazo.state());
-      if (s.stage !== 4) r.play.push(`the solve: stage ${s.stage} after four pulls`);
-    });
-    await run('Skip intro', async (page) => { await page.click('#skip'); });
+    for (const mask of THEMES) {
+      await run('the solve', mask, async (page) => {
+        for (let i = 1; i <= 4; i++) {
+          await page.evaluate(() => window.__mazo.showMe());
+          await page.waitForFunction((n) => window.__mazo.state().stage === n, i, { timeout: 15000 });
+        }
+        const s = await page.evaluate(() => window.__mazo.state());
+        if (s.stage !== 4) r.play.push(`the solve [${mask}]: stage ${s.stage} after four pulls`);
+        await page.waitForFunction(() => ['hold', 'fall'].includes(window.__mazo.state().phase), null, { timeout: 20000 });
+        return page.evaluate(() => window.__mazo.state());
+      });
+      await run('Skip intro', mask, async (page) => { await page.click('#skip'); });
+    }
     await browser.close();
     return Object.entries(r).map(([k, problems]) => ({ id: `entrance.${k}`, ok: problems.length === 0, problems }));
   },

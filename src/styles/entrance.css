@@ -1,5 +1,7 @@
-/* The entrance (U5). Without JavaScript only the still picture and the ways in show (Editorial's paper, the mark).
-   With it, P0's stage and controls, in P0's look on every theme: the puzzle's own look is decided later (spec, P2). */
+/* The entrance (U5). Without JavaScript only the still picture and the ways in show (Paper, the mark).
+   With it, P0's stage and controls. v4: they wear the mask in force (v4 BRIEF §3): Night is P0's dark stage in Night's
+   colours; Paper shows its paper and grain through a transparent canvas. Only colours change; every stage text,
+   button and focus ring passes 4.5:1 (focus rings 3:1 as outlines). The puzzle's own colours are in puzzle.js. */
 
 body.is-entrance main { min-height: 100vh; display: grid; place-content: center; justify-items: start; gap: calc(4 * var(--u)); padding: var(--page-pad); }
 .entrance-still .mark { width: min(80vw, calc(110 * var(--u))); }
@@ -10,9 +12,19 @@ body.is-entrance main { min-height: 100vh; display: grid; place-content: center;
 
 /* with JavaScript: the stage */
 [data-js] body.is-entrance {
-  --stage: #0e1014; --stage-ink: #e8e4da; --stage-ink-2: #9a968c; --glow: #ffcf8a;
+  /* Night (v4: was P0's #0e1014, #e8e4da, #9a968c, #ffcf8a) */
+  --stage: #07060b; --stage-ink: #dad6f0; --stage-ink-2: #b9b4d6; --glow: #46d98a; --light: #ff6a2b;
+  --btn: rgba(218, 214, 240, 0.07); --btn-hover: rgba(218, 214, 240, 0.14); --btn-line: rgba(218, 214, 240, 0.28);
+  --pressed: rgba(70, 217, 138, 0.16); --pressed-line: rgba(70, 217, 138, 0.55); --card: rgba(7, 6, 11, 0.86);
   background: var(--stage); color: var(--stage-ink); height: 100%; overflow: hidden;
   font: 15px/1.5 ui-sans-serif, system-ui, sans-serif; background-image: none;
+}
+/* Paper: the paper and its grain behind the puzzle; ink text, red for the light, focus and what is pressed */
+:root:not([data-theme="night"])[data-js] body.is-entrance {
+  --stage: transparent; --stage-ink: #1b1816; --stage-ink-2: #5a544b; --glow: #b0301b; --light: #e5484d;
+  --btn: rgba(27, 24, 22, 0.05); --btn-hover: rgba(27, 24, 22, 0.11); --btn-line: rgba(27, 24, 22, 0.4);
+  --pressed: rgba(229, 72, 77, 0.12); --pressed-line: rgba(176, 48, 27, 0.6); --card: rgba(238, 231, 218, 0.94);
+  background-color: var(--paper); background-image: var(--grain);
 }
 [data-js] body.is-entrance main { display: block; min-height: 0; padding: 0; }
 [data-js] .is-entrance .puzzle-ui { display: block; }
@@ -22,7 +34,8 @@ body.is-entrance main { min-height: 100vh; display: grid; place-content: center;
   color: var(--stage-ink); transition: opacity 0.6s ease;
 }
 [data-js] .is-entrance .entrance-still .mark { width: min(56vw, calc(64 * var(--u))); }
-[data-js] .is-entrance .entrance-still .mark-light { fill: var(--glow); }
+[data-js] .is-entrance .entrance-still .mark-light { fill: var(--light); }
+:root[data-theme="night"][data-js] .is-entrance .entrance-still .mark-light { fill: url(#mark-led-light); }   /* Night: the LED panel's own dot */
 [data-js] .is-entrance.puzzle-ready .entrance-still { opacity: 0; }
 
 #stage { position: fixed; inset: 0; height: 100dvh; z-index: 1; touch-action: none; user-select: none; -webkit-user-select: none; will-change: transform; background: var(--stage); }
@@ -41,24 +54,24 @@ body.is-entrance main { min-height: 100vh; display: grid; place-content: center;
 [data-js] .is-entrance .topbtns ul { gap: 8px; font: inherit; }
 [data-js] .is-entrance .topbtns ul a, [data-js] .is-entrance button, [data-js] .is-entrance #fbskip {
   display: inline-block; white-space: nowrap; font: inherit; font-size: 14px; line-height: 1.5; color: var(--stage-ink);
-  background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.18); border-radius: 8px;
+  background: var(--btn); border: 1px solid var(--btn-line); border-radius: 8px;
   padding: 6px 12px; cursor: pointer; text-decoration: none;
 }
-[data-js] .is-entrance :is(button, .topbtns a, #fbskip):hover { background: rgba(255, 255, 255, 0.13); }
+[data-js] .is-entrance :is(button, .topbtns a, #fbskip):hover { background: var(--btn-hover); }
 [data-js] .is-entrance :is(button, a):focus-visible { outline: 2px solid var(--glow); outline-offset: 2px; }
-[data-js] .is-entrance button[aria-pressed="true"] { background: rgba(255, 207, 138, 0.18); border-color: rgba(255, 207, 138, 0.5); }
+[data-js] .is-entrance button[aria-pressed="true"] { background: var(--pressed); border-color: var(--pressed-line); }
 
 #hint { bottom: calc(max(14px, env(safe-area-inset-bottom)) + 44px); left: 50%; transform: translateX(-50%); width: min(92vw, 520px);
-  margin: 0; text-align: center; color: #b9b4a8; font-size: 14px; transition: opacity 0.4s; pointer-events: none; }
+  margin: 0; text-align: center; color: var(--stage-ink-2); font-size: 14px; transition: opacity 0.4s; pointer-events: none; }
 #bottom { left: 16px; right: 16px; bottom: max(14px, env(safe-area-inset-bottom)); display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
 #bottom .spacer { flex: 1; }
 #bottom .dev { display: none; }
 body:has(#debug:target) #bottom .dev { display: inline-block; }
-#arrow { position: fixed; left: 0; top: 0; width: 56px; height: 56px; margin: -28px 0 0 -28px; pointer-events: none; opacity: 0; transition: opacity 0.4s; z-index: 2; }
+#arrow { color: var(--glow); position: fixed; left: 0; top: 0; width: 56px; height: 56px; margin: -28px 0 0 -28px; pointer-events: none; opacity: 0; transition: opacity 0.4s; z-index: 2; }
 #done[hidden] { display: none; }
-.is-entrance .card { background: rgba(14, 16, 20, 0.78); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; padding: 16px 20px; text-align: center; max-width: min(90vw, 440px); }
+.is-entrance .card { background: var(--card); border: 1px solid var(--btn-line); border-radius: 12px; padding: 16px 20px; text-align: center; max-width: min(90vw, 440px); }
 .is-entrance .card h2 { font: 500 18px/1.3 ui-sans-serif, system-ui, sans-serif; margin: 0 0 4px; }
-.is-entrance .card p { color: #b9b4a8; margin: 0 0 12px; }
+.is-entrance .card p { color: var(--stage-ink-2); margin: 0 0 12px; }
 #debug { right: 16px; top: calc(max(12px, env(safe-area-inset-top)) + 40px); font: 12px/1.45 ui-monospace, Menlo, monospace;
   color: #d8d3c7; white-space: pre; text-align: right; display: none; pointer-events: none;
   background: rgba(12, 13, 16, 0.78); padding: 6px 8px; border-radius: 6px; z-index: 5; }

@@ -1,7 +1,7 @@
 // The MAZO puzzle: prototype/p0/index.src.html's script, ported to the site (U5). Its logic and finale are P0's,
 // unchanged; every v3 edit is marked "v3" and only touches an integration point: the bundled data, the site being
 // Home, the warm-up, the curtain as a page change, the skip link, and the word's stand-in font. Loaded only by the
-// entrance, after first paint (src/pages/index.astro).
+// entrance, after first paint (src/pages/index.astro). Every v4 edit is marked "v4" and changes colours only.
 import * as THREE from 'three';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
@@ -9,7 +9,24 @@ import { DESIGNS } from './designs.js';                 // v3: the data is bundl
 
 const ORDER = ['M', 'A', 'Z', 'O'];
 const DIR = { '+x': [1,0,0], '-x': [-1,0,0], '+y': [0,1,0], '-y': [0,-1,0], '+z': [0,0,1], '-z': [0,0,-1] };
-const BASE = '#d6d0c2', COLORS = { M: '#e07a52', A: '#3fb08a', Z: '#8f87e6', O: '#f0b24a' };
+// v4: the puzzle wears the mask (v4 BRIEF §3): the same puzzle in the colours of the mask in force when it starts.
+// The rule: its ink and light match the mark's, so the word lands in Home's mark without changing colour. Night is
+// P0's look recoloured: M orange, A green, Z purple, and O the text colour (amber has no Night match); its light
+// effects stay, in orange. Paper prints: the paper and its grain show through (a transparent canvas), the letters are
+// ink and riso red with a tint of each, the light is red, the word ink, and a glow, which cannot show on cream, is
+// printed as red halftone dots instead (the glow behind the word) or a flat red wash (the light's halo).
+const PALETTES = {
+  night: { name: 'night', stage: '#07060b', base: '#b9b4d6', colors: { M: '#ff6a2b', A: '#46d98a', Z: '#8b5cff', O: '#dad6f0' },
+    sky: 0xf2f0ff, ground: 0x15111f, core: 0xffb08f, halo: 0xff6a2b, haloOpacity: 0.22, haloAdd: true, point: 0xff8a57,
+    hint: '#ff8a57', flash: '#ffffff', emissive: '#f1edff', settled: '#ece8ff', light: '#ff6a2b', lightEmissive: '#ff6a2b',
+    word: '#ece8ff', glow: [[0, 'rgba(255,106,43,1)'], [0.4, 'rgba(255,106,43,0.45)'], [1, 'rgba(255,106,43,0)']] },
+  paper: { name: 'paper', stage: null, base: '#8c847a', colors: { M: '#1b1816', A: '#e5484d', Z: '#9c948a', O: '#f2a19c' },
+    sky: 0xfffaf0, ground: 0xb8ae9e, core: 0xe5484d, halo: 0xe5484d, haloOpacity: 0.16, haloAdd: false, point: 0xff8f8f,
+    hint: '#e5484d', flash: '#e5484d', emissive: '#000000', settled: '#1b1816', light: '#e5484d', lightEmissive: '#000000',
+    word: '#1b1816', glow: 'halftone', dots: '#e5484d' },
+};
+const PAL = document.documentElement.dataset.theme === 'night' ? PALETTES.night : PALETTES.paper;   // v4
+const BASE = PAL.base, COLORS = PAL.colors;                                                        // v4: was P0's
 const OS_RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const HONOR_RM = false;         // the full intro plays for everyone (owner's choice); true restores the reduced-motion version
 const RM = HONOR_RM && OS_RM;
@@ -23,13 +40,14 @@ function openSiteNow() {        // no 3D, or 3D was lost: open the site straight
 // ---------- renderer ----------
 let renderer;
 try {
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer = new THREE.WebGLRenderer({ antialias: true, alpha: !PAL.stage });   // v4: Paper's canvas lets the paper show
   if (!renderer.getContext()) throw new Error('no context');
 } catch (e) {
   $('fallback').style.display = 'flex'; $('top').style.display = 'none'; $('bottom').style.display = 'none'; hintEl.style.display = 'none';
   throw e;
 }
 renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
+if (!PAL.stage) renderer.setClearColor(0x000000, 0);   // v4
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.localClippingEnabled = true;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -38,13 +56,13 @@ document.body.classList.add('puzzle-ready');            // v3: the still picture
 renderer.domElement.addEventListener('webglcontextlost', e => { e.preventDefault(); dlog('3D context lost'); paused = true; $('fallback').style.display = 'flex'; });
 
 const scene = new THREE.Scene();
-scene.background = new THREE.Color('#0e1014');
+scene.background = PAL.stage ? new THREE.Color(PAL.stage) : null;   // v4: was #0e1014
 const pmrem = new THREE.PMREMGenerator(renderer);
 scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
 scene.environmentIntensity = 0.55;
 const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 400);
 scene.add(camera);
-const hemi = new THREE.HemisphereLight(0xfff2dc, 0x1c2230, 0.9); scene.add(hemi);
+const hemi = new THREE.HemisphereLight(PAL.sky, PAL.ground, 0.9); scene.add(hemi);   // v4: was 0xfff2dc, 0x1c2230
 const key = new THREE.DirectionalLight(0xffffff, 2.2); key.position.set(6, 10, 9); scene.add(key);
 const puzzle = new THREE.Group(); scene.add(puzzle);
 const title = new THREE.Group(); camera.add(title);
@@ -53,10 +71,10 @@ const voxGeo = new RoundedBoxGeometry(0.94, 0.94, 0.94, 3, 0.11);
 
 // light core: an orb and a point light, sitting inside the O's ring
 const orb = new THREE.Group();
-const orbCore = new THREE.Mesh(new THREE.SphereGeometry(0.3, 24, 16), new THREE.MeshBasicMaterial({ color: 0xffe2b0 }));
+const orbCore = new THREE.Mesh(new THREE.SphereGeometry(0.3, 24, 16), new THREE.MeshBasicMaterial({ color: PAL.core }));   // v4: colours
 const orbHalo = new THREE.Mesh(new THREE.SphereGeometry(0.62, 24, 16),
-  new THREE.MeshBasicMaterial({ color: 0xffb866, transparent: true, opacity: 0.22, blending: THREE.AdditiveBlending, depthWrite: false }));
-const orbLight = new THREE.PointLight(0xffc47a, 14, 0, 2);
+  new THREE.MeshBasicMaterial({ color: PAL.halo, transparent: true, opacity: PAL.haloOpacity, blending: PAL.haloAdd ? THREE.AdditiveBlending : THREE.NormalBlending, depthWrite: false }));
+const orbLight = new THREE.PointLight(PAL.point, 14, 0, 2);
 orb.add(orbCore, orbHalo, orbLight);
 
 // ---------- state ----------
@@ -132,7 +150,7 @@ function glyphPixels(rows) {
 function buildPiece(L, d) {
   const g = new THREE.Group(); g.name = L;
   const mat = new THREE.MeshStandardMaterial({ color: colors ? COLORS[L] : BASE, roughness: 0.52, metalness: 0,
-    emissive: new THREE.Color('#ffbf73'), emissiveIntensity: 0 });
+    emissive: new THREE.Color(PAL.hint), emissiveIntensity: 0 });   // v4: was #ffbf73
   const pix = glyphPixels(d.glyph);
   const mesh = new THREE.InstancedMesh(voxGeo, mat, pix.length);
   const m4 = new THREE.Matrix4();
@@ -360,7 +378,9 @@ function fly(p) {
 }
 // ---------- finale: sweep, the light completes the O, a hold, the fall, the word ----------
 const HOLD_MS = 2000, ROW_GAP = 160, FALL_MS = 900;
-const WHITE = new THREE.Color('#ffffff'), DIM_WHITE = new THREE.Color('#e7e2d8'), GLOW_WHITE = new THREE.Color('#fff1da'), LIT = 0.95, DIM = 0.2;
+// v4: the names stay P0's; the colours are the mask's (Paper: the flash is red, the settled letters ink, no glow)
+const WHITE = new THREE.Color(PAL.flash), DIM_WHITE = new THREE.Color(PAL.settled), GLOW_WHITE = new THREE.Color(PAL.emissive), LIT = 0.95, DIM = 0.2;
+const LIGHT = new THREE.Color(PAL.light), LIGHT_GLOW = new THREE.Color(PAL.lightEmissive);   // v4: the light settles in the mark's light colour
 const FONT = 'ui-sans-serif, system-ui, sans-serif';   // v3: the same stand-in, without named families (BRIEF §3 bans one)
 let phase = 'none', lightBlock = null, glow = null, word = null, fallers = null, fallData = [], holdTimer = null, revealLocal = -9, lastPip = 0;
 const revealPlane = new THREE.Plane(new THREE.Vector3(0, -1, 0), -1e6);   // the word shows only below this height
@@ -374,12 +394,21 @@ function gapLocal() {           // the stencil O's missing ring cell, in the O's
 function disposeMesh(m) { if (!m) return; m.removeFromParent(); m.geometry?.dispose?.(); m.material?.map?.dispose?.(); m.material?.dispose?.(); }
 function makeGlow() {           // a soft warm light behind the word, so the letters stand out against it
   const c = document.createElement('canvas'); c.width = c.height = 256;
-  const g = c.getContext('2d'), grd = g.createRadialGradient(128, 128, 0, 128, 128, 128);
-  grd.addColorStop(0, 'rgba(255,196,120,1)'); grd.addColorStop(0.4, 'rgba(255,170,90,0.45)'); grd.addColorStop(1, 'rgba(255,150,70,0)');
-  g.fillStyle = grd; g.fillRect(0, 0, 256, 256);
+  const g = c.getContext('2d');
+  if (PAL.glow === 'halftone') {   // v4: Paper prints its glow: red dots that shrink from the centre outwards
+    g.fillStyle = PAL.dots;
+    for (let y = 4; y < 256; y += 8) for (let x = 4; x < 256; x += 8) {
+      const d = Math.hypot(x - 128, y - 128) / 128, k = Math.max(0, 1 - d), r = 4.4 * Math.sqrt(k * (0.35 + 0.65 * k));
+      if (r > 0.3) { g.beginPath(); g.arc(x, y, r, 0, Math.PI * 2); g.fill(); }
+    }
+  } else {
+    const grd = g.createRadialGradient(128, 128, 0, 128, 128, 128);
+    PAL.glow.forEach(([at, col]) => grd.addColorStop(at, col));   // v4: was P0's amber
+    g.fillStyle = grd; g.fillRect(0, 0, 256, 256);
+  }
   const tex = new THREE.CanvasTexture(c); tex.colorSpace = THREE.SRGBColorSpace;
   const m = new THREE.Mesh(new THREE.PlaneGeometry(30, 9),
-    new THREE.MeshBasicMaterial({ map: tex, transparent: true, opacity: 0, depthWrite: false, blending: THREE.AdditiveBlending }));
+    new THREE.MeshBasicMaterial({ map: tex, transparent: true, opacity: 0, depthWrite: false, blending: PAL.glow === 'halftone' ? THREE.NormalBlending : THREE.AdditiveBlending }));
   m.position.set(0, 0, -2.4); m.scale.set(0.001, 0.001, 1); return m;
 }
 const GLOW_MAX = 0.32, GLOW_MS = 2800;   // the glow starts as a point at the word's centre and spreads out
@@ -390,7 +419,7 @@ function makeWord() {           // MAZO in a plain font, capitals, the same heig
   g.font = `800 100px ${FONT}`;
   const asc = g.measureText('M').actualBoundingBoxAscent || 72;
   g.font = `800 ${(5 * px) * 100 / asc}px ${FONT}`;
-  g.fillStyle = '#f4eee2'; g.textAlign = 'center'; g.textBaseline = 'alphabetic';
+  g.fillStyle = PAL.word; g.textAlign = 'center'; g.textBaseline = 'alphabetic';   // v4: the mark's ink (was #f4eee2)
   ORDER.forEach((L, k) => g.fillText(L, (k * 6.5 - 9.75 + 12.25) * px, 5.5 * px));
   const tex = new THREE.CanvasTexture(c); tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = 4;
   const m = new THREE.Mesh(new THREE.PlaneGeometry(24.5, 6),
@@ -422,8 +451,8 @@ function finale() {
 function clickIn(instant) {     // the light turns into a block and clicks into the O's gap
   phase = 'click';
   const gl = gapLocal(), O = pieces.O;
-  lightBlock = new THREE.Mesh(voxGeo, new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: 0.4,
-    emissive: GLOW_WHITE.clone(), emissiveIntensity: 2.4 }));
+  lightBlock = new THREE.Mesh(voxGeo, new THREE.MeshStandardMaterial({ color: LIGHT.clone(), roughness: 0.4,   // v4: the light's colour (was white)
+    emissive: LIGHT_GLOW.clone(), emissiveIntensity: 2.4 }));
   const seat = () => { O.add(lightBlock); lightBlock.position.copy(gl); lightBlock.quaternion.identity(); lightBlock.scale.setScalar(1); orb.visible = false; orbLight.intensity = 0; };
   if (instant) { seat(); sfx('click'); dimBack(true); return; }
   scene.add(lightBlock);
@@ -447,9 +476,10 @@ function dimBack(instant) {     // the white dims slightly, the O's new block wi
   phase = 'dimback';
   const mats = ORDER.map(L => pieces[L].userData.mat).concat(lightBlock.material);
   const from = mats.map(m => ({ c: m.color.clone(), e: m.emissiveIntensity }));
-  mats.forEach(m => m.emissive.copy(GLOW_WHITE));
+  const to = mats.map(m => (m === lightBlock.material ? LIGHT : DIM_WHITE));   // v4: the letters settle in ink, the light in its colour
+  mats.forEach(m => m.emissive.copy(m === lightBlock.material ? LIGHT_GLOW : GLOW_WHITE));
   tween(instant ? 1 : 850, k => { const e = easeOut(k);
-    mats.forEach((m, i) => { m.color.copy(from[i].c).lerp(DIM_WHITE, e); m.emissiveIntensity = from[i].e + (DIM - from[i].e) * e; }); });
+    mats.forEach((m, i) => { m.color.copy(from[i].c).lerp(to[i], e); m.emissiveIntensity = from[i].e + (DIM - from[i].e) * e; }); });
   tween(instant ? 1 : 850, () => {}, () => startHold(instant));
   tween(instant ? 1 : GLOW_MS, k => setGlow(easeIO(k)));
 }
@@ -598,9 +628,9 @@ function jumpToEnd() {          // Skip: straight to the finished state from any
   }
   if (!lightBlock || lightBlock.parent !== pieces.O) {
     disposeMesh(lightBlock);
-    lightBlock = new THREE.Mesh(voxGeo, new THREE.MeshStandardMaterial({ color: DIM_WHITE.clone(), roughness: 0.52, emissive: GLOW_WHITE.clone(), emissiveIntensity: DIM }));
+    lightBlock = new THREE.Mesh(voxGeo, new THREE.MeshStandardMaterial({ color: LIGHT.clone(), roughness: 0.52, emissive: LIGHT_GLOW.clone(), emissiveIntensity: DIM }));   // v4: the light's colour
     pieces.O.add(lightBlock); lightBlock.position.copy(gapLocal());
-  } else { lightBlock.material.color.copy(DIM_WHITE); lightBlock.material.emissive.copy(GLOW_WHITE); lightBlock.material.emissiveIntensity = DIM; lightBlock.scale.setScalar(1); }
+  } else { lightBlock.material.color.copy(LIGHT); lightBlock.material.emissive.copy(LIGHT_GLOW); lightBlock.material.emissiveIntensity = DIM; lightBlock.scale.setScalar(1); }   // v4
   phase = 'hold'; startFall(true);
 }
 addEventListener('keydown', () => { if (phase === 'hold') startFall(false); });
@@ -693,7 +723,9 @@ window.__mazo = {   // test hook: read-only state plus the same helpers the page
   state: () => ({ stage, busy, design: D.name, s: stage < 4 ? pieces[ORDER[stage]].userData.s : null,
     done: $('done').classList.contains('on'), phase, blocks: fallData.length, landed: fallData.filter(b => b.landed).length,
     reveal: Math.round(revealLocal * 100) / 100, sound: !!audio && audio.state, hasSite: !!SITE,
-    lineColors: new Set(fallData.map(b => b.color.getHexString())).size }),
+    lineColors: new Set(fallData.map(b => b.color.getHexString())).size,
+    mask: PAL.name, letters: ORDER.map(L => '#' + pieces[L].userData.mat.color.getHexString()),          // v4: which colours it wears
+    word: word ? PAL.word : null, light: lightBlock ? '#' + lightBlock.material.color.getHexString() : null }),
   showMe: () => showMe(),
   axis: L => { const p = pieces[L], u = p.userData; return u.segs.length ? axisScreen(p, u.segs[u.seg].dir) : { dx: 1, dy: 0, ppu: 99, x: 0, y: 0 }; },
   cell: (L, n) => { const u = pieces[L].userData, m = new THREE.Matrix4(); u.mesh.getMatrixAt(n, m);

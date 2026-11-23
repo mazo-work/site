@@ -10,7 +10,7 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 | U3 type | [x] | 7978e7c | 18 | 24 | Atkinson Hyperlegible Next for body text in both masks; Paper: IM FELL English and SC, served renamed "Mazo Paper" and "Mazo Paper SC" (their licence reserves the name; `tools/fonts/rename.py`); Night: Doto and Martian Mono. Profile's faces parked (files kept, declared nowhere). Paper 208.7 KB, Night 52.0 KB, reported. `fonts.*` rewritten (6). 63 pass. |
 | U4 Paper | [x] | 3ec576c | 19 | 19 | Paper to the mocks on every page: off-register display type, IM FELL titles and small-capital labels, Atkinson text; Home (headline, Jon's lines, latest project and note), About (the mocks' frame, portrait in a side column), For recruiters (side column), one 660 px measure for reading. Shared page geometry in `pages.css`; `Teaser` component. Design-log entry. 63 pass. |
 | U5 Night | [x] | 2d8b318 | 15 | 12 | Night to the mocks on every page: Doto display headlines, Atkinson 600 titles, Martian Mono capitals for labels; purple rules and underlines, green hover and focus; Home in three columns; the portrait as an X-ray in a round window with a ring and a scanning line. New check `layout.fit` (every page, both masks, phone and desktop: no sideways scroll, no headline spilling). Design-log entry. 64 pass. |
-| U5b the puzzle in both masks | [ ] | | | | |
+| U5b the puzzle in both masks | [ ] | | 13 | 18 | The puzzle wears the mask in force when it starts, colours only (one `PALETTES` table in `puzzle.js`, 20 edits marked v4; per-mask stage variables in `entrance.css`). Night: P0 recoloured, light effects in orange. Paper: a transparent canvas over the paper and grain, ink and red with tints, glows printed as red halftone dots. The entrance check solves and skips in both masks and checks that the word and the light land in Home's mark in the same colours. 12 entrance screenshots (`tools/entrance-screens.mjs`). 64 pass. |
 | U6 the ring | [ ] | | | | |
 | U7 entering an orb | [ ] | | | | |
 | U8 the parakeet | [ ] | | | | |
@@ -23,7 +23,7 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 
 - Units done: 6 of 14 · turns so far: 122 · average turns per unit: 20.3 (14.8 over U2 to U5) · estimated turns left: 8 units × about 16 = 130
 - Wall clock (read from `date`): session started 2026-11-23 08:05 UTC; U0 done 08:11; U1 about 08:23; U2 about 08:26; U3 about 08:33; U4 08:41; U5 08:49.
-- Last updated: 2026-11-23 08:49 UTC, after U5.
+- Last updated: 2026-11-23 09:00 UTC, during U5b.
 
 ## Checks not yet expected to pass
 
@@ -135,3 +135,27 @@ where the brief is silent)
   monospaced), so "recruiters" fits its column while short titles keep the mocks' 140 px. New check `layout.fit`.
 - U5 · fix: a Night rule that coloured every h2 near-white also hit the assistant panel's title (light on light;
   axe caught it in `chatbot.a11y`); heading colour is scoped to the page's main.
+- U5b · decision: the puzzle reads the mask from `<html data-theme>` once, when it starts (the boot script has set
+  it before first paint), and takes one palette from `PALETTES` in `puzzle.js`; P0's colour names (BASE, COLORS,
+  WHITE, DIM_WHITE, GLOW_WHITE) stay and take the palette's values, so the logic reads as P0's. 54 lines added, 22
+  removed, every edit marked v4.
+- U5b · decision: Paper's letters: M ink `#1B1816`, A riso red `#E5484D`, Z an ink tint `#9C948A`, O a red tint
+  `#F2A19C`: two inks, each full and tinted, so the four differ in lightness as well as hue (for colour-blind eyes).
+  Night's: M orange, A green, Z purple, O the text colour `#DAD6F0`, as the brief says.
+- U5b · decision (the brief's "your call"): Paper prints its glows. The glow that rises behind the word is drawn as
+  riso-red halftone dots that shrink away from the centre (normal blending, so it prints on cream); the light's halo
+  is a flat red wash; the letters' emissive glows are off (their emissive colour is black), so the sweep prints each
+  letter red as the light passes and they settle in ink. The hint pulse stays a faint red, so "the one that glows"
+  is still true in Paper.
+- U5b · decision: the canvas is transparent in Paper (`alpha`, clear colour at 0 alpha, no scene background) so the
+  paper and its grain show behind the puzzle; the curtain's still picture is then the page with its paper.
+- U5b · decision: the light block settles in the light's colour (Paper red, Night orange) where P0 dimmed it with the
+  letters, so the light, like the word's ink, lands in Home's mark unchanged (the brief's rule). A colour, not a step:
+  the timings and the sequence are P0's.
+- U5b · decision: the stage's text, buttons, pressed state, card and focus ring are per-mask CSS variables (Night
+  `#DAD6F0` / green focus; Paper ink / `#B0301B` focus), all at 4.5:1 or more (axe runs on the entrance's controls in
+  both masks); the hint arrow now strokes `currentColor`, the focus colour. In Night the still mark shown while the
+  puzzle loads is the LED panel. The test hook `window.__mazo.state()` also reports the mask, the letters' colours,
+  the word's ink and the light's colour (read-only).
+- U5b · decision: `tools/entrance-screens.mjs` captures the puzzle, the hold and the word in each mask, phone and
+  desktop at 2x, as WebP; it holds Home's response so the curtain cannot take the page away mid-shot.

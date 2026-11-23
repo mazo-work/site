@@ -46,10 +46,10 @@
   }
   & :is(.utility a, .utility button, .mask, .site-footer a):hover { color: #fff; }
   & .mask:has(input:checked), & .pause[aria-pressed="true"] { color: #fff; text-decoration-color: var(--accent); }
-  & .masthead-mark .mark { filter: drop-shadow(0 0 2px rgba(218, 214, 240, 0.5)); }
-  & .masthead-mark .mark-body { fill: url(#mark-led); }
-  & .masthead-mark .mark-body-odd { fill: url(#mark-led-odd); }
-  & .masthead-mark .mark-light { fill: url(#mark-led-light); }
+  & :is(.masthead-mark, .entrance-still) .mark { filter: drop-shadow(0 0 2px rgba(218, 214, 240, 0.5)); }
+  & :is(.masthead-mark, .entrance-still) .mark-body { fill: url(#mark-led); }
+  & :is(.masthead-mark, .entrance-still) .mark-body-odd { fill: url(#mark-led-odd); }
+  & :is(.masthead-mark, .entrance-still) .mark-light { fill: url(#mark-led-light); }
   & .mark-led circle { fill: var(--led); }
   & .mark-led-light circle { fill: var(--orange); }
   & .masthead-name { font-family: var(--font-name); font-weight: 800; letter-spacing: 0.04em; color: var(--led); }
