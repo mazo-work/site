@@ -11,7 +11,7 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 | U4 Paper | [x] | 3ec576c | 19 | 19 | Paper to the mocks on every page: off-register display type, IM FELL titles and small-capital labels, Atkinson text; Home (headline, Jon's lines, latest project and note), About (the mocks' frame, portrait in a side column), For recruiters (side column), one 660 px measure for reading. Shared page geometry in `pages.css`; `Teaser` component. Design-log entry. 63 pass. |
 | U5 Night | [x] | 2d8b318 | 15 | 12 | Night to the mocks on every page: Doto display headlines, Atkinson 600 titles, Martian Mono capitals for labels; purple rules and underlines, green hover and focus; Home in three columns; the portrait as an X-ray in a round window with a ring and a scanning line. New check `layout.fit` (every page, both masks, phone and desktop: no sideways scroll, no headline spilling). Design-log entry. 64 pass. |
 | U5b the puzzle in both masks | [x] | bef1afd | 13 | 18 | The puzzle wears the mask in force when it starts, colours only (one `PALETTES` table in `puzzle.js`, 20 edits marked v4; per-mask stage variables in `entrance.css`). Night: P0 recoloured, light effects in orange. Paper: a transparent canvas over the paper and grain, ink and red with tints, glows printed as red halftone dots. The entrance check solves and skips in both masks and checks that the word and the light land in Home's mark in the same colours. 12 entrance screenshots (`tools/entrance-screens.mjs`). 64 pass. |
-| U6 the ring | [ ] | | 12 | 12 | `Ring.astro` (a nav of the five rooms) under the band on Home; transforms and opacity only (squashed plane, turning arm, counter-turn); one turn in 90 s (60 s on a phone); depth on the dots; holds still under the pointer, with focus inside, and with Pause motion. Night: the mock's wireframe; Paper: printed (ink orbit, ink dots turning red, a halftone sphere). A picture on a phone. New check `ring.*` (3); `layout.fit` adds 1024 px. 67 pass. |
+| U6 the ring | [x] | 8f102a6 | 12 | 12 | `Ring.astro` (a nav of the five rooms) under the band on Home; transforms and opacity only (squashed plane, turning arm, counter-turn); one turn in 90 s (60 s on a phone); depth on the dots; holds still under the pointer, with focus inside, and with Pause motion. Night: the mock's wireframe; Paper: printed (ink orbit, ink dots turning red, a halftone sphere). A picture on a phone. New check `ring.*` (3); `layout.fit` adds 1024 px. 67 pass. |
 | U7 entering an orb | [ ] | | | | |
 | U8 the parakeet | [ ] | | | | |
 | U9 the portrait | [ ] | | | | |
@@ -21,9 +21,9 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 
 ## Budget
 
-- Units done: 7 of 14 · turns so far: 135 · average turns per unit: 19.3 (14.5 over U2 to U5b) · estimated turns left: 7 units × about 16 = 112
+- Units done: 8 of 14 · turns so far: 147 · average turns per unit: 18.4 (14.2 over U2 to U6) · estimated turns left: 6 units × about 15 = 90
 - Wall clock (read from `date`): session started 2026-11-23 08:05 UTC; U0 done 08:11; U1 about 08:23; U2 about 08:26; U3 about 08:33; U4 08:41; U5 08:49; U5b 09:00; U6 09:12.
-- Last updated: 2026-11-23 09:12 UTC, during U6.
+- Last updated: 2026-11-23 09:12 UTC, after U6.
 
 ## Checks not yet expected to pass
 
