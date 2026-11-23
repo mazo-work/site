@@ -16,14 +16,14 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 | U8 the parakeet | [x] | 793f7c3 | 10 | 12 | The mocks' 12 × 12 sprite in one file (`src/assets/parakeet.svg`, with a contract for the artist), inlined: it perches and hops on the O, sits on the portrait's frame on About and For recruiters, flies between them (one view-transition name, an arc), appears after the curtain; its head follows a mouse or pen on portrait pages (transform only; not for touch or with Pause motion; nothing stored or sent). Colophon section. New check `parakeet.*` (3). 73 pass. |
 | U9 the portrait | [x] | ea527a5 | 9 | 8 | The CC0 parakeet photo (rawpixel; `widths` 400 and 800) replaces v2's parrot (removed); alt "A parakeet, standing in for Jon"; a caption under a frame (hidden from screen readers: it repeats the alt). Paper's halftone lifted for this darker photo; Night's X-ray is now a soft duotone, muted violet to pale cyan (an inline SVG filter, drawn live). Colophon credit. 73 pass. |
 | U10 pause motion | [x] | 7d006f4 | 4 | 2 | The control (built with the skeleton in U1) now covers every loop: on Home, About and Now in both masks every infinite animation stops, stays stopped on the next page, and runs again; page transitions still play while paused; without JavaScript nothing loops (no button to press). Keyboard and axe in both states. Every @keyframes and transition in the built CSS moves transform, opacity or clip-path only. New check `motion.*` (5). 78 pass. |
-| U11 measure and screenshots | [ ] | | 27 | 131 | Lighthouse 13.6.0 on every page in both masks, mobile and desktop (`handoff/measure.md`): content pages 92 to 100 for performance, 100 for accessibility and best practices everywhere; About and For recruiters' mobile LCP 3.0 and 3.3 s in Paper, 2.1 and 2.4 s in Night; CLS at most 0.076 (Paper's 404); SEO 63 to 69 (the deliberate noindex until launch). Before fonts 11 to 16 KB a page (84 KB with the portrait); fonts Paper 208.7 KB, Night 52 KB. 60 screenshots (48 pages plus 12 entrance moments), 10.2 MB, replacing v3's 78. CI on `v4` (run #36) passed. 14 of the 27 turns were waiting on background runs. |
+| U11 measure and screenshots | [x] | 7d3af71 | 27 | 131 | Lighthouse 13.6.0 on every page in both masks, mobile and desktop (`handoff/measure.md`): content pages 92 to 100 for performance, 100 for accessibility and best practices everywhere; About and For recruiters' mobile LCP 3.0 and 3.3 s in Paper, 2.1 and 2.4 s in Night; CLS at most 0.076 (Paper's 404); SEO 63 to 69 (the deliberate noindex until launch). Before fonts 11 to 16 KB a page (84 KB with the portrait); fonts Paper 208.7 KB, Night 52 KB. 60 screenshots (48 pages plus 12 entrance moments), 10.2 MB, replacing v3's 78. CI on `v4` (run #36) passed. 14 of the 27 turns were waiting on background runs. |
 | U12 HANDOFF.md | [ ] | | | | |
 
 ## Budget
 
-- Units done: 12 of 14 · turns so far: 183 · average turns per unit: 15.3 (12.4 over U2 to U10) · estimated turns left: 2 units × about 10 = 20
+- Units done: 13 of 14 · turns so far: 210 · average turns per unit: 16.2 · estimated turns left: 1 unit, about 8
 - Wall clock (read from `date`): session started 2026-11-23 08:05 UTC; U0 done 08:11; U1 about 08:23; U2 about 08:26; U3 about 08:33; U4 08:41; U5 08:49; U5b 09:00; U6 09:12; U7 09:22; U8 09:28; U9 09:36; restart; U10 14:07; U11 14:20.
-- Last updated: 2026-11-23 14:20 UTC, during U11.
+- Last updated: 2026-11-23 14:20 UTC, after U11.
 
 ## Checks not yet expected to pass
 
