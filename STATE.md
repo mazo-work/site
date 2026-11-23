@@ -11,7 +11,7 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 | U4 Editorial | [x] | 98557fb | 29 | 26 | Literata + Libre Franklin (77.6 KB); grain, hairlines, vermilion, hanging heads, page turn, halftone portrait, glyph diagram. Design log entry. New check `fonts.*` (4). 34 pass, 6 pending. |
 | U5 entrance | [x] | 9b2a62d | 9 | 9 | P0 ported (76 diff lines, all integration); curtain = cross-document view transition into Home; word → mark morph; 3D code only on /, after first paint (130 KB gzip). New check `entrance.*` (3) incl. a headless play-through. 37 pass, 6 pending. |
 | U6 Terminal | [x] | 2ca5e5b | 7 | 8 | Martian Mono + Atkinson Hyperlegible Next (58.5 KB); LED-panel mark, neon flicker, fringe, ## / ./ / ~/ winks, X-ray portrait, CRT transition. Design log entry. 37 pass, 6 pending. |
-| U7 Profile | [ ] | | | | |
+| U7 Profile | [x] | bb3b20c | 9 | 6 | Bungee Shade + Nunito (78.5 KB); graph-paper tile, windows with title bars, bevel buttons, extruded mark, tilted profile pic, window-pop transition. Design log entry. 37 pass, 6 pending. |
 | U8 theme switcher | [ ] | | | | |
 | U9 agent layer | [ ] | | | | |
 | U10 colophon | [ ] | | | | |
@@ -25,9 +25,9 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 
 ## Budget
 
-- Units done: 7 of 18 · turns so far: 101 · average turns per unit: 14.4 · estimated turns left: 1 design unit × 12 + 10 others × 9 ≈ 102
-- Wall clock: session started 2026-11-23 02:37 UTC; U0 done 02:47; U1 02:54; U2 02:58; U3 03:06; U4 03:19; U5 03:28; U6 03:32.
-- Last updated: 2026-11-23 03:32 UTC, after U6.
+- Units done: 8 of 18 · turns so far: 110 · average turns per unit: 13.8 · estimated turns left: 10 units × 9 ≈ 90
+- Wall clock: session started 2026-11-23 02:37 UTC; U0 done 02:47; U1 02:54; U2 02:58; U3 03:06; U4 03:19; U5 03:28; U6 03:32; U7 03:38.
+- Last updated: 2026-11-23 03:38 UTC, after U7.
 
 ## Checks not yet expected to pass
 
@@ -113,3 +113,5 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 - U6 · decision: Terminal's loops (the light block's neon flicker, the footer cursor) end within 5 s, so WCAG 2.2.2
   needs no pause control; the generated winks (`##`, `./`, `../`, `//`, `[01]`) use CSS alt text `/ ""` so screen
   readers skip them; the crumb (`~/path/`) is `aria-hidden` and shown only in Terminal.
+- U7 · decision: Profile shows Home's "Rooms" heading (visually hidden in the other themes) as a window title bar:
+  a functional label, listed with the others for Jon. Its one gradient (title bars, coral to pink) is annotated.
