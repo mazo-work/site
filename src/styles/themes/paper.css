@@ -1,10 +1,20 @@
-/* Editorial (U4): the Paper family. Paper and ink, quiet, built for reading.
-   It applies whenever the theme is not Terminal or Profile, so it is also the look without JavaScript.
-   From BRIEF.md §9: texture over gloss (paper grain, a halftone portrait); the hand-made line (hairlines, a printer's
-   registration mark); thresholds (a page turn between pages); what lies under the surface (the halftone clears to
-   the colour photo when you look closer); one hot accent, used the way a riso uses its second drum. */
+/* Paper (v3's Editorial, v4 BRIEF.md §3): cream paper with grain, ink #1B1816, riso red #E5484D for print effects
+   (the mark's light, the Ask button's offset shadow, underlines) and #B0301B for small accent text. It applies
+   whenever the mask is not Night, so it is also the look without JavaScript.
+   From v3's §9: texture over gloss (paper grain, a halftone portrait); thresholds (a page turn between pages); what
+   lies under the surface (the halftone clears to the colour photo when you look closer); one hot accent, used the way
+   a riso uses its second drum. No ornaments, icons, numbering or datelines (v4 §3). */
 
-:root:not([data-theme="terminal"], [data-theme="profile"]) {
+:root:not([data-theme="night"]) {
+  --paper: #eee7da;
+  --paper-2: #e4dccb;
+  --ink: #1b1816;
+  --ink-2: #5a544b;                              /* 6.1:1 on the paper */
+  --rule: rgba(27, 24, 22, 0.45);
+  --accent: #e5484d;                             /* riso red: print effects and underlines (3.2:1, not for small text) */
+  --accent-ink: #b0301b;                         /* small accent text (5.2:1 on the paper) */
+  --focus: var(--accent-ink);
+  --mark-light: var(--accent);
   /* newsprint grain: SVG noise as a tile (img-src allows data:), multiplied onto the paper */
   --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .11 0 0 0 0 .1 0 0 0 0 .08 0 0 0 .1 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
   --label: 500 0.75rem / calc(3 * var(--u)) var(--font-ui);
@@ -16,24 +26,32 @@
   & a:hover { text-decoration-thickness: 2px; }
 
   /* labels: the grotesque, small, spaced, in capitals */
-  & .meta, & .brand-name, & .site-nav a, & .site-footer, & .facts dt, & .tags, & .prose thead th, & .index time {
+  & .meta, & .facts dt, & .tags, & .prose thead th, & .index time {
     font: var(--label); letter-spacing: 0.1em; text-transform: uppercase;
   }
 
-  /* the masthead: the mark, the name, the rooms; a single ink rule */
-  & .site-header {
-    view-transition-name: masthead;
-    align-items: end; border-bottom: 1px solid var(--ink);
-    padding-block: calc(4 * var(--u)) calc(2 * var(--u));
+  /* the skeleton: small capitals for the rows, the italic for the name, the red underline for here and hover */
+  & .utility, & .site-footer { font-family: var(--font-label); font-size: 1.0625rem; letter-spacing: 0.04em; }
+  & .masks legend { font-family: var(--font-display); font-style: italic; }
+  & .utility a, & .utility button, & .mask, & .menu a, & .site-footer a {
+    text-decoration: underline 2px transparent; text-underline-offset: 5px;
   }
-  & .brand { align-items: end; gap: calc(3 * var(--u)); }
-  & .brand .mark { width: calc(18 * var(--u)); }
-  & .brand .mark-light { transition: transform 0.4s cubic-bezier(0.3, 1.6, 0.5, 1); }
-  & .brand:hover .mark-light, & .brand:focus-visible .mark-light { transform: translate(0.6px, -0.6px); }
-  & .brand-name { padding-bottom: 1px; }
-  & .site-nav ul { gap: 0 calc(4 * var(--u)); }
-  & .site-nav a { padding-block: var(--u); }
-  & .site-nav a[aria-current="page"] { text-decoration: none; box-shadow: inset 0 -2px 0 var(--accent); }
+  & :is(.utility a, .utility button, .mask, .site-footer a):hover, & .mask:has(input:checked), & .pause[aria-pressed="true"] {
+    text-decoration-color: var(--accent);
+  }
+  & .masthead-mark .mark { shape-rendering: crispEdges; }
+  & .masthead-mark .mark-body { fill: var(--ink); }
+  & .masthead-name { font-family: var(--font-display); font-style: italic; }
+  & .menu { border-top-color: var(--ink); border-bottom-color: rgba(27, 24, 22, 0.5); font-family: var(--font-label); font-size: 1.3125rem; letter-spacing: 0.03em; }
+  & .menu a { text-underline-offset: 6px; }
+  & .menu a:hover, & .menu a[aria-current="page"] { text-decoration-color: var(--accent); }
+  & .chat-launcher {
+    border: 2px solid var(--ink); background: var(--paper); color: var(--ink);
+    font-family: var(--font-label); font-size: 1.25rem; letter-spacing: 0.02em;
+    /* shadow-ok: a hard riso offset, not a soft shadow */
+    box-shadow: 3px 3px 0 var(--accent);
+  }
+  @media (max-width: 47.99rem) { & .utility, & .site-footer { font-size: 1rem; } & .menu { font-size: 1.125rem; } & .chat-launcher { font-size: 1.0625rem; } }
 
   /* type */
   & h1 { font-weight: 400; font-size: clamp(2.75rem, 1.6rem + 4.6vw, 5.25rem); line-height: 1.02; letter-spacing: -0.022em; }
@@ -108,14 +126,11 @@
   & .skills dt { font-weight: 700; }
   & .tags { color: var(--ink-2); }
 
-  /* the footer: a hairline, the name, a printer's registration mark */
-  & .site-footer { border-top: 1px solid var(--ink); align-items: center; }
-  & .regmark { display: block; width: calc(4 * var(--u)); height: calc(4 * var(--u)); color: var(--accent); }
 }
 
 /* desktop reading: a margin column for headings and labels beside one measure of text */
 @media (min-width: 62rem) {
-  :root:not([data-theme="terminal"], [data-theme="profile"]) {
+  :root:not([data-theme="night"]) {
     & .prose {
       display: grid; column-gap: calc(6 * var(--u));
       grid-template-columns: [margin-start] minmax(0, 12rem) [margin-end text-start] minmax(0, var(--measure)) [text-end] minmax(0, 1fr) [end];
@@ -132,11 +147,11 @@
   }
 }
 
-/* thresholds: a page turn between pages; the masthead stays where it is */
-:root:not([data-theme="terminal"], [data-theme="profile"])::view-transition-old(root) {
+/* thresholds: a page turn between pages (v3's, kept: v4 §3); the header stays where it is */
+:root:not([data-theme="night"])::view-transition-old(root) {
   animation: editorial-leave 220ms cubic-bezier(0.4, 0, 1, 1) both;
 }
-:root:not([data-theme="terminal"], [data-theme="profile"])::view-transition-new(root) {
+:root:not([data-theme="night"])::view-transition-new(root) {
   animation: editorial-enter 380ms cubic-bezier(0, 0, 0.2, 1) both;
 }
 @keyframes editorial-leave { to { opacity: 0; transform: translateX(-1.5%); } }

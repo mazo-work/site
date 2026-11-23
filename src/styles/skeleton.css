@@ -1,0 +1,124 @@
+/* The skeleton (v4 BRIEF.md §3): one structure on every page in every mask. This file is its geometry only: where
+   things sit and how big they are. The masks (themes/paper.css, themes/night.css) set type, colour, texture and motion
+   on top and never change a size here, so the menu band and the mask toggle stay put when the mask changes (the
+   check `skeleton.still` measures it). Sizes follow the mocks (docs/v4-mocks/), rounded to the one unit (--u, 6 px)
+   where they were within a few pixels of it. */
+
+:root {
+  --frame: 80rem;                                          /* 1280 px, the mocks' frame */
+  --frame-pad: clamp(calc(3 * var(--u)), 4vw, calc(8 * var(--u)));   /* 18 px on a phone, 48 px on a desktop */
+  --utility-h: calc(8 * var(--u));                         /* 48 px */
+  --band-h: calc(2 * 44px);                                /* phone: two rows of 44 px targets */
+  --mark-w: calc(32 * var(--u));                           /* small mark, phone: 192 px */
+  --masthead-pad: calc(4 * var(--u)) calc(2 * var(--u));
+  --name-gap: calc(2 * var(--u));
+  --name-size: 1.125rem;                                   /* 18 px */
+  --name-lh: calc(4 * var(--u));
+  --ask: 60px;
+}
+.site-header[data-size="large"] {
+  --mark-w: calc(48 * var(--u));                           /* 288 px: Home on a phone (the mock: 290) */
+  --masthead-pad: calc(8 * var(--u)) calc(2 * var(--u));
+  --name-size: 1.375rem;                                   /* 22 px */
+  --name-lh: calc(5 * var(--u));
+}
+@media (min-width: 48rem) {
+  :root {
+    --utility-h: calc(9 * var(--u));                       /* 54 px */
+    --band-h: calc(10 * var(--u));                         /* 60 px: one row */
+    --mark-w: calc(50 * var(--u));                         /* 300 px */
+    --masthead-pad: calc(7 * var(--u)) calc(3 * var(--u)); /* 42 / 18 (the mock: 40 / 16) */
+    --name-size: 1.5rem;                                   /* 24 px */
+    --name-lh: calc(5 * var(--u));
+    --ask: 68px;
+  }
+  .site-header[data-size="large"] {
+    --mark-w: min(calc(90 * var(--u)), 100%);              /* 540 px */
+    --masthead-pad: calc(11 * var(--u)) calc(4 * var(--u)); /* 66 / 24 (the mock: 64 / 22) */
+    --name-gap: calc(4 * var(--u));
+    --name-size: 1.875rem;                                 /* 30 px */
+    --name-lh: calc(6 * var(--u));
+  }
+}
+
+/* the frame: everything but the Ask button sits in one centred column */
+.frame { width: 100%; max-width: var(--frame); margin-inline: auto; padding-inline: var(--frame-pad); flex: 1; display: flex; flex-direction: column; }
+.frame > main { flex: 1; }
+
+/* 1. the utility row: Replay and Pause motion on the left, the masks on the right */
+.utility {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--u) calc(2 * var(--u));
+  min-height: var(--utility-h); border-bottom: 1px solid var(--rule);
+}
+.utility-start { display: flex; align-items: center; gap: 0 calc(3 * var(--u)); min-width: 0; }
+.utility a, .utility button, .mask {
+  display: inline-flex; align-items: center; min-height: 44px; padding: 0; margin: 0;
+  background: none; border: 0; color: inherit; font: inherit; letter-spacing: inherit; text-transform: inherit;
+  text-decoration: none; cursor: pointer; white-space: nowrap;
+}
+@media (max-width: 47.99rem) {
+  .utility .long { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+}
+.pause { display: none !important; }
+[data-js] .pause { display: inline-flex !important; }
+
+/* the masks: a radio group with its legend inline ("Mask: Paper Night") */
+.masks { display: none; margin: 0; padding: 0; border: 0; min-inline-size: 0; }
+[data-js] .masks { display: flex; align-items: center; gap: 0 calc(2 * var(--u)); }
+.masks legend { float: left; padding: 0; margin: 0; white-space: nowrap; }
+.masks legend::after { content: ":" / ""; }
+.mask { position: relative; }
+.mask input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+
+/* 2. the masthead: the mark centred, the name under it */
+.masthead { display: flex; flex-direction: column; align-items: center; padding-block: var(--masthead-pad); }
+.masthead-mark { display: block; width: var(--mark-w); color: inherit; }
+.masthead-mark .mark { display: block; width: 100%; height: auto; aspect-ratio: 49 / 10; overflow: visible; }
+.masthead-name { margin-top: var(--name-gap); font-size: var(--name-size); line-height: var(--name-lh); text-align: center; white-space: nowrap; }
+
+/* 3. the menu band: a double rule above, a single rule below, five rooms centred */
+.menu { border-top: 3px double; border-bottom: 1px solid var(--rule); }
+.menu ul {
+  list-style: none; margin: 0; padding: 0; min-height: var(--band-h);
+  display: flex; flex-wrap: wrap; justify-content: center; align-content: center; align-items: center; gap: 0 calc(3 * var(--u));
+}
+.menu a { display: inline-flex; align-items: center; min-height: 44px; padding-inline: 4px; text-decoration: none; white-space: nowrap; }
+@media (min-width: 48rem) { .menu ul { gap: 0 calc(5 * var(--u)); } }
+
+/* 4. the page sits in the frame: v3's page containers lose their own side padding */
+.frame .page, .frame .prose { max-width: none; padding-inline: 0; }
+
+/* 5. the footer: the name and region on the left, the Colophon on the right */
+.site-footer {
+  display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: var(--u) calc(3 * var(--u));
+  margin-top: calc(7 * var(--u)); padding-block: calc(3 * var(--u)) calc(14 * var(--u));
+  border-top: 1px solid var(--rule);
+}
+.site-footer ul { list-style: none; margin: 0; padding: 0; display: flex; gap: calc(3 * var(--u)); }
+.site-footer a { display: inline-flex; align-items: center; min-height: 44px; text-decoration: none; }
+@media (min-width: 48rem) { .site-footer { margin-top: calc(18 * var(--u)); padding-bottom: calc(20 * var(--u)); } }
+
+/* 6. the Ask button: bottom-right, the same size and place in both masks */
+.chat-launcher { display: none; }
+[data-js] .chat-launcher {
+  position: fixed; z-index: 19; right: 18px; bottom: 22px;
+  display: grid; place-items: center; width: var(--ask); height: var(--ask); padding: 0; cursor: pointer;
+  /* radius-ok: a round launcher, as support widgets have (the gag is played straight) */
+  border-radius: 50%;
+}
+@media (min-width: 48rem) { [data-js] .chat-launcher { right: 36px; bottom: 32px; } }
+
+/* the light: the O's 16th block blinks, in both masks (the mocks: 2.6 s, off for a quarter of the beat) */
+.masthead-mark .mark-light { animation: mark-blink 2.6s steps(1, end) infinite; }
+@keyframes mark-blink { 0%, 62% { opacity: 1; } 63%, 88% { opacity: 0.12; } 89%, 100% { opacity: 1; } }
+
+/* Pause motion (WCAG 2.2.2): every looping animation stops where it is; page transitions (pseudo-elements of the
+   view transition, which `*` does not match) still play */
+:root[data-motion="paused"] *, :root[data-motion="paused"] *::before, :root[data-motion="paused"] *::after {
+  animation-play-state: paused !important;
+}
+
+/* what holds still between pages: the header (each mask's v3 page transition plays under it); the mark has its own
+   name so it can travel (the curtain, and Home's large mark into a room's small one) */
+.site-header { view-transition-name: masthead; }
+.masthead-mark .mark { view-transition-name: mark; }

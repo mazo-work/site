@@ -1,13 +1,15 @@
 ---
 // Every page's document. Head order matters: the theme boot runs before the stylesheet so the first paint is
-// already in the right theme. `bare` drops the header and footer (the entrance).
+// already in the right mask. `bare` drops the skeleton (the entrance). v4: one skeleton on every page in every mask
+// (BRIEF.md §3): the header (utility row, masthead, menu band), the page, the footer, and the Ask button. Two masks,
+// Paper and Night; Profile is parked (src/styles/themes/profile.css is kept and never loaded).
 import '../styles/fonts.css';
 import '../styles/base.css';
-import '../styles/themes/editorial.css';
-import '../styles/themes/terminal.css';
-import '../styles/themes/profile.css';
+import '../styles/skeleton.css';
+import '../styles/themes/paper.css';
+import '../styles/themes/night.css';
 import '../styles/switcher.css';
-import Header from '../components/Header.astro';
+import Masthead from '../components/Masthead.astro';
 import Footer from '../components/Footer.astro';
 import Chat from '../components/Chat.astro';
 import Beacon from '../components/Beacon.astro';
@@ -58,11 +60,15 @@ const sourceNote = `<!--\n\n  ${art}\n\n  [JON: a message for whoever reads the 
   </head>
   <body class={bodyClass}>
     <a class="skip" href="#main">Skip to content</a>
-    {!bare && <Header path={path} />}
-    <main id="main" tabindex="-1">
-      <slot />
-    </main>
-    {!bare && <Footer path={path} />}
+    {bare ? (
+      <main id="main" tabindex="-1"><slot /></main>
+    ) : (
+      <div class="frame">
+        <Masthead path={path} />
+        <main id="main" tabindex="-1"><slot /></main>
+        <Footer path={path} />
+      </div>
+    )}
     {!bare && <Chat />}
   </body>
 </html>

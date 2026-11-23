@@ -1,0 +1,30 @@
+---
+// The masthead and the menu band (BRIEF.md §3, the skeleton, items 1 to 3), one <header> on every page in every mask:
+// the utility row; the MAZO mark centred with Jon's name under it, large on Home (about 540 px wide on desktop) and
+// smaller elsewhere (about 300 px); then the menu band, a double rule above and a single rule below, five rooms
+// centred. The mark links to Home on every page (on Home it is the current page). The masks change type, colour,
+// texture and motion only, so the band and the toggle sit in the same place whichever mask is on.
+import Utility from './Utility.astro';
+import Mark from './Mark.astro';
+import { NAV, SITE_NAME } from '../data/site';
+interface Props { path: string; }
+const { path } = Astro.props;
+const home = path === '/home/';
+const current = (href: string) => path === href || path.startsWith(href);
+---
+<header class="site-header" data-size={home ? 'large' : 'small'}>
+  <Utility />
+  <div class="masthead">
+    <a class="masthead-mark" href="/home/" aria-current={home ? 'page' : undefined}>
+      <Mark /><span class="vh">Home</span>
+    </a>
+    <p class="masthead-name">{SITE_NAME}</p>
+  </div>
+  <nav class="menu" aria-label="Main">
+    <ul>
+      {NAV.map((item) => (
+        <li><a href={item.href} aria-current={current(item.href) ? 'page' : undefined}>{item.label}</a></li>
+      ))}
+    </ul>
+  </nav>
+</header>

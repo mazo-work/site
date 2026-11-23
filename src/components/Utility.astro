@@ -1,0 +1,17 @@
+---
+// The utility row (BRIEF.md §3, the skeleton, item 1): Replay the intro and Pause motion on the left, the mask toggle
+// on the right. The same markup on every page in every mask, so nothing in it moves when the mask changes. Pause
+// motion and the masks need JavaScript and show only with it; Replay is a plain link to the entrance. On a phone the
+// row shows "Replay" and "Pause" (the rest of each name is still read out), so it stays one line.
+import ThemeSwitch from './ThemeSwitch.astro';
+---
+<div class="utility">
+  <div class="utility-start">
+    <a class="replay" href="/"><span>Replay<span class="long"> the intro</span></span></a>
+    <button class="pause" type="button" aria-pressed="false" data-pause><span>Pause<span class="long"> motion</span></span></button>
+  </div>
+  <ThemeSwitch />
+</div>
+<script>
+  import '../scripts/motion.js';
+</script>

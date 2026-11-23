@@ -5,7 +5,7 @@
 # stays at its default (this origin only) because the entrance's sound starts on a tap; client hints (ch-*) are left
 # alone (they only delegate hints to other origins, and there are none).
 /*
-  Content-Security-Policy: default-src 'none'; script-src 'self' 'sha256-L7sflUqSDTwoZlikpHe1FcABRLC/FvPB1Yx7F8JegPM=' https://static.cloudflareinsights.com; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://cloudflareinsights.com; media-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'; object-src 'none'; upgrade-insecure-requests; require-trusted-types-for 'script'; trusted-types 'none'
+  Content-Security-Policy: default-src 'none'; script-src 'self' 'sha256-/5OarawLAZB6HDLbC8x9NrZiZ98lNMkDhMQqZXS/3XY=' https://static.cloudflareinsights.com; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://cloudflareinsights.com; media-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'; object-src 'none'; upgrade-insecure-requests; require-trusted-types-for 'script'; trusted-types 'none'
   Strict-Transport-Security: max-age=63072000; includeSubDomains
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin

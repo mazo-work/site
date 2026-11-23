@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Screenshots of the built site, for the §4 design loop and U15: every page (or --pages=/a/,/b/) in each theme
-// (or --themes=editorial) at mobile (390 × 844) and desktop (1440 × 900), full page, into --out (default
+// (or --themes=paper) at mobile (390 × 844) and desktop (1440 × 900), full page, into --out (default
 // handoff/screens). --scale=1 for working shots, 2 (default) for the ones a person will look at.
 // Run `npm run build` first. Usage: node tools/screens.mjs [--themes=…] [--pages=…] [--out=…] [--scale=…] [--only=mobile|desktop]
 import fs from 'node:fs';
@@ -27,7 +27,7 @@ const written = [];
 for (const theme of themes) {
   for (const [size, width, height] of sizes) {
     const context = await browser.newContext({ viewport: { width, height }, deviceScaleFactor: scale,
-      colorScheme: theme === 'terminal' ? 'dark' : 'light', isMobile: size === 'mobile', hasTouch: size === 'mobile' });
+      colorScheme: theme === 'night' ? 'dark' : 'light', isMobile: size === 'mobile', hasTouch: size === 'mobile' });
     await context.addInitScript(([k, v]) => { try { localStorage.setItem(k, v); } catch {} }, [THEME_KEY, theme]);
     for (const u of urls) {
       const page = await context.newPage();

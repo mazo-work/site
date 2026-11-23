@@ -1,25 +1,35 @@
 ---
-// The site's mark: MAZO as the puzzle's own block letters, solved (BRIEF.md §3: MAZO resolves into the header as
-// the mark). Glyphs from docs/puzzle/mazo-burr.json; the O's 16th block, the light that completes it in the finale,
-// is its own path (.mark-light) so a theme can make it the accent. 64 blocks; one block is 2 × 2 user units.
+// The site's mark: MAZO as the puzzle's own block letters, solved (v3 BRIEF §3: MAZO resolves into the header as the
+// mark). Glyphs from docs/puzzle/mazo-burr.json; the O's 16th block, the light that completes it in the finale, is its
+// own path (.mark-light) so a mask can make it the accent. 64 blocks; one block is 2 × 2 user units.
+// v4: one drawing, two inks. Paper fills the blocks with ink; Night fills them with the LED patterns below (a dot per
+// block, the pattern's cell is one block), so the markup is the same in both masks. A and O start on odd units (13,
+// 39), so their blocks are a path of their own with a pattern shifted by one unit, or their dots would be cut in half.
+// `led` names the patterns (ids must be unique in a page).
 import data from '../../docs/puzzle/mazo-burr.json';
 
-interface Props { class?: string; }
-const { class: cls } = Astro.props;
+interface Props { class?: string; led?: string; }
+const { class: cls, led = 'mark-led' } = Astro.props;
 const design = data.designs[0];
 const order = ['M', 'A', 'Z', 'O'] as const;
 const cell = 2, pitch = 13;                       // letters 5 blocks wide, 1.5 blocks apart (the puzzle's title spacing)
-let body = '', light = '';
+let even = '', odd = '', light = '';
 order.forEach((L, k) => {
   const rows: string[] = (design.pieces as any)[L].glyph;
   rows.forEach((row, r) => [...row].forEach((ch, c) => {
     const x = k * pitch + c * cell, y = r * cell;
-    if (ch === 'X') body += `M${x} ${y}h2v2h-2z`;
+    if (ch === 'X') { if (x % 2) odd += `M${x} ${y}h2v2h-2z`; else even += `M${x} ${y}h2v2h-2z`; }
     else if (L === 'O' && (r === 0 || r === 4 || c === 0 || c === 4)) light += `M${x} ${y}h2v2h-2z`;
   }));
 });
 ---
-<svg class:list={['mark', cls]} viewBox="0 0 49 10" aria-hidden="true" focusable="false" shape-rendering="crispEdges">
-  <path class="mark-body" d={body} />
+<svg class:list={['mark', cls]} viewBox="0 0 49 10" aria-hidden="true" focusable="false">
+  <defs>
+    <pattern id={led} class="mark-led" width="2" height="2" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="0.72" /></pattern>
+    <pattern id={`${led}-odd`} class="mark-led" x="1" width="2" height="2" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="0.72" /></pattern>
+    <pattern id={`${led}-light`} class="mark-led-light" x="1" width="2" height="2" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="0.82" /></pattern>
+  </defs>
+  <path class="mark-body" d={even} />
+  <path class="mark-body mark-body-odd" d={odd} />
   <path class="mark-light" d={light} />
 </svg>

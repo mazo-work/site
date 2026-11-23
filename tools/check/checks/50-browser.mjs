@@ -5,7 +5,7 @@ import { THEMES, THEME_KEY, BEACON_HOSTS, ENTRANCE, NOT_DOCUMENTS, SHELLS } from
 
 export async function themedContext(browser, theme, options = {}) {
   const context = await browser.newContext({ viewport: { width: 1280, height: 800 }, serviceWorkers: 'block',
-    colorScheme: theme === 'terminal' ? 'dark' : 'light', ...options });
+    colorScheme: theme === 'night' ? 'dark' : 'light', ...options });
   await context.addInitScript(([key, value]) => {
     try { localStorage.setItem(key, value); } catch {}
     window.__csp = [];

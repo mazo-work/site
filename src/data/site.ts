@@ -7,20 +7,18 @@ export const SITE_NAME = name;
 
 export interface NavItem { href: string; label: string; }
 
-/** The header: every room, one click from every page. */
+/** The menu band (v4 BRIEF §3): five rooms, one click from every page. Home is the mark. */
 export const NAV: NavItem[] = [
   { href: '/about/', label: 'About' },
   { href: '/projects/', label: 'Projects' },
   { href: '/notes/', label: 'Lab notes' },
   { href: '/now/', label: 'Now' },
-  { href: '/uses/', label: 'Uses' },
   { href: '/recruiters/', label: 'For recruiters' },
 ];
 
-/** The footer. */
+/** The footer: the Colophon is reached from here only. "Replay the intro" lives in the utility row. */
 export const FOOTER_NAV: NavItem[] = [
   { href: '/colophon/', label: 'Colophon' },
-  { href: '/', label: 'Replay the intro' },
 ];
 
 export const DESCRIPTIONS = {

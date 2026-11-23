@@ -65,7 +65,7 @@ export default {
     const browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader',
       '--ignore-gpu-blocklist', '--host-resolver-rules=MAP static.cloudflareinsights.com ~NOTFOUND, MAP cloudflareinsights.com ~NOTFOUND'] });
     const run = async (label, drive) => {
-      const context = await themedContext(browser, 'editorial');
+      const context = await themedContext(browser, 'paper');
       const page = await context.newPage();
       const errs = [];
       page.on('pageerror', (e) => errs.push(`uncaught: ${e.message}`));

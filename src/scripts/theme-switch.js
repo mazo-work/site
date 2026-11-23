@@ -1,8 +1,8 @@
-// The theme switcher (U8). The boot script in <head> has already applied the stored choice or the device's
-// (light: Editorial, dark: Terminal) before first paint. This syncs the radios, applies and stores a new choice
-// (localStorage only, no cookie), and, while the visitor has made no choice, follows the device live.
+// The mask toggle (v3's U8, v4's U1): Paper or Night. The boot script in <head> has already applied the stored choice
+// or the device's (light: Paper, dark: Night) before first paint. This syncs the radios, applies and stores a new
+// choice (localStorage only, no cookie), and, while the visitor has made no choice, follows the device live.
 const KEY = 'mazo-theme';
-const THEMES = ['editorial', 'terminal', 'profile'];
+const THEMES = ['paper', 'night'];
 const root = document.documentElement;
 const dark = matchMedia('(prefers-color-scheme: dark)');
 
@@ -25,5 +25,5 @@ for (const input of document.querySelectorAll('[data-theme-switch] input[name="t
     apply(input.value);
   });
 }
-dark.addEventListener('change', () => { if (!stored()) apply(dark.matches ? 'terminal' : 'editorial'); });
+dark.addEventListener('change', () => { if (!stored()) apply(dark.matches ? 'night' : 'paper'); });
 addEventListener('pageshow', (e) => { if (e.persisted) { const t = stored(); if (t) root.setAttribute('data-theme', t); sync(); } });

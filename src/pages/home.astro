@@ -6,7 +6,8 @@ import { hero } from '../data/v2-words';
 import { NAV, FOOTER_NAV, DESCRIPTIONS } from '../data/site';
 const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
 const notes = (await getCollection('notes')).sort((a, b) => +b.data.date - +a.data.date);
-const rooms = [...NAV, FOOTER_NAV[0]];
+// Uses is not a room in v4's menu; until it moves into Now (U2) Home keeps a way to it.
+const rooms = [...NAV, { href: '/uses/', label: 'Uses' }, FOOTER_NAV[0]];
 ---
 <Base title="Home" description={DESCRIPTIONS.home} schema={{ type: 'home' }}>
   <div class="page grid">
@@ -39,7 +40,6 @@ const rooms = [...NAV, FOOTER_NAV[0]];
           </li>
         ))}
       </ul>
-      <p class="meta"><a href="/">Replay the intro</a></p>
     </section>
   </div>
 </Base>

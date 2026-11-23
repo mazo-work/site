@@ -1,7 +1,8 @@
 // What the checks expect of the site (BRIEF.md §3, §4, §6). Later units add their own check files;
 // this file holds the expectations U1 can already state.
 
-export const THEMES = ['editorial', 'terminal', 'profile'];
+// v4: two masks (BRIEF.md §3); Profile is parked, never offered and never loaded.
+export const THEMES = ['paper', 'night'];
 export const THEME_KEY = 'mazo-theme';           // localStorage key the theme boot script reads (no cookie)
 
 /** The entrance is excepted from WCAG as art (§3); its skip-intro link is its accessible way in. */

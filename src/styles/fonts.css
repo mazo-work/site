@@ -109,26 +109,26 @@
 }
 /* end of generated @font-face */
 
-/* Editorial (the default, and the look without JavaScript): a book face built for long reading, and a newspaper
-   grotesque for labels. */
+/* Paper (the default, and the look without JavaScript): a book face built for long reading, and a newspaper
+   grotesque for labels. (v3's Editorial; U3 sets v4's faces.) */
 :root {
   --font-text: "Literata", ui-serif, Georgia, serif;
   --font-display: "Literata", ui-serif, Georgia, serif;
   --font-ui: "Libre Franklin", system-ui, sans-serif;
   --font-mono: ui-monospace, Menlo, Consolas, monospace;
+  --font-label: var(--font-ui);
+  --font-name: var(--font-display);
 }
 
-/* Terminal: a wide, square mono for structure (headings, labels, code) and a face built for legibility for reading. */
-:root[data-theme="terminal"] {
+/* Night: a wide, square mono for structure (headings, labels, code) and a face built for legibility for reading.
+   (v3's Terminal; U3 sets v4's faces.) */
+:root[data-theme="night"] {
   --font-text: "Atkinson Hyperlegible Next", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Martian Mono", ui-monospace, monospace;
   --font-ui: "Martian Mono", ui-monospace, monospace;
   --font-mono: "Martian Mono", ui-monospace, monospace;
+  --font-label: "Martian Mono", ui-monospace, monospace;
+  --font-name: "Martian Mono", ui-monospace, monospace;
 }
 
-/* Profile: a signage face with its 3D shade built in, for display; a rounded sans for everything else. */
-:root[data-theme="profile"] {
-  --font-text: "Nunito", ui-rounded, ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Bungee Shade", ui-sans-serif, system-ui, sans-serif;
-  --font-ui: "Nunito", ui-rounded, ui-sans-serif, system-ui, sans-serif;
-}
+/* Profile is parked (v4): its faces stay declared above for its own session, and are never used, so never loaded. */

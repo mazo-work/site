@@ -29,7 +29,7 @@ export default {
     }
     const { origin } = await ctx.server();
     const browser = await ctx.browser();
-    const context = await themedContext(browser, 'editorial');
+    const context = await themedContext(browser, 'paper');
     const seen = [];
     await context.route('**/*', (route) => {
       const q = route.request(), u = new URL(q.url());

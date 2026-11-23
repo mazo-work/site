@@ -7,7 +7,7 @@
       "package": "@fontsource/literata",
       "version": "5.3.0",
       "themes": [
-        "editorial"
+        "paper"
       ],
       "faces": [
         [
@@ -30,7 +30,7 @@
       "package": "@fontsource/libre-franklin",
       "version": "5.3.0",
       "themes": [
-        "editorial"
+        "paper"
       ],
       "faces": [
         [
@@ -45,7 +45,7 @@
       "package": "@fontsource/martian-mono",
       "version": "5.3.0",
       "themes": [
-        "terminal"
+        "night"
       ],
       "faces": [
         [
@@ -64,7 +64,7 @@
       "package": "@fontsource/atkinson-hyperlegible-next",
       "version": "5.3.0",
       "themes": [
-        "terminal"
+        "night"
       ],
       "faces": [
         [

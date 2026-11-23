@@ -19,7 +19,7 @@
   --step-3: 2.375rem;
   --step-4: clamp(2.5rem, 7vw, 4rem);
 
-  /* colour: the Paper family (Editorial's), the default; themes override these */
+  /* colour: the Paper family, the default; Night overrides these */
   --paper: #f5f0e6;
   --paper-2: #ece5d7;
   --ink: #1d1b18;
@@ -32,14 +32,7 @@
   color-scheme: light;
 }
 
-/* dark: Terminal's family; without JavaScript it follows the device (the boot script sets data-theme otherwise) */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme]) {
-    --paper: #0b0c10; --paper-2: #12141a; --ink: #e7e4f2; --ink-2: #a09cb4; --rule: #2b2e3a; --accent: #36e3d0;
-    --accent-ink: #36e3d0; --focus: #36e3d0; --mark-light: #ffd9a0;
-    color-scheme: dark;
-  }
-}
+/* Without JavaScript the page wears Paper, whatever the device (v4: the masks need the boot script to be chosen). */
 
 /* Page-to-page: the browser's cross-document View Transitions, in CSS only (no router). */
 @view-transition { navigation: auto; }
@@ -81,35 +74,8 @@ hr { border: 0; border-top: 1px solid var(--rule); margin: calc(2 * var(--lh)) 0
 }
 .skip:focus { top: var(--u); }
 
-/* header: the mark and the rooms */
-.site-header {
-  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
-  gap: calc(2 * var(--u)) var(--gutter);
-  padding: calc(3 * var(--u)) var(--page-pad);
-  border-bottom: 1px solid var(--rule);
-  font-family: var(--font-ui);
-}
-.brand { display: inline-flex; align-items: center; gap: calc(2 * var(--u)); text-decoration: none; min-height: calc(4 * var(--u)); }
-.brand .mark { width: calc(16 * var(--u)); height: auto; }
-.brand-name { font-size: var(--step--1); letter-spacing: 0.02em; }
 .mark { display: block; fill: currentColor; }
 .mark .mark-light { fill: var(--mark-light); }
-.site-nav ul, .site-footer ul { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 0 calc(3 * var(--u)); }
-.site-nav a, .site-footer a {
-  display: inline-block; padding-block: var(--u); font-size: var(--step--1); text-decoration: none;
-}
-.site-nav a:hover, .site-footer a:hover { text-decoration: underline; }
-.site-nav a[aria-current="page"] { text-decoration: underline; text-decoration-thickness: 2px; }
-
-/* footer */
-.site-footer {
-  display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline;
-  gap: calc(2 * var(--u)) var(--gutter);
-  padding: calc(4 * var(--u)) var(--page-pad) calc(6 * var(--u));
-  border-top: 1px solid var(--rule);
-  margin-top: calc(3 * var(--lh));
-  font-family: var(--font-ui); font-size: var(--step--1); color: var(--ink-2);
-}
 
 /* the grid: 12 columns of the wide measure; content sits on it */
 .page, .prose {
@@ -147,9 +113,7 @@ hr { border: 0; border-top: 1px solid var(--rule); margin: calc(2 * var(--lh)) 0
 .lede { font-size: var(--step-1); line-height: calc(6 * var(--u)); max-width: var(--measure); color: var(--ink-2); }
 .portrait { margin: 0; width: calc(40 * var(--u)); max-width: 60%; }
 .portrait img { display: block; width: 100%; height: auto; }
-.portrait-screen { display: none; }
-.regmark { display: none; }
-.crumb { display: none; }               /* a theme may draw the portrait another way (Editorial: halftone) */
+.portrait-screen { display: none; }    /* a mask may draw the portrait another way (Paper: halftone) */
 .prose > :not(.page-head), .measure { max-width: var(--measure); }
 .prose > * + *, .flow > * + * { margin-top: var(--lh); }
 .prose h2 { margin-top: calc(2 * var(--lh)); }
@@ -181,9 +145,9 @@ hr { border: 0; border-top: 1px solid var(--rule); margin: calc(2 * var(--lh)) 0
 .tags { display: block; margin-top: var(--u); font-family: var(--font-ui); font-size: var(--step--1); color: var(--ink-2); }
 
 /* The curtain (U5): arriving from the entrance, this page's own change runs P0's curtain: the finished scene, a still
-   picture, rises over 1.4 s with this page underneath, and the word travels into the header's mark (the one element
-   named in both pages). The page's own transition (a theme's) steps aside: these selectors outrank it. */
-.brand .mark { view-transition-name: mark; }
+   picture, rises over 1.4 s with this page underneath, and the word travels into the masthead's mark (named `mark` in
+   skeleton.css and on the entrance's word). The page's own transition (a mask's) steps aside: these selectors outrank
+   it. */
 :root[data-curtain][data-theme] .site-header { view-transition-name: none; }
 :root[data-curtain][data-theme]::view-transition-old(root) {
   animation: mazo-curtain 1.4s cubic-bezier(0.45, 0, 0.55, 1) both; z-index: 1; mix-blend-mode: normal;

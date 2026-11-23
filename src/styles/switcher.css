@@ -1,22 +1,5 @@
-/* The masks (U8): one control, drawn with each theme's tokens so it belongs to whichever theme is on. Each mask
-   wears its own theme's colours, so it previews who you become. Loaded after the themes. */
-.masks { display: none; margin: 0; padding: 0; border: 0; min-inline-size: 0; }
-[data-js] .masks { display: flex; flex-wrap: wrap; gap: var(--u); align-items: center; }
-.mask { position: relative; display: inline-flex; align-items: center; gap: var(--u); padding: var(--u) calc(1.5 * var(--u));
-  font: 500 0.75rem / calc(3 * var(--u)) var(--font-ui); color: var(--ink-2); cursor: pointer; border: 1px solid transparent; }
-.mask input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
-.mask svg { width: calc(4 * var(--u)); height: auto; flex: none; stroke-width: 1.2; }
-.mask-editorial svg { fill: #f5f0e6; stroke: #1d1b18; }
-.mask-terminal svg { fill: #0b0c10; stroke: #36e3d0; }
-.mask-profile svg { fill: #ff6f61; stroke: #2a1f2d; }
-.mask:hover { color: var(--ink); }
-.mask:has(input:focus-visible) { outline: 2px solid var(--focus); outline-offset: 2px; }
-:root[data-theme="editorial"] .mask-editorial, :root[data-theme="terminal"] .mask-terminal, :root[data-theme="profile"] .mask-profile {
-  color: var(--ink); border-color: var(--ink);
-}
-:root[data-theme="profile"] .mask { font-weight: 800; }
-:root[data-theme="profile"] .mask-profile { background: var(--mint); }
-:root[data-theme="terminal"] .mask { font-family: var(--font-ui); font-weight: 400; }
+/* v4: the masks, Pause motion and the Ask button are drawn by skeleton.css (geometry) and each mask's file (looks).
+   What is left here is shared by both masks. */
 
 /* story fragments (U11): one small square, the light that completes the O; open, a line of the story */
 .fragment { margin-top: calc(4 * var(--u)); max-width: var(--measure); }
@@ -28,20 +11,6 @@
 .fragment[open] { padding: calc(2 * var(--u)) calc(3 * var(--u)) calc(3 * var(--u)); border-left: 2px solid var(--mark-light); }
 .fragment[open] summary { margin-bottom: var(--u); }
 .fragment p + p { margin-top: var(--u); }
-
-/* the assistant's launcher (U12): a support widget's bubble, in the theme's colours; the panel's styles load with it */
-.chat-launcher { display: none; }
-[data-js] .chat-launcher {
-  position: fixed; z-index: 19; right: calc(3 * var(--u)); bottom: calc(3 * var(--u)); display: grid; place-items: center;
-  width: calc(9 * var(--u)); height: calc(9 * var(--u)); padding: 0; border: 0; cursor: pointer;
-  color: var(--paper); background: var(--ink);
-  /* radius-ok: a round launcher, as support widgets have (the gag is played straight) */
-  border-radius: 50%;
-  /* shadow-ok: the support widget's own look, played straight */
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
-}
-.chat-launcher svg { width: calc(4 * var(--u)); height: calc(4 * var(--u)); fill: currentColor; }
-.chat-launcher:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
 
 /* putting on a mask: a cross-fade, whatever the theme's page transition is */
 :root.theme-switching[data-theme]::view-transition-old(root) { animation: mask-off 0.35s ease both; }
