@@ -7,7 +7,7 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 | U0 baseline | [x] | a15ed3d | 17 | 1 | `npm run check` as inherited: 55 checks, 55 passed, 0 pending, 0 failed (73 s). 15 of the 17 turns were the one-time read of §0's inputs and the install. |
 | U1 skeleton | [x] | 9d92285 | 46 | 29 | One header on every page (utility row: Replay, Pause motion, mask toggle Paper · Night; masthead: the mark, large on Home, small elsewhere, and the name; menu band: five rooms), footer (name · [JON: region], Colophon), Ask. Masks are `paper` and `night`; Profile parked. New check `skeleton.*` (4); `switcher.*` rewritten. 59 pass. 7 of the 46 turns were the one-time read of the mocks. |
 | U2 rooms | [x] | dc6c73c | 7 | 10 | Uses is a section of Now (`/now/#uses`); `public/_redirects` 301s `/uses`, `/uses/` and `/uses.md`; the local test server applies `_redirects`; the Colophon is linked from the footer only; llms.txt lists Uses as a section of Now, the sitemap drops /uses/. New check `rooms.*` (2). 61 pass. |
-| U3 type | [ ] | | 18 | 33 | Atkinson Hyperlegible Next for body text in both masks; Paper: IM FELL English and SC, served renamed "Mazo Paper" and "Mazo Paper SC" (their licence reserves the name; `tools/fonts/rename.py`); Night: Doto and Martian Mono. Profile's faces parked (files kept, declared nowhere). Paper 208.7 KB, Night 52.0 KB, reported. `fonts.*` rewritten (6). 63 pass. |
+| U3 type | [x] | 7978e7c | 18 | 33 | Atkinson Hyperlegible Next for body text in both masks; Paper: IM FELL English and SC, served renamed "Mazo Paper" and "Mazo Paper SC" (their licence reserves the name; `tools/fonts/rename.py`); Night: Doto and Martian Mono. Profile's faces parked (files kept, declared nowhere). Paper 208.7 KB, Night 52.0 KB, reported. `fonts.*` rewritten (6). 63 pass. |
 | U4 Paper | [ ] | | | | |
 | U5 Night | [ ] | | | | |
 | U5b the puzzle in both masks | [ ] | | | | |
@@ -21,9 +21,9 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 
 ## Budget
 
-- Units done: 3 of 14 · turns so far: 70 · average turns per unit: 23.3 (U0 and U1 carried the one-time reading; U2 took 7) · estimated turns left: 11 units × about 18 = 200
-- Wall clock: session started 2026-11-23 08:05 UTC; U0 done 08:11; U1 08:24; U2 08:27.
-- Last updated: 2026-11-23 08:34 UTC, during U3.
+- Units done: 4 of 14 · turns so far: 88 · average turns per unit: 22 (12.5 over U2 and U3) · estimated turns left: 10 units × about 18 = 180
+- Wall clock: session started 2026-11-23 08:05 UTC; U0 done 08:11; U1 08:24; U2 08:27; U3 08:35.
+- Last updated: 2026-11-23 08:35 UTC, after U3.
 
 ## Checks not yet expected to pass
 
