@@ -1,0 +1,45 @@
+/* Entering an orb (v4 BRIEF.md §3; U7): the orb grows to fill the screen, as if breaking through its atmosphere, and
+   the destination page settles out of it. A cross-document view transition, no router: the clicked orb's dot and the
+   destination's main share the name `orb-entry` (the main grows out of the orb), and two veils, shown only during the
+   transition, flood out from where the orb was (`--entry-x`, `--entry-y`) as growing circles, then clear. Paper: an
+   ink flood that clears to paper. Night: a dark atmosphere with a brief purple rim at its edge, clearing to light.
+   Only transform, opacity and the reveal's clip-path move. Without cross-document view transitions the boot script
+   never sets data-entry, so it is a normal page change; the menu band keeps each mask's v3 transition. */
+
+.entry-veil, .entry-rim { display: none; }
+:root[data-entry="orb"] :is(.entry-veil, .entry-rim) { display: block; position: fixed; inset: 0; pointer-events: none; }
+:root[data-entry="orb"] .entry-rim { view-transition-name: entry-rim; }
+:root[data-entry="orb"] .entry-veil { view-transition-name: entry-veil; }
+:root[data-entry="orb"] main { view-transition-name: orb-entry; }
+
+/* 1.2 s: the flood covers the screen by 40 %; the page's main comes out of the orb as a window of the mask's own
+   ground (paper, or night) from 20 % to 75 %, above the flood; then the flood clears (72 % to 100 %) and the rest of
+   the new page (masthead, footer) shows; the old page has hidden under the flood by then */
+:root[data-entry="orb"][data-theme]::view-transition-group(*) { animation-duration: 1.2s; animation-timing-function: cubic-bezier(0.6, 0, 0.2, 1); }
+:root[data-entry="orb"][data-theme]::view-transition-old(root) { animation: entry-hide 1.2s linear both; }
+:root[data-entry="orb"][data-theme]::view-transition-new(root) { animation: entry-show 1.2s linear both; }
+:root[data-entry="orb"][data-theme]::view-transition-old(masthead), :root[data-entry="orb"][data-theme]::view-transition-old(mark) { animation: entry-hide 1.2s linear both; }
+:root[data-entry="orb"][data-theme]::view-transition-new(masthead), :root[data-entry="orb"][data-theme]::view-transition-new(mark) { animation: entry-show 1.2s linear both; }
+:root[data-entry="orb"][data-theme]::view-transition-new(entry-veil) { animation: entry-flood 1.2s cubic-bezier(0.5, 0, 0.2, 1) both; }
+:root[data-entry="orb"][data-theme]::view-transition-new(entry-rim) { animation: entry-rim 1.2s cubic-bezier(0.5, 0, 0.2, 1) both; }
+:root[data-entry="orb"][data-theme]::view-transition-old(orb-entry) { animation: entry-dot 1.2s linear both; }
+:root[data-entry="orb"][data-theme]::view-transition-new(orb-entry) { animation: entry-emerge 1.2s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+
+@keyframes entry-hide { 0%, 30% { opacity: 1; } 40%, 100% { opacity: 0; } }
+@keyframes entry-show { 0%, 72% { opacity: 0; } 100% { opacity: 1; } }
+@keyframes entry-flood {
+  0% { clip-path: circle(0 at var(--entry-x) var(--entry-y)); opacity: 1; }
+  40%, 72% { clip-path: circle(150vmax at var(--entry-x) var(--entry-y)); opacity: 1; }
+  100% { clip-path: circle(150vmax at var(--entry-x) var(--entry-y)); opacity: 0; }
+}
+@keyframes entry-rim {
+  0% { clip-path: circle(9px at var(--entry-x) var(--entry-y)); opacity: 1; }
+  40% { clip-path: circle(calc(150vmax + 9px) at var(--entry-x) var(--entry-y)); opacity: 1; }
+  50%, 100% { clip-path: circle(calc(150vmax + 9px) at var(--entry-x) var(--entry-y)); opacity: 0; }
+}
+@keyframes entry-dot { 0% { opacity: 1; } 20%, 100% { opacity: 0; } }
+@keyframes entry-emerge {
+  0%, 20% { clip-path: circle(0 at 50% 18rem); opacity: 0; transform: scale(1.04); }
+  35% { opacity: 1; }
+  75%, 100% { clip-path: circle(150vmax at 50% 18rem); opacity: 1; transform: none; }
+}

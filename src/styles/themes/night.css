@@ -166,6 +166,11 @@
   & .orb-link:hover .orb-dot, & .orb-link:focus-visible .orb-dot { border-color: var(--green); background: var(--green); }
   & .orb-link:hover .orb-label, & .orb-link:focus-visible .orb-label { color: #fff; text-decoration: underline 2px var(--accent); text-underline-offset: 6px; }
 
+  /* entering an orb (U7): a dark atmosphere with a brief purple rim at its edge, clearing to the lit page */
+  & .entry-veil { background: #0b0a12; }
+  & .entry-rim { background: var(--accent); }
+  &[data-entry="orb"] main { background-color: var(--paper); }
+
   /* diagrams */
   & .glyph svg { fill: var(--ink); }
   & .glyph .gap { stroke: var(--orange); }

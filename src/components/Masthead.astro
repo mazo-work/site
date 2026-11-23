@@ -3,7 +3,9 @@
 // the utility row; the MAZO mark centred with Jon's name under it, large on Home (about 540 px wide on desktop) and
 // smaller elsewhere (about 300 px); then the menu band, a double rule above and a single rule below, five rooms
 // centred. The mark links to Home on every page (on Home it is the current page). The masks change type, colour,
-// texture and motion only, so the band and the toggle sit in the same place whichever mask is on.
+// texture and motion only, so the band and the toggle sit in the same place whichever mask is on. The two empty
+// veils at the end show only while an orb is being entered (U7; src/styles/entry.css): placed after the masthead and
+// before the main, they paint over the old page and under the page coming out of the orb.
 import Utility from './Utility.astro';
 import Mark from './Mark.astro';
 import { NAV, SITE_NAME } from '../data/site';
@@ -27,4 +29,6 @@ const current = (href: string) => path === href || path.startsWith(href);
       ))}
     </ul>
   </nav>
+  <div class="entry-rim" aria-hidden="true"></div>
+  <div class="entry-veil" aria-hidden="true"></div>
 </header>

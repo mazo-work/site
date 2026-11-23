@@ -12,7 +12,7 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 | U5 Night | [x] | 2d8b318 | 15 | 12 | Night to the mocks on every page: Doto display headlines, Atkinson 600 titles, Martian Mono capitals for labels; purple rules and underlines, green hover and focus; Home in three columns; the portrait as an X-ray in a round window with a ring and a scanning line. New check `layout.fit` (every page, both masks, phone and desktop: no sideways scroll, no headline spilling). Design-log entry. 64 pass. |
 | U5b the puzzle in both masks | [x] | bef1afd | 13 | 18 | The puzzle wears the mask in force when it starts, colours only (one `PALETTES` table in `puzzle.js`, 20 edits marked v4; per-mask stage variables in `entrance.css`). Night: P0 recoloured, light effects in orange. Paper: a transparent canvas over the paper and grain, ink and red with tints, glows printed as red halftone dots. The entrance check solves and skips in both masks and checks that the word and the light land in Home's mark in the same colours. 12 entrance screenshots (`tools/entrance-screens.mjs`). 64 pass. |
 | U6 the ring | [x] | 8f102a6 | 12 | 12 | `Ring.astro` (a nav of the five rooms) under the band on Home; transforms and opacity only (squashed plane, turning arm, counter-turn); one turn in 90 s (60 s on a phone); depth on the dots; holds still under the pointer, with focus inside, and with Pause motion. Night: the mock's wireframe; Paper: printed (ink orbit, ink dots turning red, a halftone sphere). A picture on a phone. New check `ring.*` (3); `layout.fit` adds 1024 px. 67 pass. |
-| U7 entering an orb | [ ] | | | | |
+| U7 entering an orb | [ ] | | 13 | 35 | A cross-document view transition: the clicked dot and the room's main share `orb-entry`; a veil floods out from the orb as a growing circle (Paper ink; Night dark with a purple rim), the main opens out of the orb as a window of the mask's ground, the flood clears. The boot script marks the page only where cross-document view transitions exist, and unmarks it when the transition ends; the menu band keeps v3's transitions. New check `entry.*` (3). Frames in `handoff/orb-entry/` (`tools/entry-frames.mjs`). 70 pass. |
 | U8 the parakeet | [ ] | | | | |
 | U9 the portrait | [ ] | | | | |
 | U10 pause motion | [ ] | | | | |
@@ -22,8 +22,8 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 ## Budget
 
 - Units done: 8 of 14 · turns so far: 147 · average turns per unit: 18.4 (14.2 over U2 to U6) · estimated turns left: 6 units × about 15 = 90
-- Wall clock (read from `date`): session started 2026-11-23 08:05 UTC; U0 done 08:11; U1 about 08:23; U2 about 08:26; U3 about 08:33; U4 08:41; U5 08:49; U5b 09:00; U6 09:12.
-- Last updated: 2026-11-23 09:12 UTC, after U6.
+- Wall clock (read from `date`): session started 2026-11-23 08:05 UTC; U0 done 08:11; U1 about 08:23; U2 about 08:26; U3 about 08:33; U4 08:41; U5 08:49; U5b 09:00; U6 09:12; U7 09:22.
+- Last updated: 2026-11-23 09:22 UTC, during U7.
 
 ## Checks not yet expected to pass
 
@@ -178,3 +178,20 @@ where the brief is silent)
 - U6 · decision: the orbit and its outer ring are rounded boxes (`border-radius: 50%`, annotated), the outer one
   dotted (CSS cannot draw the mock's 2-and-10 dashes). The ring's landmark is named "Rooms, in orbit" (a functional
   label, listed for Jon). The ring is part of Home's main, so Home's Markdown twin lists the five rooms.
+- U7 · decision: how the destination knows it was entered from an orb: the ring's click handler leaves a note in
+  sessionStorage (the room, where the orb was on screen, and when) and names the clicked dot `orb-entry`; the boot
+  script reads the note before first paint and, only if it is for this page, under 10 s old, and the browser has
+  cross-document view transitions (`onpagereveal`), sets `data-entry="orb"` and `--entry-x`/`--entry-y` (CSSOM, which
+  the CSP allows), then removes the mark when the transition finishes or at once if none runs. New boot hash.
+- U7 · decision: the flood is two empty, fixed veils at the end of the header (so they paint over the old page and
+  under the main), shown only while the page is marked and named `entry-rim` and `entry-veil`; their circles grow from
+  the orb with `clip-path` (the brief's reveal), then fade. Paper: ink, no rim. Night: a dark veil `#0B0A12` with a
+  purple band 9 px ahead of it. While marked, the main carries its mask's ground, so it opens out of the orb as a
+  window of paper or night (a snapshot is transparent where nothing is painted: ink text over an ink flood was
+  invisible in the first take). The old page, masthead and mark hide under the flood; the new ones show as it clears.
+- U7 · found: in the first take the flood cleared before the main had come out, so one recorded frame showed the
+  header over empty paper; a probe of every painted frame placed it mid-transition (not a rendering glitch), and the
+  retiming (flood full from 40 % to 72 %, main out from 20 % to 75 %) closed the gap.
+- U7 · decision: the recording is Chrome's screencast (every painted frame) of a click on the About orb in each mask,
+  ten frames kept per mask with a contact sheet (`handoff/orb-entry/`). Software rendering here paints Paper's flood
+  at about 13 frames a second, so its sheet shows fewer in-between states than a real screen would.

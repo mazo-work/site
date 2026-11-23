@@ -118,6 +118,12 @@
   & .orb-link:hover .orb-dot, & .orb-link:focus-visible .orb-dot { background: var(--accent); }
   & .orb-link:hover .orb-label, & .orb-link:focus-visible .orb-label { color: var(--accent-ink); text-decoration: underline 2px var(--accent); text-underline-offset: 5px; }
 
+  /* entering an orb (U7): an ink flood that clears to paper; no rim. While the page is entered, its main carries the
+     paper (a snapshot is transparent where nothing is painted), so it opens in the ink as a window of paper */
+  & .entry-veil { background: var(--ink); }
+  & .entry-rim { background: transparent; }
+  &[data-entry="orb"] main { background-color: var(--paper); background-image: var(--grain); }
+
   /* the portrait: a halftone screen over the photo; it clears when you look closer (v3's, kept) */
   & .portrait { position: relative; }
   & .portrait-screen {

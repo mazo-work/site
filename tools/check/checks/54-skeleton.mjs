@@ -26,7 +26,7 @@ export default {
       if (headers.length !== 1) { say(`${headers.length} site headers (want 1)`); continue; }
       const h = headers[0];
       if (h.getAttribute('data-size') !== (p.url === '/home/' ? 'large' : 'small')) say(`masthead size ${h.getAttribute('data-size')}`);
-      const parts = [...h.children].filter((e) => e.tagName !== 'SCRIPT').map((e) => e.getAttribute('class'));
+      const parts = [...h.children].filter((e) => e.tagName !== 'SCRIPT' && !/^entry-/.test(e.getAttribute('class') || '')).map((e) => e.getAttribute('class'));
       if (parts.join() !== 'utility,masthead,menu') say(`the header holds ${parts.join(', ')} (want utility, masthead, menu)`);
       const replay = h.querySelector('.utility a.replay'), pause = h.querySelector('.utility button.pause'), masks = h.querySelector('.utility [data-theme-switch]');
       if (replay?.getAttribute('href') !== '/' || text(replay) !== 'Replay the intro') say('no "Replay the intro" link to the entrance in the utility row');
