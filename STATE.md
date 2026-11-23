@@ -16,7 +16,7 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 | U9 agent layer | [x] | d7af40b | 8 | 14 | 12 twins from built HTML, llms.txt, sitemap (11 URLs), RSS, JSON-LD per page type, robots.txt from vendor docs (sources in `src/data/crawlers.ts`). 47 pass, 0 pending. |
 | U10 colophon | [x] | c791ef8 | 6 | 7 | Generated from the build: headers/CSP, stack, licences (+ /licences.txt), fonts, crawlers, storage, accessibility; sizes measured post-build (7-17 KB brotli per page before fonts). 47 pass. |
 | U11 secrets | [x] | 8239eb2 | 3 | 9 | View-source note (the mark as text + [JON] slot) on every page; 4 story fragments as native details, linking to About's beats. New check `secrets-in-walls.*` (2). 49 pass. |
-| U12 gag chatbot | [ ] | | | | |
+| U12 gag chatbot | [x] | a105b6c | 6 | 8 | Launcher on content pages; widget JS + CSS load on first open; invented vocabulary; role=log; no network, nothing stored. New check `chatbot.*` (4). 53 pass. |
 | U13 analytics beacon | [ ] | | | | |
 | U14 resume PDF | [ ] | | | | |
 | U15 measure | [ ] | | | | |
@@ -25,9 +25,9 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 
 ## Budget
 
-- Units done: 12 of 18 · turns so far: 132 · average turns per unit: 11 · estimated turns left: 6 units × 7 ≈ 42
-- Wall clock: session started 2026-11-23 02:37 UTC; U0 done 02:47; U1 02:54; U2 02:58; U3 03:06; U4 03:19; U5 03:28; U6 03:32; U7 03:38; U8 03:41; U9 03:47; U10 03:52; U11 03:55.
-- Last updated: 2026-11-23 03:55 UTC, after U11.
+- Units done: 13 of 18 · turns so far: 138 · average turns per unit: 10.6 · estimated turns left: 5 units × 6 ≈ 30
+- Wall clock: session started 2026-11-23 02:37 UTC; U0 done 02:47; U1 02:54; U2 02:58; U3 03:06; U4 03:19; U5 03:28; U6 03:32; U7 03:38; U8 03:41; U9 03:47; U10 03:52; U11 03:55; U12 04:00.
+- Last updated: 2026-11-23 04:00 UTC, after U12.
 
 ## Checks not yet expected to pass
 
@@ -142,3 +142,10 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
   study (beat 3), the colophon (beat 4); which page carries which beat is Jon's to change. The marker is the light
   block's square, the site's one recurring secret. The link text "The whole story" and the summary's hidden name
   "A fragment of the story" are functional labels, listed for Jon. The optional "eye that tracks nothing" is not built.
+- U12 · decision: the gibberish is original: invented words and syllables in a singsong style, none taken from the
+  films' vocabulary or catchphrases; a check greps src, public and dist for the brand name. The welcome line ("Hi! How
+  can I help you today?"), the placeholder, "Send" and the close label are new words written straight for the gag;
+  they are not shown as [JON] slots (a slot in the widget would break the joke) and are listed for Jon instead.
+- U12 · decision: the widget's rounded panel, round launcher and soft shadows are the joke's costume (a support widget
+  played straight), annotated `radius-ok` / `shadow-ok`. Its stylesheet is a plain file in public/ attached on first
+  open, because Astro hoists a dynamic import's CSS into every page.
