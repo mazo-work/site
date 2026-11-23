@@ -14,7 +14,7 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 | U7 Profile | [x] | bb3b20c | 9 | 6 | Bungee Shade + Nunito (78.5 KB); graph-paper tile, windows with title bars, bevel buttons, extruded mark, tilted profile pic, window-pop transition. Design log entry. 37 pass, 6 pending. |
 | U8 theme switcher | [x] | e058cfb | 5 | 6 | Masks as a native radio group; no flash; device default followed live; keyboard; localStorage, no cookie. New check `switcher.*` (4). 41 pass, 6 pending. |
 | U9 agent layer | [x] | d7af40b | 8 | 14 | 12 twins from built HTML, llms.txt, sitemap (11 URLs), RSS, JSON-LD per page type, robots.txt from vendor docs (sources in `src/data/crawlers.ts`). 47 pass, 0 pending. |
-| U10 colophon | [ ] | | | | |
+| U10 colophon | [x] | c791ef8 | 6 | 7 | Generated from the build: headers/CSP, stack, licences (+ /licences.txt), fonts, crawlers, storage, accessibility; sizes measured post-build (7-17 KB brotli per page before fonts). 47 pass. |
 | U11 secrets | [ ] | | | | |
 | U12 gag chatbot | [ ] | | | | |
 | U13 analytics beacon | [ ] | | | | |
@@ -25,9 +25,9 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 
 ## Budget
 
-- Units done: 10 of 18 · turns so far: 123 · average turns per unit: 12.3 · estimated turns left: 8 units × 7 ≈ 56
-- Wall clock: session started 2026-11-23 02:37 UTC; U0 done 02:47; U1 02:54; U2 02:58; U3 03:06; U4 03:19; U5 03:28; U6 03:32; U7 03:38; U8 03:41; U9 03:47.
-- Last updated: 2026-11-23 03:47 UTC, after U9.
+- Units done: 11 of 18 · turns so far: 129 · average turns per unit: 11.7 · estimated turns left: 7 units × 7 ≈ 49
+- Wall clock: session started 2026-11-23 02:37 UTC; U0 done 02:47; U1 02:54; U2 02:58; U3 03:06; U4 03:19; U5 03:28; U6 03:32; U7 03:38; U8 03:41; U9 03:47; U10 03:52.
+- Last updated: 2026-11-23 03:52 UTC, after U10.
 
 ## Checks not yet expected to pass
 
@@ -132,3 +132,9 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 - U9 · decision: twins are generated from each built page's `<main>` (they can never drift); the puzzle's UI is
   marked `data-twin="skip"`. JSON-LD states only facts (name; languages from "Bilingual: English & Spanish"); a
   photo, `sameAs` links, a region and a job title wait for Jon.
+- U10 · fix in a ticked unit's file (U4, `editorial.css`), not a failing check: Editorial's label style capitalised
+  every table header cell, which showed crawler tokens in capitals on the colophon; now only column headers.
+- U10 · decision: "every dependency's licence" is met twice: the colophon lists the direct dependencies with their
+  licences and roles, and `/licences.txt` lists every installed package (from package-lock.json). Only three.js is
+  sent to visitors (the entrance). Sizes are measured from the built files by a build hook and written into the
+  colophon (the colophon's own row is measured before the table is added).
