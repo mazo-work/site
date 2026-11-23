@@ -128,12 +128,12 @@
   & .parakeet[data-place="portrait"] { right: 26px; top: calc(var(--bird) * -11 / 12); }
 
   /* the portrait: a halftone screen over the photo; it clears when you look closer (v3's, kept) */
-  & .portrait { position: relative; }
+  & .portrait-caption { font-family: var(--font-display); font-style: italic; font-size: 1.1875rem; line-height: 1.35; }
   & .portrait-screen {
     display: block; position: relative; overflow: hidden; background: #fff;
     filter: grayscale(1) contrast(24); mix-blend-mode: multiply;
   }
-  & .portrait-screen img { filter: grayscale(1) contrast(1.25) brightness(0.92); }
+  & .portrait-screen img { filter: grayscale(1) brightness(1.32) contrast(1.08); }   /* U9: lifted, so the dark door prints as dots, not a slab */
   & .portrait-screen::after {
     content: ""; position: absolute; inset: 0;
     /* Averaged 50/50 with the photo and thresholded at mid-grey, a dot's radius grows with the tone's darkness,

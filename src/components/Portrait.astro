@@ -1,21 +1,37 @@
 ---
-// Jon's photo. The real image carries the alt text; a decorative copy (alt="", hidden from assistive tech) lets a
-// mask draw the photo another way on top (Paper: a halftone screen that clears when you look closer; Night: an X-ray
-// in a round window, with a ring and a scanning line, which Paper hides).
-// Loaded eagerly: it sits at the top of About and For recruiters, where it is the largest thing painted (U15).
+// The portrait (v4 BRIEF.md §3; U9): the blue parakeet photo (src/assets/parakeet.jpg, CC0, from rawpixel; credited in
+// the colophon), standing in for Jon. The real image carries the alt text; a decorative copy (alt="", hidden from
+// assistive tech) lets each mask draw the photo another way on top, live: Paper a halftone screen, Night a soft X-ray
+// (the duotone filter below, muted violet to pale cyan) in a round window with a ring and a scanning line. Either clears
+// to the photo when you look closer. The parakeet sits on the frame (U8). The caption repeats the alt text, so screen
+// readers skip it. Loaded eagerly: it is the largest thing painted near the top of About and For recruiters.
 import { Image } from 'astro:assets';
-import headshot from '../assets/headshot.webp';
-import { sidebar } from '../data/v2-words';
+import photo from '../assets/parakeet.jpg';
 import Parakeet from './Parakeet.astro';
-interface Props { width?: number; class?: string; }
-const { width = 320, class: cls } = Astro.props;
+import { PORTRAIT_ALT } from '../data/site';
+interface Props { class?: string; }
+const { class: cls } = Astro.props;
+const sizes = '(min-width: 62rem) 26rem, (min-width: 48rem) 26rem, 90vw';
 ---
 <figure class:list={['portrait', cls]}>
-  <span class="portrait-screen" aria-hidden="true"><Image src={headshot} alt="" width={width} loading="eager" /></span>
-  <Image class="portrait-img" src={headshot} alt={sidebar.headshotAlt} width={width} loading="eager" fetchpriority="high" />
-  <span class="portrait-scan" aria-hidden="true"></span>
-  <svg class="portrait-ring" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><circle cx="50" cy="50" r="46" /><path d="M50 0v5M50 95v5M0 50h5M95 50h5" /></svg>
-  <Parakeet place="portrait" />
+  <svg class="portrait-filters" aria-hidden="true" focusable="false" width="0" height="0">
+    <filter id="portrait-xray" color-interpolation-filters="sRGB">
+      <feColorMatrix type="matrix" values="-0.2126 -0.7152 -0.0722 0 1 -0.2126 -0.7152 -0.0722 0 1 -0.2126 -0.7152 -0.0722 0 1 0 0 0 1 0" />
+      <feComponentTransfer>
+        <feFuncR type="table" tableValues="0.13 0.33 0.80" />
+        <feFuncG type="table" tableValues="0.10 0.27 0.94" />
+        <feFuncB type="table" tableValues="0.24 0.62 0.94" />
+      </feComponentTransfer>
+    </filter>
+  </svg>
+  <div class="portrait-frame">
+    <span class="portrait-screen" aria-hidden="true"><Image src={photo} alt="" widths={[400, 800]} sizes={sizes} loading="eager" /></span>
+    <Image class="portrait-img" src={photo} alt={PORTRAIT_ALT} widths={[400, 800]} sizes={sizes} loading="eager" fetchpriority="high" />
+    <span class="portrait-scan" aria-hidden="true"></span>
+    <svg class="portrait-ring" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><circle cx="50" cy="50" r="46" /><path d="M50 0v5M50 95v5M0 50h5M95 50h5" /></svg>
+    <Parakeet place="portrait" />
+  </div>
+  <figcaption class="portrait-caption" aria-hidden="true">{PORTRAIT_ALT}.</figcaption>
 </figure>
 <script>
   import '../scripts/parakeet.js';

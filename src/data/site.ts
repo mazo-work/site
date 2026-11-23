@@ -16,6 +16,9 @@ export const NAV: NavItem[] = [
   { href: '/recruiters/', label: 'For recruiters' },
 ];
 
+/** The portrait's alt text (v4 BRIEF.md §3, The portrait): the photo is a parakeet, standing in for Jon. */
+export const PORTRAIT_ALT = 'A parakeet, standing in for Jon';
+
 /** Pages with the portrait (v4: the parakeet sits on its frame there, and on the mark everywhere else). */
 export const PORTRAIT_PAGES = ['/about/', '/recruiters/'];
 

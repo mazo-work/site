@@ -90,10 +90,13 @@ body { font-size: 1.0625rem; line-height: 1.55; }                       /* 17 px
 .side-lists { display: grid; gap: calc(2 * var(--u)); }
 .side-lists ul { list-style: none; margin: 0 0 calc(2 * var(--u)); padding: 0; }
 
-/* the portrait (v3's markup; U9 changes the photo) */
+/* the portrait (U9): the layers in a frame (the bird sits on it), the caption under it */
 .portrait { margin: 0; width: calc(40 * var(--u)); max-width: 60%; }
+.portrait-frame { position: relative; }
 .portrait img { display: block; width: 100%; height: auto; }
 .portrait-screen, .portrait-scan, .portrait-ring { display: none; }
+.portrait-caption { margin-top: calc(2 * var(--u)); }
+.portrait-filters { position: absolute; width: 0; height: 0; overflow: hidden; }
 
 /* the 404's way back */
 .rooms { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--u) calc(4 * var(--u)); }

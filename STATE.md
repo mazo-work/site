@@ -14,7 +14,7 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 | U6 the ring | [x] | 8f102a6 | 12 | 12 | `Ring.astro` (a nav of the five rooms) under the band on Home; transforms and opacity only (squashed plane, turning arm, counter-turn); one turn in 90 s (60 s on a phone); depth on the dots; holds still under the pointer, with focus inside, and with Pause motion. Night: the mock's wireframe; Paper: printed (ink orbit, ink dots turning red, a halftone sphere). A picture on a phone. New check `ring.*` (3); `layout.fit` adds 1024 px. 67 pass. |
 | U7 entering an orb | [x] | dcdbd13 | 13 | 35 | A cross-document view transition: the clicked dot and the room's main share `orb-entry`; a veil floods out from the orb as a growing circle (Paper ink; Night dark with a purple rim), the main opens out of the orb as a window of the mask's ground, the flood clears. The boot script marks the page only where cross-document view transitions exist, and unmarks it when the transition ends; the menu band keeps v3's transitions. New check `entry.*` (3). Frames in `handoff/orb-entry/` (`tools/entry-frames.mjs`). 70 pass. |
 | U8 the parakeet | [x] | 793f7c3 | 10 | 12 | The mocks' 12 × 12 sprite in one file (`src/assets/parakeet.svg`, with a contract for the artist), inlined: it perches and hops on the O, sits on the portrait's frame on About and For recruiters, flies between them (one view-transition name, an arc), appears after the curtain; its head follows a mouse or pen on portrait pages (transform only; not for touch or with Pause motion; nothing stored or sent). Colophon section. New check `parakeet.*` (3). 73 pass. |
-| U9 the portrait | [ ] | | | | |
+| U9 the portrait | [ ] | | 9 | 8 | The CC0 parakeet photo (rawpixel; `widths` 400 and 800) replaces v2's parrot (removed); alt "A parakeet, standing in for Jon"; a caption under a frame (hidden from screen readers: it repeats the alt). Paper's halftone lifted for this darker photo; Night's X-ray is now a soft duotone, muted violet to pale cyan (an inline SVG filter, drawn live). Colophon credit. 73 pass. |
 | U10 pause motion | [ ] | | | | |
 | U11 measure and screenshots | [ ] | | | | |
 | U12 HANDOFF.md | [ ] | | | | |
@@ -22,8 +22,8 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 ## Budget
 
 - Units done: 10 of 14 · turns so far: 170 · average turns per unit: 17 (13.7 over U2 to U8) · estimated turns left: 4 units × about 12 = 50
-- Wall clock (read from `date`): session started 2026-11-23 08:05 UTC; U0 done 08:11; U1 about 08:23; U2 about 08:26; U3 about 08:33; U4 08:41; U5 08:49; U5b 09:00; U6 09:12; U7 09:22; U8 09:28.
-- Last updated: 2026-11-23 09:28 UTC, after U8.
+- Wall clock (read from `date`): session started 2026-11-23 08:05 UTC; U0 done 08:11; U1 about 08:23; U2 about 08:26; U3 about 08:33; U4 08:41; U5 08:49; U5b 09:00; U6 09:12; U7 09:22; U8 09:28; U9 09:36.
+- Last updated: 2026-11-23 09:36 UTC, during U9.
 
 ## Checks not yet expected to pass
 
@@ -210,3 +210,15 @@ where the brief is silent)
 - U8 · decision: the head turns toward a mouse or pen, at most 24° up or down, mirrored when the pointer is behind it;
   one requestAnimationFrame per move, transform only (CSSOM, which the CSP allows), not for touch. It keeps still
   while Pause motion is on: the brief asks only for loops to stop, but someone who asked for less motion gets less.
+- U9 · decision: the credit follows the file's own metadata: published by rawpixel.com as public domain (CC0 1.0),
+  citing free-images.com as its source (linked); the colophon gives it though CC0 asks for none. v2's parrot
+  (`src/assets/headshot.webp`) is removed from the branch (history keeps it); `headshotAlt` in `v2-words.ts` is kept,
+  unused, and says so. The alt text lives in `PORTRAIT_ALT` (`src/data/site.ts`), the brief's words.
+- U9 · decision: the mocks caption the portrait with the same words as the alt text; the caption is shown and hidden
+  from screen readers (`aria-hidden`), so they hear it once. The layers sit in a `.portrait-frame` (the bird sits on
+  it, Night's round window is its square), the caption under it.
+- U9 · decision: Night's X-ray is an SVG filter in the portrait (luminance inverted, then a three-step table from
+  `#21193D` to `#CCF0F0`), referenced from night.css: softer than v3's hue-rotated sepia (the mock's muted violet to
+  pale cyan), still live over the photo. Paper's halftone keeps v3's threshold screen, with the photo lifted
+  (brightness 1.32) first: the new photo's dark door printed as a solid slab at v3's settings.
+- U9 · fix: html-validate wants a figure's caption last; the filter definitions moved to the figure's start.

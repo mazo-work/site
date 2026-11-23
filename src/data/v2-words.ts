@@ -85,7 +85,7 @@ export const resume = {
 
 /** Sidebar.jsx */
 export const sidebar = {
-  headshotAlt: 'A parrot, standing in for Jon', // Jon's review, 2026-11-23: v2's alt text named him, under a parrot
+  headshotAlt: 'A parrot, standing in for Jon', // Jon's review, 2026-11-23: v2's alt text named him, under a parrot. v4: unused (the portrait is the parakeet photo; its alt text is PORTRAIT_ALT in site.ts)
   strengths: {
     heading: 'Key Strengths',
     items: [
