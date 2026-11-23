@@ -6,7 +6,7 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 |---|---|---|---|---|---|
 | U0 scaffold | [x] | 17b87c7 | 28 | 30 | Astro 7.4.13 + three 0.170.0 pinned; v2's words in `src/data/v2-words.ts`; React app removed. 13 of the 28 turns were the one-time read of the brief's inputs. |
 | U1 check suite | [x] | 4e78de4 | 11 | 17 | `npm run check`: 32 checks, 22 pass, 10 pending (listed below). Proven against a broken fixture. CI workflow `check.yml` (check only). |
-| U2 headers | [ ] | | | | |
+| U2 headers | [x] | 1ddc1d3 | 6 | 3 | `public/_headers` (§3 CSP + `trusted-types 'none'`, HSTS no preload, COOP/CORP, XFO, Permissions-Policy denying 55 unused features), `security.txt`; check `headers.*` (4) passes. |
 | U3 spine | [ ] | | | | |
 | U4 Editorial | [ ] | | | | |
 | U5 entrance | [ ] | | | | |
@@ -25,9 +25,9 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 
 ## Budget
 
-- Units done: 2 of 18 · turns so far: 39 · average turns per unit: 19.5 (13 without U0's one-time read) · estimated turns left: 16 × 13 ≈ 210
-- Wall clock: session started 2026-11-23 02:37 UTC; U0 done 02:47; U1 done 02:54.
-- Last updated: 2026-11-23 02:55 UTC, after U1.
+- Units done: 3 of 18 · turns so far: 45 · average turns per unit: 15 (11.3 without U0's one-time read) · estimated turns left: 15 × 15 ≈ 225 (design units will run above the average)
+- Wall clock: session started 2026-11-23 02:37 UTC; U0 done 02:47; U1 02:54; U2 02:58.
+- Last updated: 2026-11-23 02:58 UTC, after U2.
 
 ## Checks not yet expected to pass
 
@@ -69,3 +69,10 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
   localStorage under `mazo-theme`. A case-study shell is `noindex`, out of the sitemap, and WebPage (not Article).
 - U1 · decision: a check-only CI workflow, `.github/workflows/check.yml` (push to v3; contents: read; actions pinned to
   the same commits as test-page.yml, which is untouched).
+- U2 · decision: the CSP adds `trusted-types 'none'` to §3's list: with `require-trusted-types-for 'script'` and no
+  policy needed, no script may create one (a default policy would be a bypass). Proposed as a change in the handoff.
+- U2 · decision: Permissions-Policy denies every feature Chrome 157 recognises that the site does not use (55);
+  `ambient-light-sensor` and `attribution-reporting` were dropped as unrecognised; `bluetooth` and `web-share` stay
+  although Linux Chrome warns they are unrecognised (other platforms have them); `autoplay` stays at its default for
+  the entrance's tap-started sound; client hints (`ch-*`) are left alone.
+- U2 · unverified: whether Cloudflare Pages applies `_headers` to its 404 responses; the runbook (U16) checks it with curl.
