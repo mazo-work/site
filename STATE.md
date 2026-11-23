@@ -18,16 +18,16 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 | U11 secrets | [x] | 8239eb2 | 3 | 9 | View-source note (the mark as text + [JON] slot) on every page; 4 story fragments as native details, linking to About's beats. New check `secrets-in-walls.*` (2). 49 pass. |
 | U12 gag chatbot | [x] | a105b6c | 6 | 8 | Launcher on content pages; widget JS + CSS load on first open; invented vocabulary; role=log; no network, nothing stored. New check `chatbot.*` (4). 53 pass. |
 | U13 analytics beacon | [x] | ba20fae | 9 | 5 | Beacon on every page, token as `[CF_BEACON_TOKEN]`; CSP + exactly two hosts; colophon names it. New check `beacon.*` (2). 55 pass. |
-| U14 resume PDF | [ ] | | | | |
+| U14 resume PDF | [x] | 88560cc | 5 | 4 | Metadata stripped (info, XMP with IDs, file ID); text and pixels identical. Report `handoff/resume-pdf.md`: the page shows an email address (Jon's to remove). 55 pass. |
 | U15 measure | [ ] | | | | |
 | U16 deploy runbook | [ ] | | | | |
 | U17 HANDOFF.md | [ ] | | | | |
 
 ## Budget
 
-- Units done: 14 of 18 · turns so far: 147 · average turns per unit: 10.5 · estimated turns left: 4 units × 6 ≈ 24
-- Wall clock: session started 2026-11-23 02:37 UTC; U0 done 02:47; U1 02:54; U2 02:58; U3 03:06; U4 03:19; U5 03:28; U6 03:32; U7 03:38; U8 03:41; U9 03:47; U10 03:52; U11 03:55; U12 04:00; U13 04:08.
-- Last updated: 2026-11-23 04:08 UTC, after U13.
+- Units done: 15 of 18 · turns so far: 152 · average turns per unit: 10.1 · estimated turns left: 3 units × 6 ≈ 18
+- Wall clock: session started 2026-11-23 02:37 UTC; U0 done 02:47; U1 02:54; U2 02:58; U3 03:06; U4 03:19; U5 03:28; U6 03:32; U7 03:38; U8 03:41; U9 03:47; U10 03:52; U11 03:55; U12 04:00; U13 04:08; U14 04:14.
+- Last updated: 2026-11-23 04:14 UTC, after U14.
 
 ## Checks not yet expected to pass
 
@@ -160,3 +160,6 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
   after deploy; if it needs a policy, the brief says to add a named one, never to drop the directive.
 - U13 · decision: no Subresource Integrity on the beacon (Cloudflare changes the file in place); an html-validate
   directive next to the script records the exception.
+- U14 · decision: the stripped copy replaces `public/Profile.pdf` under the same name (no link changes); the report
+  names kinds and places, never values, because the repository is public. The email address on the page is left for
+  Jon (content changes are his) and is a must-fix before launch in the handoff.
