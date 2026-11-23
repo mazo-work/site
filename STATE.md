@@ -16,14 +16,14 @@ Resume rule: start at the first unticked unit. Never redo a ticked unit.
 | U8 the parakeet | [x] | 793f7c3 | 10 | 12 | The mocks' 12 × 12 sprite in one file (`src/assets/parakeet.svg`, with a contract for the artist), inlined: it perches and hops on the O, sits on the portrait's frame on About and For recruiters, flies between them (one view-transition name, an arc), appears after the curtain; its head follows a mouse or pen on portrait pages (transform only; not for touch or with Pause motion; nothing stored or sent). Colophon section. New check `parakeet.*` (3). 73 pass. |
 | U9 the portrait | [x] | ea527a5 | 9 | 8 | The CC0 parakeet photo (rawpixel; `widths` 400 and 800) replaces v2's parrot (removed); alt "A parakeet, standing in for Jon"; a caption under a frame (hidden from screen readers: it repeats the alt). Paper's halftone lifted for this darker photo; Night's X-ray is now a soft duotone, muted violet to pale cyan (an inline SVG filter, drawn live). Colophon credit. 73 pass. |
 | U10 pause motion | [x] | 7d006f4 | 4 | 2 | The control (built with the skeleton in U1) now covers every loop: on Home, About and Now in both masks every infinite animation stops, stays stopped on the next page, and runs again; page transitions still play while paused; without JavaScript nothing loops (no button to press). Keyboard and axe in both states. Every @keyframes and transition in the built CSS moves transform, opacity or clip-path only. New check `motion.*` (5). 78 pass. |
-| U11 measure and screenshots | [ ] | | | | |
+| U11 measure and screenshots | [ ] | | 27 | 131 | Lighthouse 13.6.0 on every page in both masks, mobile and desktop (`handoff/measure.md`): content pages 92 to 100 for performance, 100 for accessibility and best practices everywhere; About and For recruiters' mobile LCP 3.0 and 3.3 s in Paper, 2.1 and 2.4 s in Night; CLS at most 0.076 (Paper's 404); SEO 63 to 69 (the deliberate noindex until launch). Before fonts 11 to 16 KB a page (84 KB with the portrait); fonts Paper 208.7 KB, Night 52 KB. 60 screenshots (48 pages plus 12 entrance moments), 10.2 MB, replacing v3's 78. CI on `v4` (run #36) passed. 14 of the 27 turns were waiting on background runs. |
 | U12 HANDOFF.md | [ ] | | | | |
 
 ## Budget
 
 - Units done: 12 of 14 · turns so far: 183 · average turns per unit: 15.3 (12.4 over U2 to U10) · estimated turns left: 2 units × about 10 = 20
-- Wall clock (read from `date`): session started 2026-11-23 08:05 UTC; U0 done 08:11; U1 about 08:23; U2 about 08:26; U3 about 08:33; U4 08:41; U5 08:49; U5b 09:00; U6 09:12; U7 09:22; U8 09:28; U9 09:36; restart; U10 14:07.
-- Last updated: 2026-11-23 14:07 UTC, after U10.
+- Wall clock (read from `date`): session started 2026-11-23 08:05 UTC; U0 done 08:11; U1 about 08:23; U2 about 08:26; U3 about 08:33; U4 08:41; U5 08:49; U5b 09:00; U6 09:12; U7 09:22; U8 09:28; U9 09:36; restart; U10 14:07; U11 14:20.
+- Last updated: 2026-11-23 14:20 UTC, during U11.
 
 ## Checks not yet expected to pass
 
@@ -230,3 +230,16 @@ where the brief is silent)
   brief's rule (transform, opacity, the reveal's clip-path).
 - 2026-11-23 14:04 UTC · resume: the session's worker restarted during U10 (about 09:40 to 14:04 UTC; the work was on
   disk, uncommitted, and nothing was lost). Per §1: `npm run check` once (78 of 78), then U10 committed.
+- U11 · decision: Lighthouse runs once per mask: Paper as a light device, Night as a dark one (Chrome's
+  `--blink-settings=preferredColorScheme=0`; the boot script follows the device when nothing is stored). Checked
+  first: under chrome-launcher both that flag and `--force-dark-mode` select Night; under Playwright neither does,
+  because Playwright emulates a light scheme.
+- U11 · found: SEO is 63 to 69 on every page: the `X-Robots-Tag: noindex` header the reviewing session added after
+  v3 was measured (until launch) fails Lighthouse's crawlable audit. Expected; the runbook removes it at launch.
+- U11 · found: About and For recruiters' mobile LCP rose from v3's 1.96 s to 3.0 and 3.3 s in Paper (2.1 and 2.4 s in
+  Night): the larger photo (up to 800 px) and IM FELL's 209 KB; Paper's 404 shifts 0.076 as its giant headline's font
+  swaps in. Reported, not traded for (v4: no size budget); listed for the performance session.
+- U11 · decision: the check workflow now also runs on pushes to `v4` (it listened to `v3` only, so no v4 push had been
+  checked on GitHub); its first run on v4 (#36, a3367b2) passed. `tools/slots.mjs` lists every slot by page.
+- U11 · decision: the screens replace v3's 78 (`node tools/measure.mjs --screens`; v3's remain in the `v3` branch);
+  the entrance's twelve moments from U5b are kept beside them.
