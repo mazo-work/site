@@ -4,9 +4,9 @@
   "version": "4.0.0",
   "type": "module",
   "scripts": {
-    "dev": "ASTRO_TELEMETRY_DISABLED=1 astro dev",
-    "build": "ASTRO_TELEMETRY_DISABLED=1 astro build",
-    "preview": "ASTRO_TELEMETRY_DISABLED=1 astro preview",
+    "dev": "node -e \"process.env.ASTRO_TELEMETRY_DISABLED='1';process.exit(require('node:child_process').spawnSync('astro',process.argv.slice(1),{stdio:'inherit',shell:true}).status??1)\" dev",
+    "build": "node -e \"process.env.ASTRO_TELEMETRY_DISABLED='1';process.exit(require('node:child_process').spawnSync('astro',process.argv.slice(1),{stdio:'inherit',shell:true}).status??1)\" build",
+    "preview": "node -e \"process.env.ASTRO_TELEMETRY_DISABLED='1';process.exit(require('node:child_process').spawnSync('astro',process.argv.slice(1),{stdio:'inherit',shell:true}).status??1)\" preview",
     "check": "node tools/check/run.mjs"
   },
   "dependencies": {

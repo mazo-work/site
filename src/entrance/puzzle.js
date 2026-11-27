@@ -33,6 +33,9 @@ const OS_RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const HONOR_RM = true;
 const RM = HONOR_RM && OS_RM;
 const $ = id => document.getElementById(id);
+// s109 (C5): the test surfaces (window.__mazo and the #debug HUD) exist only in the check's build, which sets
+// PUBLIC_MAZO_TEST=1 (tools/check/run.mjs); the production build carries neither
+const TEST = import.meta.env.PUBLIC_MAZO_TEST === '1';
 const stageEl = $('stage'), hintEl = $('hint'), arrowEl = $('arrow'), liveEl = $('live'), dbgEl = $('debug');
 const SITE = '/home/';          // v3: the site is Home, a page of its own (the CSP allows no frames)
 function openSiteNow() {        // no 3D, or 3D was lost: open the site straight away, without the curtain
@@ -82,7 +85,7 @@ const orbLight = new THREE.PointLight(PAL.point, 14, 0, 2);
 orb.add(orbCore, orbHalo, orbLight);
 
 // ---------- state ----------
-let design = 0, D, pieces = {}, stage = 0, busy = false, colors = true, debug = location.hash === '#debug';
+let design = 0, D, pieces = {}, stage = 0, busy = false, colors = true, debug = TEST && location.hash === '#debug';
 const dlogLines = []; let dbgLive = '';
 function renderDbg() { dbgEl.textContent = dbgLive + (dlogLines.length ? (dbgLive ? '\n' : '') + dlogLines.join('\n') : ''); }
 function dlog(m) { dlogLines.push(`${(performance.now() / 1000).toFixed(1)}s ${m}`); if (dlogLines.length > 10) dlogLines.shift(); if (debug) renderDbg(); }
@@ -682,7 +685,7 @@ $('sound').onclick = () => {
   setSoundButton(); if (soundOn) wakeAudio(); else if (audio) audio.suspend();
 };
 setSoundButton();
-$('dbg').onclick = () => { debug = !debug; $('dbg').setAttribute('aria-pressed', String(debug)); dbgEl.style.display = debug ? 'block' : 'none'; };
+if (TEST) $('dbg').onclick = () => { debug = !debug; $('dbg').setAttribute('aria-pressed', String(debug)); dbgEl.style.display = debug ? 'block' : 'none'; };
 stageEl.addEventListener('keydown', e => {
   if (e.key === 'ArrowLeft') yaw -= 0.26; else if (e.key === 'ArrowRight') yaw += 0.26;
   else if (e.key === 'ArrowUp') pitch = Math.max(-0.55, pitch - 0.2); else if (e.key === 'ArrowDown') pitch = Math.min(0.85, pitch + 0.2);
@@ -736,6 +739,7 @@ function frame(now) {
   renderer.render(scene, camera);
   rafId = requestAnimationFrame(frame);
 }
+if (TEST) {   // s109 (C5): the check's build only
 let voxDisposed = 0; voxGeo.addEventListener('dispose', () => { voxDisposed++; });   // s109: for the check (C1)
 window.__mazo = {   // test hook: read-only state plus the same helpers the page uses
   gpu: () => ({ geometries: renderer.info.memory.geometries, textures: renderer.info.memory.textures,   // s109: the lifecycle
@@ -754,5 +758,6 @@ window.__mazo = {   // test hook: read-only state plus the same helpers the page
   seg: L => pieces[L].userData.seg, setView: (y, p) => { yaw = y; pitch = p; touched = true; vyaw = vpitch = 0; },
   pick: (x, y) => pick({ clientX: x, clientY: y })
 };
+}
 load(0);
 rafId = requestAnimationFrame(frame);

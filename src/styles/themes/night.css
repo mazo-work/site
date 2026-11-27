@@ -32,7 +32,6 @@
   & ::selection { background: #3d2b6b; color: #fff; }
   & :focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
   & a { text-decoration-color: var(--accent); }
-  & a:hover { color: #fff; }
 
   & .meta, & .facts dt, & .tags, & .prose th, & .index time {
     font: var(--label); letter-spacing: 0.02em;
@@ -103,7 +102,6 @@
   & .prose blockquote:not(.pull) { padding-left: calc(3 * var(--u)); border-left: 1px solid var(--accent); font-style: italic; }
   & .prose pre { background: var(--paper-2); border: 1px solid var(--rule); }
   & .prose table { border-top: 1px solid rgba(218, 214, 240, 0.45); }
-  & .prose th { font-weight: 600; }
 
   /* For recruiters */
   & .facts { padding-top: calc(2 * var(--u)); border-top: 1px solid rgba(218, 214, 240, 0.45); }

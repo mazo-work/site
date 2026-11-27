@@ -2,6 +2,8 @@
 // `npm run check`: builds the site, then runs every check in tools/check/checks/ in file-name order.
 // A failing check fails the run unless STATE.md lists it under "Checks not yet expected to pass" (things not
 // built yet); those print as PENDING. Options: --no-build (check the existing dist/), --only=id[,id].
+// S109 (C5): the check builds with PUBLIC_MAZO_TEST=1, the only build that carries the puzzle's test hook
+// (window.__mazo) and its debug HUD; `npm run build` (production) carries neither (check `production`).
 import { spawnSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -16,7 +18,7 @@ const t0 = Date.now();
 const results = [];
 
 if (!args.includes('--no-build')) {
-  const b = spawnSync('npx', ['astro', 'build'], { cwd: ROOT, encoding: 'utf8', env: { ...process.env, ASTRO_TELEMETRY_DISABLED: '1' } });
+  const b = spawnSync('npx', ['astro', 'build'], { cwd: ROOT, encoding: 'utf8', env: { ...process.env, ASTRO_TELEMETRY_DISABLED: '1', PUBLIC_MAZO_TEST: '1' } });
   const out = (b.stdout || '') + (b.stderr || '');
   results.push({ id: 'build', ok: b.status === 0, problems: b.status === 0 ? [] : out.trim().split('\n').slice(-40) });
   if (b.status !== 0) { report(); process.exit(1); }
