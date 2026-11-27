@@ -95,3 +95,15 @@ hr { border: 0; border-top: 1px solid var(--rule); margin: calc(2 * var(--lh)) 0
 :root[data-curtain][data-theme]::view-transition-old(mark), :root[data-curtain][data-theme]::view-transition-new(mark) { animation-duration: 1.4s; }
 @keyframes mazo-curtain { to { transform: translateY(-100%); } }
 @keyframes mazo-curtain-fade { to { opacity: 0; } }
+/* S109: the curtain under reduced motion (adopted by the operator at S108), chosen by the puzzle per mask and passed
+   as data-curtain: Paper, "fade" (above: the finished scene fades out over 0.45 s); Night, "scan" (the scene fades
+   out while Home is revealed top to bottom in six bands, 720 ms). Neither moves anything: no transform, and the word
+   does not fly into the mark (the mark keeps no view-transition name, so it opens with the page and the word fades
+   with the scene); each band changes once, so nothing flashes. */
+:root:is([data-curtain="fade"], [data-curtain="scan"]) .masthead-mark .mark { view-transition-name: none; }
+:root:is([data-curtain="fade"], [data-curtain="scan"])[data-theme]::view-transition-group(*) { animation: none; }
+:root[data-curtain="fade"][data-theme]::view-transition-old(mark) { animation: mazo-curtain-fade 0.45s ease both; }
+:root[data-curtain="scan"][data-theme]::view-transition-old(root),
+:root[data-curtain="scan"][data-theme]::view-transition-old(mark) { animation: mazo-curtain-fade 720ms linear both; z-index: 0; }
+:root[data-curtain="scan"][data-theme]::view-transition-new(root) { animation: mazo-curtain-scan 720ms steps(6, end) both; z-index: 1; }
+@keyframes mazo-curtain-scan { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0 0 0 0); } }

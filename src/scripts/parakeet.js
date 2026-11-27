@@ -12,6 +12,9 @@ if (head) {
     const deg = Math.max(-24, Math.min(24, (Math.atan2(y - hy, Math.abs(x - hx) + 1) * 180) / Math.PI));
     head.style.transform = `rotate(${(x < hx ? -1 : 1) * deg}deg)` + (x < hx ? ' scaleX(-1)' : '');
   };
+  // S109: Pause motion brings the head back to rest at once, not at the next pointer move
+  new MutationObserver(() => { if (document.documentElement.dataset.motion === 'paused') head.style.transform = ''; })
+    .observe(document.documentElement, { attributes: true, attributeFilter: ['data-motion'] });
   addEventListener('pointermove', (e) => {
     if (e.pointerType === 'touch') return;
     x = e.clientX; y = e.clientY;

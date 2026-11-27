@@ -28,7 +28,9 @@ const PALETTES = {
 const PAL = document.documentElement.dataset.theme === 'night' ? PALETTES.night : PALETTES.paper;   // v4
 const BASE = PAL.base, COLORS = PAL.colors;                                                        // v4: was P0's
 const OS_RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
-const HONOR_RM = false;         // the full intro plays for everyone (owner's choice); true restores the reduced-motion version
+// S109: the device's reduce-motion setting is honoured (the operator adopted this at S108, replacing "the full intro
+// plays for everyone"): no idle spin, no momentum drift, P0's shortened moves; turning and pulling are unchanged
+const HONOR_RM = true;
 const RM = HONOR_RM && OS_RM;
 const $ = id => document.getElementById(id);
 const stageEl = $('stage'), hintEl = $('hint'), arrowEl = $('arrow'), liveEl = $('live'), dbgEl = $('debug');
@@ -592,7 +594,10 @@ function moveStage(y, o, ms, done) {   // a CSS transition, run by the browser's
   stageEl.style.transform = y ? `translate3d(0, ${y}%, 0)` : ''; stageEl.style.opacity = o === 1 ? '' : String(o);
   stageEl.addEventListener('transitionend', end); setTimeout(end, ms + 300);
 }
-const CURTAIN_FADE = false;     // the curtain rises for everyone, Reduce Motion included (owner's choice); true gives a 0.45 s fade
+// S109: the curtain follows the reduce-motion setting by mask (adopted by the operator at S108, replacing "the curtain
+// rises for everyone"): without it, the curtain rises as before; with it, Paper fades (0.45 s) and Night reveals Home
+// in six bands (base.css), and without cross-document view transitions both fade here. Nothing moves in either.
+const CURTAIN = RM ? (PAL.name === 'night' ? 'scan' : 'fade') : 'rise';
 // v3: the curtain is the page change itself. Where the browser has cross-document view transitions, Home's
 // stylesheet raises this page's last frame (a still picture) over 1.4 s with Home underneath, and the word, placed
 // as an image over the 3D word, travels into Home's mark (BRIEF §3: MAZO resolves into the header). Elsewhere the
@@ -601,14 +606,14 @@ const CROSS_DOC_VT = 'onpagereveal' in window;
 function liftCurtain() {
   phase = 'lift';
   Promise.race([ensureSite(), new Promise(r => setTimeout(r, 3000))]).then(() => {
-    $('top').style.visibility = 'hidden'; placeWord(); snapshot(); paused = true; dlog(CURTAIN_FADE ? 'curtain: fade' : 'curtain: rising');
+    $('top').style.visibility = 'hidden'; placeWord(); snapshot(); paused = true; dlog('curtain: ' + CURTAIN);
     const opened = () => {
       phase = 'site'; say('The site is open.'); dlog('curtain up');
-      try { sessionStorage.setItem('mazo-curtain', CURTAIN_FADE ? 'fade' : 'rise'); } catch (e) {}
+      try { sessionStorage.setItem('mazo-curtain', CURTAIN); } catch (e) {}
       location.assign(SITE);
     };
     if (CROSS_DOC_VT) opened();
-    else if (CURTAIN_FADE) moveStage(0, 0, 450, opened); else moveStage(-100, 1, 1400, opened);
+    else if (CURTAIN !== 'rise') moveStage(0, 0, 450, opened); else moveStage(-100, 1, 1400, opened);
   });
 }
 function placeWord() {          // the word as a still image exactly over the 3D word; the 3D word steps aside
@@ -735,7 +740,7 @@ let voxDisposed = 0; voxGeo.addEventListener('dispose', () => { voxDisposed++; }
 window.__mazo = {   // test hook: read-only state plus the same helpers the page uses
   gpu: () => ({ geometries: renderer.info.memory.geometries, textures: renderer.info.memory.textures,   // s109: the lifecycle
     calls: renderer.info.render.calls, triangles: renderer.info.render.triangles, voxDisposed }),
-  state: () => ({ halo: Math.round(orbHalo.material.opacity * 100) / 100, stage, busy, design: D.name, s: stage < 4 ? pieces[ORDER[stage]].userData.s : null,
+  state: () => ({ halo: Math.round(orbHalo.material.opacity * 100) / 100, yaw: Math.round(yaw * 1e4) / 1e4, stage, busy, design: D.name, s: stage < 4 ? pieces[ORDER[stage]].userData.s : null,
     done: $('done').classList.contains('on'), phase, blocks: fallData.length, landed: fallData.filter(b => b.landed).length,
     reveal: Math.round(revealLocal * 100) / 100, sound: !!audio && audio.state, hasSite: !!SITE,
     lineColors: new Set(fallData.map(b => b.color.getHexString())).size,

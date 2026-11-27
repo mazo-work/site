@@ -1,6 +1,6 @@
 # MAZO puzzle spec
 
-**Version:** v0.4, draft for review (2026-11-21)
+**Version:** v0.5, draft for review (2026-11-27)
 
 The site's front door is a 3D puzzle made of the letters M, A, Z and O, locked together like a wooden burr puzzle. Visitors turn it and pull the letters out one at a time. Each letter flies into a title that spells MAZO, a light sweeps across the name, and the site opens. A skip control and a direct link to the recruiter section are always available.
 
@@ -88,7 +88,7 @@ Run `python3 tools/burr/check.py` after any change to the puzzle data. It must e
 - After 40 seconds, a "Show me" button appears and pulls the letter out.
 - Skip is always visible and jumps straight to the finale.
 - Keyboard: the arrow keys turn the puzzle, and Enter or Space pulls the free letter. Progress is announced for screen readers.
-- Reduced motion turns off the idle spin and shortens every animation. Without WebGL, a fallback card offers the site.
+- Reduced motion (the device's setting, honoured since S109) turns off the idle spin and the drift after a turn, and shortens every animation; turning and pulling work as before. Without WebGL, a fallback card offers the site.
 
 ## Finale
 
@@ -102,7 +102,7 @@ During the puzzle, the pieces keep their own colours. From the sweep on, everyth
 6. **Word.** As each row lets go, MAZO in a plain bold font is uncovered behind it, from the bottom up. It is set in capitals, at the same height and in the same places as the block letters. The font is a stand-in until the looks are chosen.
 7. **Curtain.** After 0.65 s the line rises like a curtain. The whole scene lifts with it, the line as its hem, over 1.4 s. Underneath is the site. It was loaded behind the puzzle after the first letter came out, so it is ready. The curtain is a still picture of the finished scene moved by a CSS transition, which phones run smoothly. While the site shows, the 3D scene stops drawing. "Replay intro" brings the curtain back down on a fresh puzzle. The private preview has no site to reveal, so it ends on a card instead.
 
-Skip jumps straight to step 7 from anywhere. The full intro plays for everyone, Reduce Motion included: the owner's choice, with Skip as the way out. The reduced-motion version (quicker moves, instant sweep and fall, 1.5 s hold) and a 0.45 s curtain fade stay in the code, each behind one setting.
+Skip jumps straight to step 7 from anywhere. With Reduce Motion on (honoured since S109: the owner adopted the reduced-motion design at S108, replacing "the full intro plays for everyone"), the puzzle plays the reduced version (quicker moves, a quick sweep, the click-in and dim at once, no hold, then the fall), and the curtain moves nothing: in Paper the finished scene fades out over 0.45 s; in Night it fades while the site is revealed top to bottom in six bands (720 ms); the word does not fly into the mark. Where the browser has no cross-document view transitions, both fade the stage in 0.45 s. Without Reduce Motion the curtain rises as above.
 
 ## Sound
 
@@ -152,6 +152,7 @@ Testers use a public page on the site's domain, published with GitHub Pages. Beh
 
 ## Version history
 
+- **v0.5 (2026-11-27):** Reduce Motion is honoured (S109, adopted by the owner at S108): no idle spin or drift, the reduced version of the moves, and a curtain by mask that moves nothing (Paper fades; Night reveals in six bands).
 - **v0.4 (2026-11-21):** The curtain moves a still picture and rises and the full intro plays for everyone, Reduce Motion included, with the reduced version and a fade kept as a one-setting fallback. On iPhone the sound starts on a tap, not a drag, and the sound button says so.
 - **v0.3 (2026-11-21):** The glow is smaller and fainter, and spreads from the centre of the word over 2.8 s. The logo handoff is written up under P3.
 - **v0.2 (2026-11-21):** The sweep turns the letters white, the white dims with the glow, and the line is one solid colour. The hold is 2 s. The line rises as a curtain on the current site.

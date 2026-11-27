@@ -1,0 +1,24 @@
+/* Reduced motion (S109; the design the operator adopted at S108, replacing v4's "the same motion for everyone").
+   Under the device's "reduce motion" setting, and under Pause motion, a page change is one short cross-fade: the
+   masthead, the mark, the parakeet and a clicked orb give up their own view-transition names, so nothing travels
+   (no flying mark, no bird's flight, no orb flood or emergence), the orb's veils stay hidden, and the whole page fades
+   old to new in 250 ms, opacity only. That replaces Night's collapsing screen, Paper's page slide and the orb's
+   entry. The entrance's curtain keeps its own rules (base.css): it is reduced by the puzzle itself, which picks the
+   curtain by mask (Paper: a fade; Night: a banded reveal), so pages the curtain opens are left out here. */
+@keyframes mazo-fade-out { to { opacity: 0; } }
+@keyframes mazo-fade-in { from { opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .site-header, .masthead-mark .mark, .parakeet, .ring .orb-dot, :root[data-entry="orb"] main { view-transition-name: none !important; }
+  :root[data-entry="orb"] :is(.entry-veil, .entry-rim) { display: none !important; }
+  :root:not([data-curtain])::view-transition-group(*), :root:not([data-curtain])::view-transition-image-pair(*) { animation: none !important; }
+  :root:not([data-curtain])::view-transition-old(*) { animation: mazo-fade-out 250ms ease both !important; mix-blend-mode: normal; }
+  :root:not([data-curtain])::view-transition-new(*) { animation: mazo-fade-in 250ms ease both !important; mix-blend-mode: normal; }
+}
+:root[data-motion="paused"] :is(.site-header, .masthead-mark .mark, .parakeet, .ring .orb-dot),
+:root[data-motion="paused"][data-entry="orb"] main { view-transition-name: none !important; }
+:root[data-motion="paused"][data-entry="orb"] :is(.entry-veil, .entry-rim) { display: none !important; }
+:root[data-motion="paused"]:not([data-curtain])::view-transition-group(*),
+:root[data-motion="paused"]:not([data-curtain])::view-transition-image-pair(*) { animation: none !important; }
+:root[data-motion="paused"]:not([data-curtain])::view-transition-old(*) { animation: mazo-fade-out 250ms ease both !important; mix-blend-mode: normal; }
+:root[data-motion="paused"]:not([data-curtain])::view-transition-new(*) { animation: mazo-fade-in 250ms ease both !important; mix-blend-mode: normal; }

@@ -1,7 +1,8 @@
 // Pause motion (v4 BRIEF.md §3, Motion; U10). `loops`: on Home (the light, the ring, the bird), About (the bird on
 // the portrait, Night's scan) and Now, in both masks, every infinite animation runs, and every one stops when Pause
 // motion is pressed, stays stopped on the next page (remembered), and runs again when it is pressed again. `transitions`:
-// with motion paused, a page change still plays its view transition. `nojs`: without JavaScript (no data-js), there
+// with motion paused, a page change still plays its view transition; since S109 (the reduced-motion design adopted at
+// S108) that transition animates opacity only, each animation at most 300 ms (src/styles/reduced.css: 250 ms). `nojs`: without JavaScript (no data-js), there
 // is no button, so no animation runs. `a11y`: the button is named "Pause motion", says its state (aria-pressed),
 // works with the keyboard, and passes axe pressed and unpressed, in both masks. `properties`: every @keyframes in the
 // built CSS animates only transform (or translate, scale, rotate), opacity, or the reveal's clip-path, and every
@@ -83,15 +84,24 @@ export default {
       await c.addInitScript(([k, v]) => { try { localStorage.setItem(k, v); localStorage.setItem('mazo-motion', 'paused'); } catch {} }, [THEME_KEY, t]);
       await c.addInitScript(() => addEventListener('pagereveal', (e) => {
         window.__vt = 'none';
-        e.viewTransition?.ready.then(() => { window.__vt = document.getAnimations().filter((a) => (a.effect?.pseudoElement || '').startsWith('::view-transition') && a.playState === 'running').length; }, () => { window.__vt = 'skipped'; });
+        e.viewTransition?.ready.then(() => {
+          const run = document.getAnimations().filter((a) => (a.effect?.pseudoElement || '').startsWith('::view-transition') && a.playState === 'running');
+          window.__vt = run.length;
+          window.__vtMoves = run.flatMap((a) => {   // s109: opacity only, at most 300 ms
+            const props = [...new Set(a.effect.getKeyframes().flatMap((k) => Object.keys(k)).filter((p) => !['offset', 'computedOffset', 'easing', 'composite'].includes(p)))];
+            const ms = a.effect.getTiming().duration;
+            return props.some((p) => p !== 'opacity') || ms > 300 ? [`${a.effect.pseudoElement} animates ${props.join(', ')} for ${ms} ms`] : [];
+          });
+        }, () => { window.__vt = 'skipped'; });
       }));
       const p = await c.newPage();
       await p.goto(origin + '/now/', { waitUntil: 'load' });
       await p.click('.menu a[href="/projects/"]');
       await p.waitForURL(origin + '/projects/');
       await p.waitForFunction(() => window.__vt !== undefined && window.__vt !== 'none', null, { timeout: 10000 }).catch(() => {});
-      const vt = await p.evaluate(() => [window.__vt, document.documentElement.dataset.motion]);
+      const vt = await p.evaluate(() => [window.__vt, document.documentElement.dataset.motion, window.__vtMoves || []]);
       if (!(vt[0] > 0) || vt[1] !== 'paused') r.transitions.push(`[${t}] with motion paused, the page change ran ${vt[0]} transition animations (motion: ${vt[1]})`);
+      vt[2].forEach((m) => r.transitions.push(`[${t}] with motion paused, ${m} (opacity only, at most 300 ms)`));
       await c.close();
     }
     await plain.close();

@@ -42,6 +42,9 @@
 /* after the entrance: the curtain opens onto Home, then the bird appears, in steps, like a sprite */
 :root[data-curtain] .parakeet { animation: bird-appear 0.9s steps(6, end) 1.5s both; }
 @keyframes bird-appear { from { opacity: 0; transform: scale(0.4); } 60% { opacity: 1; transform: scale(1); } to { opacity: 1; transform: none; } }
+/* S109: after a reduced-motion curtain (fade or scan) it appears in the same steps without growing: opacity only */
+:root:is([data-curtain="fade"], [data-curtain="scan"]) .parakeet { animation-name: bird-appear-still; }
+@keyframes bird-appear-still { from { opacity: 0; } 60%, to { opacity: 1; } }
 :root[data-curtain][data-theme]::view-transition-new(parakeet) { animation: none; opacity: 0; }
 
 /* between pages it flies: the browser carries it from the mark to the portrait and back; it rises on the way */

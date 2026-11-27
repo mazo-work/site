@@ -123,10 +123,16 @@ halftone and Night's X-ray are drawn over it live, as v3 does.
 
 **Profile.** Hidden: removed from the mask toggle and never loaded. Keep its files; it returns in its own session.
 
-**Motion.** Jon's rule stands: the same motion for everyone (no automatic Reduce Motion variant yet). v4 adds motion
-that loops for more than 5 s (the ring, the bird's hop, the light's blink), so the WCAG 2.2.2 floor now needs a
-**Pause motion** control: in the utility row, a real button, remembered for the visit (local storage, no cookie), that
-pauses every looping animation; page transitions still play. Animate only `transform` and `opacity` (and the reveal's
+**Motion.** v4 shipped with Jon's rule of the same motion for everyone. **Changed at S108:** Jon adopted the
+reduced-motion design from an independent review, built in S109. Under the device's reduce-motion setting, the
+entrance puzzle neither spins on its own nor drifts after a turn (turning and pulling are unchanged), and its curtain
+moves nothing: Paper's fades out in 0.45 s; Night's fades the puzzle while Home is revealed top to bottom in six bands
+(`clip-path`, 720 ms); the word does not fly into the mark. Under that setting, **and under Pause motion**, every page
+change is a 250 ms opacity cross-fade (no CRT collapse, page slide, orb flood or bird's flight), and the parakeet's
+head rests while motion is paused. Without the setting, everything plays as before. v4 adds motion that loops for more
+than 5 s (the ring, the bird's hop, the light's blink), so the WCAG 2.2.2 floor needs a **Pause motion** control: in
+the utility row, a real button, remembered for the visit (local storage, no cookie), that pauses every looping
+animation; page changes still play, as the cross-fades above. Animate only `transform` and `opacity` (and the reveal's
 `clip-path`).
 
 **Budget.** No size budget for this version (Jon: get the design right first; a performance session follows). Measure
