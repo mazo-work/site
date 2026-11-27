@@ -6,15 +6,15 @@ Resume rule: start at the first unticked unit. Never redo a ticked one. If resum
 | Unit | Done | Commit | Turns | Checks | CI | Notes |
 |---|---|---|---|---|---|---|
 | U1 WebGL lifecycle (items 1–6) | [x] | 725202f, c11e449 | 16 | 79 of 79 | green (run 45941681583, on c11e449; run 45940620136 on 725202f failed, see log) | `puzzle.js`: `disposeMesh` never disposes the shared `voxGeo` (C1); `load()` disposes each letter's material and `InstancedMesh` (C2); the `RoomEnvironment` and the `PMREMGenerator` are disposed once the map is made (C3); the halo takes `PAL.haloOpacity` (C4); `skip()` returns during `lift` and `site` too (C10); the hold, the five rows and `finishUp`'s two waits go through `later()`, and `load()`/`jumpToEnd()` clear them (P2). New check `entrance.lifecycle` (1). Test hook: `gpu()` and `state().halo`. |
-| U2 UI races (items 7–10) | [ ] | | | | | |
-| U3 the reduced-motion design (items 11–14) | [ ] | | | | | |
+| U2 UI races (items 7–10) | [x] | f8e1e1d | 10 | 83 of 83 | green (run 45942679694, on 5ebd8c5, which carries f8e1e1d) | P1 reproduced and fixed: the sound button decides from whether the sound was running when the press began (read in a capture listener ahead of the wake), not after the wake has started it. `ring.css`: on a phone the dots take no pointer events (C7). `ring.js`: every dot gives up `orb-entry` before the clicked one takes it (C8). `theme-switch.js`: only the latest transition removes `theme-switching` (C9). New check `races.*` (4). |
+| U3 the reduced-motion design (items 11–14) | [x] | 8ee6184 | 20 | 87 of 87 | see the log (dispatched on the push that carries this row) | `puzzle.js`: `HONOR_RM = true`; `CURTAIN` is `rise`, or under reduce motion `fade` (Paper) or `scan` (Night), stored in `mazo-curtain`; without cross-document view transitions both reduced curtains fade the stage (`moveStage(0, 0, 450)`). `base.css`: the scan (old fades, new revealed by `clip-path` in `steps(6, end)`, 720 ms), no group moves and the mark keeps no name under fade and scan. New `reduced.css` (imported last in `Base.astro`): under `prefers-reduced-motion: reduce` and under Pause motion, page changes are one 250 ms opacity cross-fade. `parakeet.js`: the head rests the moment Pause motion is pressed. `parakeet.css`: after a reduced curtain the bird appears without growing. Docs: root `BRIEF.md`'s motion rule, `docs/puzzle-spec.md` (v0.5), the comments at `HONOR_RM` and `CURTAIN`. New check `reduced.*` (4); `motion.transitions` changed (below). Screens: `docs/briefs/s109-screens/`. |
 | U4 build and dead weight (items 15–18) | [ ] | | | | | |
 | U5 handoff and manifest | [ ] | | | | | |
 
 ## Budget
 
-- Units done: 1 of 5 · turns so far: 40 · average per unit: 16 (after the 12 turns of reading and baseline).
-- Estimated turns left: about 60 (U2 4 to tick, U3 22, U4 15, U5 10).
+- Units done: 3 of 5 · turns so far: 70 · average per unit: 15 (after the 12 turns of reading and baseline).
+- Estimated turns left: about 25 (U3's CI 2, U4 15, U5 8).
 - Session started 2026-11-27 04:04 UTC (read from `date`).
 
 ## Checks not yet expected to pass
@@ -25,7 +25,12 @@ Resume rule: start at the first unticked unit. Never redo a ticked one. If resum
 
 ## Changed checks (§2: a check changes only where an item changes the behaviour it asserts)
 
-(none yet)
+- `motion.transitions` (U3, item 14): it asserted that, with motion paused, a page change still runs view-transition
+  animations. Item 14 changes that behaviour: with motion paused a page change must animate opacity only. It now also
+  asserts that every running view-transition animation animates opacity alone and lasts at most 300 ms (the site uses
+  250 ms). On the U2 tree it fails with 30 problems (Paper's slide, Night's collapse, the mark's and the bird's
+  flight); on the U3 tree it passes. Its other assertion (transitions still play) is unchanged.
+- `entrance.*` (U1): `entrance.lifecycle` added beside the existing results; `entrance.play` and the rest unchanged.
 
 ## Log
 
@@ -63,3 +68,42 @@ Resume rule: start at the first unticked unit. Never redo a ticked one. If resum
   on the slower runner, the check's wait of three frames between Skip and Replay outlasted the curtain's 650 ms wait,
   so the page navigated. c11e449 does Skip and Replay one frame apart inside the page; both controls re-run and still
   fail as before; CI green.
+- U2 · P1 reproduced in Playwright before the fix (`tools`-free script in the session's scratch space): on a fresh
+  entrance, a mouse click on "Click for sound" ended "Sound off" (aria-pressed false, `mazo-sound=off`, audio
+  suspended), and so did Enter on the focused button (the capture-phase `keydown` wake resolves before `click`); a slow
+  press (150 ms between down and up) did not. Fixed as above; `races.sound` presses by click and by Enter.
+- U2 · planted control: the four U2 files at their pre-U2 state (U1's tree): all four `races.*` fail (the first press
+  mutes; every one of the five phone dots opens its room; two `orb-entry` names; `theme-switching` taken off twice
+  while the last transition ran). Fixed: all pass.
+- U2 · decision: `races.theme-toggle` presses the toggles 90 ms apart, so each change has applied while the previous
+  transition still runs (pressed in the same task, `apply()` sees the old mask and returns, so only one transition
+  would start).
+- U3 · decision: the reduced design takes the masthead, the mark, the parakeet and a clicked dot out of the view
+  transition (`view-transition-name: none`) and hides the orb's veils, so a page change is one root cross-fade; giving
+  the named groups no animation instead would have drawn the old picture of each (the dot, the large header) stretched
+  to the new one's box for 250 ms. `!important` because the named rules of `entry.css` and `parakeet.css` outrank a
+  `(*)` selector.
+- U3 · decision: the curtain modes go through the boot script unchanged: it already copies any `mazo-curtain` value
+  into `data-curtain` and the CSS reads `rise`, `fade` and `scan`; changing it would change its CSP hash for nothing.
+- U3 · decision: "zero transform movement" in the reduced curtains is read to include the bird's appearance after
+  them (it grew from 0.4 to 1): after `fade` or `scan` it appears in the same six steps by opacity alone. With the
+  curtain rising (no reduce motion) it grows as before.
+- U3 · decision: the scan takes 720 ms (the brief: 650 to 800); each band changes once (hidden to shown) while the
+  scene fades evenly, so no area flashes (WCAG 2.3.1 counts pairs of opposing changes in one area).
+- U3 · found: the puzzle's reduced version, now live, has no hold: under reduce motion `finale()` calls `clickIn(true)`,
+  which runs `dimBack(true)` and `startHold(true)`, whose wait is 0 ms, so the 1.5 s `RM` hold in `startHold` is never
+  reached, and the fall then plays at its usual pace. The spec said "instant sweep and fall, 1.5 s hold"; it now
+  describes the code (a quick sweep, no hold, then the fall). The code is P0's and is left as it is: not an item here.
+- U3 · found: under the device's setting the site-wide rules also take the mark's name away on a page the curtain
+  opens with `rise`, so a stale `rise` under reduce motion would not fly the word either. The puzzle never stores `rise`
+  under reduce motion, so this only makes the rule hold twice.
+- U3 · planted controls: the U2 tree's `src/` with the U3 checks: `motion.transitions` 30 problems, `reduced.curtain`
+  22 (`rise`, transforms, the flying mark group), `reduced.pages` and `reduced.head` fail. `reduced.entrance` needs the
+  hook's `yaw`, so its control is the U3 file with `HONOR_RM = false`: it fails with the spin (about 0.11 rad in 1.2 s)
+  and the drift (about 0.45 rad), and `reduced.curtain` with it (12: `rise`, the 1.4 s transform, no bands, the stage
+  rising without view transitions).
+- U3 · conflict with the brief: U3's acceptance asks for entrance screenshots of both curtains, but the brief's
+  write list has no place for them and `handoff/` must not change. They are in `docs/briefs/s109-screens/` (ten JPEGs,
+  554 KB: the puzzle before Skip, then four frames of each curtain), beside this file. Made by pausing the transition's
+  animations on Home under `reducedMotion: 'reduce'` and stepping their time; the script stayed in the session's scratch
+  space (it is not a check and the write list has no `tools/` beyond `tools/check/`).
