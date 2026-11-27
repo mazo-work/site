@@ -7,14 +7,14 @@ Resume rule: start at the first unticked unit. Never redo a ticked one. If resum
 |---|---|---|---|---|---|---|
 | U1 WebGL lifecycle (items 1–6) | [x] | 725202f, c11e449 | 16 | 79 of 79 | green (run 45941681583, on c11e449; run 45940620136 on 725202f failed, see log) | `puzzle.js`: `disposeMesh` never disposes the shared `voxGeo` (C1); `load()` disposes each letter's material and `InstancedMesh` (C2); the `RoomEnvironment` and the `PMREMGenerator` are disposed once the map is made (C3); the halo takes `PAL.haloOpacity` (C4); `skip()` returns during `lift` and `site` too (C10); the hold, the five rows and `finishUp`'s two waits go through `later()`, and `load()`/`jumpToEnd()` clear them (P2). New check `entrance.lifecycle` (1). Test hook: `gpu()` and `state().halo`. |
 | U2 UI races (items 7–10) | [x] | f8e1e1d | 10 | 83 of 83 | green (run 45942679694, on 5ebd8c5, which carries f8e1e1d) | P1 reproduced and fixed: the sound button decides from whether the sound was running when the press began (read in a capture listener ahead of the wake), not after the wake has started it. `ring.css`: on a phone the dots take no pointer events (C7). `ring.js`: every dot gives up `orb-entry` before the clicked one takes it (C8). `theme-switch.js`: only the latest transition removes `theme-switching` (C9). New check `races.*` (4). |
-| U3 the reduced-motion design (items 11–14) | [x] | 8ee6184 | 20 | 87 of 87 | see the log (dispatched on the push that carries this row) | `puzzle.js`: `HONOR_RM = true`; `CURTAIN` is `rise`, or under reduce motion `fade` (Paper) or `scan` (Night), stored in `mazo-curtain`; without cross-document view transitions both reduced curtains fade the stage (`moveStage(0, 0, 450)`). `base.css`: the scan (old fades, new revealed by `clip-path` in `steps(6, end)`, 720 ms), no group moves and the mark keeps no name under fade and scan. New `reduced.css` (imported last in `Base.astro`): under `prefers-reduced-motion: reduce` and under Pause motion, page changes are one 250 ms opacity cross-fade. `parakeet.js`: the head rests the moment Pause motion is pressed. `parakeet.css`: after a reduced curtain the bird appears without growing. Docs: root `BRIEF.md`'s motion rule, `docs/puzzle-spec.md` (v0.5), the comments at `HONOR_RM` and `CURTAIN`. New check `reduced.*` (4); `motion.transitions` changed (below). Screens: `docs/briefs/s109-screens/`. |
-| U4 build and dead weight (items 15–18) | [ ] | | | | | |
+| U3 the reduced-motion design (items 11–14) | [x] | 8ee6184 | 20 | 87 of 87 | green (run 45943362330, on b1181e9, which carries 8ee6184) | `puzzle.js`: `HONOR_RM = true`; `CURTAIN` is `rise`, or under reduce motion `fade` (Paper) or `scan` (Night), stored in `mazo-curtain`; without cross-document view transitions both reduced curtains fade the stage (`moveStage(0, 0, 450)`). `base.css`: the scan (old fades, new revealed by `clip-path` in `steps(6, end)`, 720 ms), no group moves and the mark keeps no name under fade and scan. New `reduced.css` (imported last in `Base.astro`): under `prefers-reduced-motion: reduce` and under Pause motion, page changes are one 250 ms opacity cross-fade. `parakeet.js`: the head rests the moment Pause motion is pressed. `parakeet.css`: after a reduced curtain the bird appears without growing. Docs: root `BRIEF.md`'s motion rule, `docs/puzzle-spec.md` (v0.5), the comments at `HONOR_RM` and `CURTAIN`. New check `reduced.*` (4); `motion.transitions` changed (below). Screens: `docs/briefs/s109-screens/`. |
+| U4 build and dead weight (items 15–18) | [x] | 14ab860 | 14 | 89 of 89 | see the log (dispatched on the push that carries this row) | `package.json`: `dev`, `build` and `preview` start Astro from `node -e` with `ASTRO_TELEMETRY_DISABLED` set by Node, so no shell syntax sets it (C6). `puzzle.js` and `index.astro`: `window.__mazo`, the `#debug` hash, the HUD and its button exist only when `PUBLIC_MAZO_TEST=1`, which only `tools/check/run.mjs` sets (C5). `night.css`: the `.prose th` weight 600 (C11) and the first `a:hover` (C12) removed. New check `production.*` (2). Pictures of Night's tables and links before and after in `docs/briefs/s109-screens/`. |
 | U5 handoff and manifest | [ ] | | | | | |
 
 ## Budget
 
-- Units done: 3 of 5 · turns so far: 70 · average per unit: 15 (after the 12 turns of reading and baseline).
-- Estimated turns left: about 25 (U3's CI 2, U4 15, U5 8).
+- Units done: 4 of 5 · turns so far: 84 · average per unit: 18 (after the 12 turns of reading and baseline).
+- Estimated turns left: about 10 (U5).
 - Session started 2026-11-27 04:04 UTC (read from `date`).
 
 ## Checks not yet expected to pass
@@ -107,3 +107,29 @@ Resume rule: start at the first unticked unit. Never redo a ticked one. If resum
   554 KB: the puzzle before Skip, then four frames of each curtain), beside this file. Made by pausing the transition's
   animations on Home under `reducedMotion: 'reduce'` and stepping their time; the script stayed in the session's scratch
   space (it is not a check and the write list has no `tools/` beyond `tools/check/`).
+- U3 · CI green on b1181e9 (run 45943362330).
+- U4 · decision (C6): `node -e` starts `astro` with `shell: true`, so npm's shell finds it on PATH on every system
+  (`astro.cmd` on Windows), passes the script's arguments on (`npm run dev -- --host` reaches Astro) and exits with
+  Astro's code. The quoted program uses only double quotes outside and single quotes inside, and no `$`, `%`, `!`, `^`,
+  `&`, `|`, `<` or `>`, so `cmd.exe` (npm's default shell on Windows) and PowerShell pass it to Node unchanged.
+  Measured here under bash: `npm run build` builds and exits 0; `npm run preview -- --port 4999` serves Home (200);
+  the same program, pointed at `node`, shows the child gets `ASTRO_TELEMETRY_DISABLED=1` and the arguments
+  `["dev","--host"]`, and passes on an exit code of 3. No Windows shell exists in this container, so the Windows run is
+  [UNVERIFIED]: reasoned from cmd's and PowerShell's quoting, not run. `production.scripts` fails on any
+  `NAME=value cmd` in a script (control: the three v4 scripts, 3 problems).
+- U4 · decision (C5): the flag is `PUBLIC_MAZO_TEST` (Astro passes `PUBLIC_` variables to client code and folds an
+  unset one away, so the production chunk has no trace of the hook: checked with `grep` on `dist/`). The debug HUD
+  is the `#debug` panel, its Debug button and the `#debug` hash; the two other dev buttons (Shape, Letter colors) are
+  not named by the item and stay, but they only ever showed through `#debug:target`, so in production they can no
+  longer be shown (noted for the main seat). `production.surfaces` builds a production copy into a temporary folder
+  and finds neither `__mazo` nor the HUD, and finds both in the check's own `dist/`. Control (the U3 `src/` and
+  `package.json`): 2 problems (`__mazo` in the production puzzle chunk; the HUD on the entrance).
+- U4 · found: `tools/entrance-screens.mjs` (outside this run's write list) reads `window.__mazo`, so it now needs the
+  check's build (`npm run check` or `PUBLIC_MAZO_TEST=1 npm run build`) before it runs; left unchanged, for the main
+  seat.
+- U4 · C11 and C12, measured: computed `th` weight 600 before, 400 after (Martian Mono, which ships 400 only, rendered
+  at 400 both times); `a:hover` green (`rgb(70, 217, 138)`) before and after. Pictures at 2x, Night, 1280 px: both
+  links at rest and hovered, and MAZO's table, are byte-identical before and after. The Colophon's table differs in
+  768 pixels, all inside its size columns: it prints the build's own page weights, which moved by 0.1 kB on some rows
+  because this unit made the CSS and the entrance smaller; its paths column and its rules match. Saved at half size
+  as `night-*-before.png` and `night-*-after.png`.
