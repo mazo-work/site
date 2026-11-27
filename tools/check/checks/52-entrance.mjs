@@ -190,9 +190,12 @@ async function lifecycle(browser, origin, mask, out) {
     const first = {}, seen = [];
     const start = await take(); first[start.shape] = start;
     for (let i = 0; i < 10; i++) {
-      await page.evaluate(() => document.getElementById('skip').click());
-      await frames(page, 3);
-      await page.evaluate((k) => document.getElementById(k % 2 ? 'design' : 'replay').click(), i);
+      // in the page, one frame apart: the frame draws the finished scene (so its objects reach the GPU), and the
+      // Replay or switch comes long before the curtain's 650 ms wait, however slow the machine
+      await page.evaluate((k) => new Promise((res) => {
+        document.getElementById('skip').click();
+        requestAnimationFrame(() => { document.getElementById(k % 2 ? 'design' : 'replay').click(); res(); });
+      }), i);
       const m = await take();
       seen.push(m);
       if (!first[m.shape]) { first[m.shape] = m; continue; }
