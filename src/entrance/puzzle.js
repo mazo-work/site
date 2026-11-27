@@ -142,6 +142,10 @@ const SFX = {
   pip: () => tone(2300 + Math.random() * 1000, null, 0.035, 'triangle', 0.014),            // a block lands in the line
 };
 function sfx(name, arg) { if (!soundOn || !audio || audio.state !== 'running') return; try { SFX[name](arg); } catch (e) {} }
+// s109 (P1): whether the sound was already running when this press began, read before the wake below can start it,
+// so the first press on "Click for sound" only starts the sound instead of starting it and then turning it off
+let pressFoundSound = false;
+['pointerdown', 'keydown'].forEach(t => addEventListener(t, () => { pressFoundSound = !!audio && audio.state === 'running'; }, { capture: true, passive: true }));
 ['pointerdown', 'pointerup', 'touchend', 'click', 'keydown'].forEach(t => addEventListener(t, wakeAudio, { capture: true, passive: true }));
 
 function glyphPixels(rows) {
@@ -668,7 +672,7 @@ $('colors').onclick = () => setColors(!colors);
 const COARSE = matchMedia('(pointer: coarse)').matches;
 function setSoundButton() { $('sound').textContent = !soundOn ? 'Sound off' : (audio && audio.state === 'running') ? 'Sound on' : (COARSE ? 'Tap for sound' : 'Click for sound'); $('sound').setAttribute('aria-pressed', String(soundOn)); }
 $('sound').onclick = () => {
-  if (soundOn && !(audio && audio.state === 'running')) { wakeAudio(); return; }   // this tap only starts the sound
+  if (soundOn && !pressFoundSound) { wakeAudio(); return; }   // this tap only starts the sound (s109, P1: as it began)
   soundOn = !soundOn; try { localStorage.setItem('mazo-sound', soundOn ? 'on' : 'off'); } catch (e) {}
   setSoundButton(); if (soundOn) wakeAudio(); else if (audio) audio.suspend();
 };

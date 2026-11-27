@@ -83,6 +83,6 @@
 /* on a phone it is a picture: the links and labels are hidden (the menu band is the navigation), their dots orbit */
 @media (max-width: 47.99rem) {
   .orb-link { visibility: hidden; }
-  .orb-dot { visibility: visible; }
+  .orb-dot { visibility: visible; pointer-events: none; }   /* s109 (C7): a visible dot in a hidden link still took taps */
   .orb-label { display: none; }
 }

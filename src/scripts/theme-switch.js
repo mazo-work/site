@@ -8,12 +8,14 @@ const dark = matchMedia('(prefers-color-scheme: dark)');
 
 function stored() { try { const t = localStorage.getItem(KEY); return THEMES.includes(t) ? t : null; } catch { return null; } }
 function sync() { for (const i of document.querySelectorAll('[data-theme-switch] input[name="theme"]')) i.checked = i.value === root.dataset.theme; }
+let latest = null;   // s109 (C9): only the latest transition takes the class away, so a skipped older one cannot
 function apply(theme) {
   if (root.dataset.theme === theme) return;
   const change = () => { root.setAttribute('data-theme', theme); sync(); };
   if (document.startViewTransition) {
     root.classList.add('theme-switching');
-    document.startViewTransition(change).finished.finally(() => root.classList.remove('theme-switching'));
+    const vt = latest = document.startViewTransition(change);
+    vt.finished.finally(() => { if (latest === vt) { latest = null; root.classList.remove('theme-switching'); } });
   } else change();
 }
 

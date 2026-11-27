@@ -8,6 +8,7 @@ for (const a of document.querySelectorAll('.ring .orb-link')) {
     const dot = a.querySelector('.orb-dot'), b = dot.getBoundingClientRect();
     const x = ((b.left + b.width / 2) / innerWidth) * 100, y = ((b.top + b.height / 2) / innerHeight) * 100;
     try { sessionStorage.setItem(KEY, JSON.stringify({ to: new URL(a.href).pathname, x: +x.toFixed(2), y: +y.toFixed(2), t: Date.now() })); } catch { /* private mode: a plain page change */ }
+    for (const d of document.querySelectorAll('.ring .orb-dot')) d.style.viewTransitionName = '';   // s109 (C8): one name only
     dot.style.viewTransitionName = 'orb-entry';
   });
 }
