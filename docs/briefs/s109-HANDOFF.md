@@ -15,7 +15,7 @@ copy change, no dependency, nothing from carry-register 11.158, 11.159 or 11.162
 
 | Unit | Commits | What changed |
 |---|---|---|
-| U1 WebGL lifecycle (1–6) | 725202f, c11e449 | `src/entrance/puzzle.js`: the shared block geometry is never disposed (C1); a Replay disposes each letter's material and `InstancedMesh` (C2); the `RoomEnvironment` and `PMREMGenerator` are freed once the map exists (C3); the halo takes the mask's opacity, so Paper's is 0.16 (C4); Skip does nothing once the curtain is lifting (C10); the four timers that act on puzzle state go through `later()` and are cleared by `load()` and `jumpToEnd()` (P2). c11e449 fixed the new check's timing for slower CI runners. |
+| U1 WebGL lifecycle (1–6) | 725202f, c11e449, 77c804b | `src/entrance/puzzle.js`: the shared block geometry is never disposed (C1); a Replay disposes each letter's material and `InstancedMesh` (C2); the `RoomEnvironment` and `PMREMGenerator` are freed once the map exists (C3); the halo takes the mask's opacity, so Paper's is 0.16 (C4); Skip does nothing once the curtain is lifting (C10); the four timers that act on puzzle state go through `later()` and are cleared by `load()` and `jumpToEnd()` (P2). c11e449 and 77c804b fixed the new check's timing for slower CI runners. |
 | U2 UI races (7–10) | f8e1e1d | P1 reproduced, then fixed: the sound button reads whether the sound was running when the press began. Phone ring dots take no pointer events (C7). One `orb-entry` name at a time (C8). Only the latest mask transition removes `theme-switching` (C9). |
 | U3 reduced motion (11–14) | 8ee6184 | `HONOR_RM = true`; the curtain is `rise`, or under reduce motion `fade` (Paper) or `scan` (Night: six bands, 720 ms); without cross-document view transitions both fade the stage (0.45 s). New `src/styles/reduced.css`: under reduce motion and under Pause motion, a page change is one 250 ms opacity cross-fade. The head rests when motion is paused. Root `BRIEF.md`'s motion rule, `docs/puzzle-spec.md` (v0.5) and the code comments say what changed and that the operator adopted it at S108. |
 | U4 build and dead weight (15–18) | 14ab860 | `package.json`'s three Astro scripts set the variable from Node, not the shell (C6). The test hook and the debug HUD exist only when `PUBLIC_MAZO_TEST=1`, set only by `tools/check/run.mjs` (C5). `night.css`: the `th` weight 600 and the first `a:hover` removed (C11, C12). |
@@ -59,8 +59,8 @@ animates opacity alone and lasts at most 300 ms (the site uses 250 ms). On the U
 | U1 | 45941681583 | c11e449 | success |
 | U2 | 45942679694 | 5ebd8c5 (carries f8e1e1d) | success |
 | U3 | 45943362330 | b1181e9 (carries 8ee6184) | success |
-| U4 | 45944241521 | 6bce06a (carries 14ab860) | see STATE's U4 row and U5's log line |
-| U5 | dispatched on the manifest commit | tip | see STATE's U5 row |
+| U4 | 45944241521 | 6bce06a (carries 14ab860) | failure: `entrance.lifecycle` in Night, the check's timing again; every U4 check passed (fixed in 77c804b) |
+| U4, U5 | dispatched on the manifest commit | tip | reported in the closing message (recording it here would change the manifested tree) |
 
 **Planted controls** (each new assertion run against the code it guards, unfixed):
 - `entrance.lifecycle` on `d7a9e5b`'s `puzzle.js` plus only the hook's additions: 26 problems: Paper's halo 0.22;
@@ -124,7 +124,9 @@ Each claim says how it was established.
 
 - **The first CI run of U1 failed** on the new check, not the site: the check waited three frames between Skip and
   Replay, which on the slower runner outlasted the curtain's 650 ms wait, so the page navigated. Fixed in c11e449
-  (both one frame apart, inside the page); both controls re-run and still fail as before.
+  (both one frame apart, inside the page); both controls re-run and still fail as before. U4's run then failed the same
+  way in Night (one frame was still too long once), though every U4 check passed; 77c804b does Skip and Replay in one task
+  and reports, instead of dying on, any navigation to Home; the control re-run gives the same 26 problems.
 - **Screenshots outside the write list.** U3's acceptance asks for screenshots of both curtains and U4's for Night's
   tables and links, but the brief's write list has no place for pictures and `handoff/` must not change. They are in
   `docs/briefs/s109-screens/` (22 files, 968 KB), beside STATE and this file. The two scripts that made them stayed in

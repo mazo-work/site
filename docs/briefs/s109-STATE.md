@@ -5,16 +5,16 @@ Resume rule: start at the first unticked unit. Never redo a ticked one. If resum
 
 | Unit | Done | Commit | Turns | Checks | CI | Notes |
 |---|---|---|---|---|---|---|
-| U1 WebGL lifecycle (items 1–6) | [x] | 725202f, c11e449 | 16 | 79 of 79 | green (run 45941681583, on c11e449; run 45940620136 on 725202f failed, see log) | `puzzle.js`: `disposeMesh` never disposes the shared `voxGeo` (C1); `load()` disposes each letter's material and `InstancedMesh` (C2); the `RoomEnvironment` and the `PMREMGenerator` are disposed once the map is made (C3); the halo takes `PAL.haloOpacity` (C4); `skip()` returns during `lift` and `site` too (C10); the hold, the five rows and `finishUp`'s two waits go through `later()`, and `load()`/`jumpToEnd()` clear them (P2). New check `entrance.lifecycle` (1). Test hook: `gpu()` and `state().halo`. |
+| U1 WebGL lifecycle (items 1–6) | [x] | 725202f, c11e449, 77c804b | 16 | 79 of 79 | green (run 45941681583, on c11e449; run 45940620136 on 725202f failed, see log) | `puzzle.js`: `disposeMesh` never disposes the shared `voxGeo` (C1); `load()` disposes each letter's material and `InstancedMesh` (C2); the `RoomEnvironment` and the `PMREMGenerator` are disposed once the map is made (C3); the halo takes `PAL.haloOpacity` (C4); `skip()` returns during `lift` and `site` too (C10); the hold, the five rows and `finishUp`'s two waits go through `later()`, and `load()`/`jumpToEnd()` clear them (P2). New check `entrance.lifecycle` (1). Test hook: `gpu()` and `state().halo`. |
 | U2 UI races (items 7–10) | [x] | f8e1e1d | 10 | 83 of 83 | green (run 45942679694, on 5ebd8c5, which carries f8e1e1d) | P1 reproduced and fixed: the sound button decides from whether the sound was running when the press began (read in a capture listener ahead of the wake), not after the wake has started it. `ring.css`: on a phone the dots take no pointer events (C7). `ring.js`: every dot gives up `orb-entry` before the clicked one takes it (C8). `theme-switch.js`: only the latest transition removes `theme-switching` (C9). New check `races.*` (4). |
 | U3 the reduced-motion design (items 11–14) | [x] | 8ee6184 | 20 | 87 of 87 | green (run 45943362330, on b1181e9, which carries 8ee6184) | `puzzle.js`: `HONOR_RM = true`; `CURTAIN` is `rise`, or under reduce motion `fade` (Paper) or `scan` (Night), stored in `mazo-curtain`; without cross-document view transitions both reduced curtains fade the stage (`moveStage(0, 0, 450)`). `base.css`: the scan (old fades, new revealed by `clip-path` in `steps(6, end)`, 720 ms), no group moves and the mark keeps no name under fade and scan. New `reduced.css` (imported last in `Base.astro`): under `prefers-reduced-motion: reduce` and under Pause motion, page changes are one 250 ms opacity cross-fade. `parakeet.js`: the head rests the moment Pause motion is pressed. `parakeet.css`: after a reduced curtain the bird appears without growing. Docs: root `BRIEF.md`'s motion rule, `docs/puzzle-spec.md` (v0.5), the comments at `HONOR_RM` and `CURTAIN`. New check `reduced.*` (4); `motion.transitions` changed (below). Screens: `docs/briefs/s109-screens/`. |
-| U4 build and dead weight (items 15–18) | [x] | 14ab860 | 14 | 89 of 89 | see the log (dispatched on the push that carries this row) | `package.json`: `dev`, `build` and `preview` start Astro from `node -e` with `ASTRO_TELEMETRY_DISABLED` set by Node, so no shell syntax sets it (C6). `puzzle.js` and `index.astro`: `window.__mazo`, the `#debug` hash, the HUD and its button exist only when `PUBLIC_MAZO_TEST=1`, which only `tools/check/run.mjs` sets (C5). `night.css`: the `.prose th` weight 600 (C11) and the first `a:hover` (C12) removed. New check `production.*` (2). Pictures of Night's tables and links before and after in `docs/briefs/s109-screens/`. |
-| U5 handoff and manifest | [ ] | | | | | |
+| U4 build and dead weight (items 15–18) | [x] | 14ab860 | 14 | 89 of 89 | run 45944241521 (6bce06a) failed on the U1 check's timing, not U4: see the log; re-run on the push that carries the fix | `package.json`: `dev`, `build` and `preview` start Astro from `node -e` with `ASTRO_TELEMETRY_DISABLED` set by Node, so no shell syntax sets it (C6). `puzzle.js` and `index.astro`: `window.__mazo`, the `#debug` hash, the HUD and its button exist only when `PUBLIC_MAZO_TEST=1`, which only `tools/check/run.mjs` sets (C5). `night.css`: the `.prose th` weight 600 (C11) and the first `a:hover` (C12) removed. New check `production.*` (2). Pictures of Night's tables and links before and after in `docs/briefs/s109-screens/`. |
+| U5 handoff and manifest | [x] | 9297cd9, then the manifest commit | 12 | 89 of 89 | dispatched on the tip after the manifest: its result is in the closing message (writing it here would change the manifested tree) | `docs/briefs/s109-HANDOFF.md` in the seven sections; `MANIFEST.sha256` at the tip; gitleaks [UNVERIFIED] (not installed; a pattern scan in its place, 0 findings but five false positives). |
 
 ## Budget
 
-- Units done: 4 of 5 · turns so far: 84 · average per unit: 18 (after the 12 turns of reading and baseline).
-- Estimated turns left: about 10 (U5).
+- Units done: 5 of 5 · turns so far: 100 · average per unit: 18 (after the 12 turns of reading and baseline).
+- Estimated turns left: 0 (the manifest and the last CI read).
 - Session started 2026-11-27 04:04 UTC (read from `date`).
 
 ## Checks not yet expected to pass
@@ -133,3 +133,17 @@ Resume rule: start at the first unticked unit. Never redo a ticked one. If resum
   768 pixels, all inside its size columns: it prints the build's own page weights, which moved by 0.1 kB on some rows
   because this unit made the CSS and the entrance smaller; its paths column and its rules match. Saved at half size
   as `night-*-before.png` and `night-*-after.png`.
+- U4 · CI: run 45944241521 (on 6bce06a) failed one check, `entrance.lifecycle` in Night ("execution context was
+  destroyed"): the curtain opened Home during the rounds on the slower runner, again my check's timing, not the site;
+  every U4 check passed there. 77c804b does Skip and Replay in one task (the Replay during the fall still disposes a
+  finale that was drawn), and blocks and reports any navigation to Home in that context instead of losing the page.
+  The U1 control re-run on it: the same 26 problems. Both suites pass locally (89 of 89).
+- U5 · gitleaks is not installed here and fetching it would break the brief's network rule (only `npm ci` and the
+  browser install): [UNVERIFIED]. In its place: the repository's `secrets.*` and `secrets-in-walls.*` checks pass, and a
+  scan with gitleaks-style patterns (cloud keys, GitHub, Slack, npm and GitLab tokens, private keys, `sk-` keys,
+  `api_key`/`secret`/`token`/`password` assignments) over the tree and every added line of the history (108 commits
+  reachable locally) finds only five false positives: the crawler table's `token:` user-agent names in
+  `src/data/crawlers.ts`.
+- U5 · sizes, production builds of `d7a9e5b` and the tip: the puzzle chunk 130,962 to 130,471 B gzip (the hook is
+  gone), `Base.css` 8,362 to 8,623 B gzip (`reduced.css` and the scan), the entrance's HTML 2,391 to 2,369 B gzip.
+
