@@ -58,7 +58,9 @@ renderer.domElement.addEventListener('webglcontextlost', e => { e.preventDefault
 const scene = new THREE.Scene();
 scene.background = PAL.stage ? new THREE.Color(PAL.stage) : null;   // v4: was #0e1014
 const pmrem = new THREE.PMREMGenerator(renderer);
-scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+const room = new RoomEnvironment();
+scene.environment = pmrem.fromScene(room, 0.04).texture;
+room.dispose(); pmrem.dispose();   // s109 (C3): the generator and the temporary room are freed; the map they made stays
 scene.environmentIntensity = 0.55;
 const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 400);
 scene.add(camera);
@@ -189,15 +191,15 @@ function setColors(on) {
 }
 
 function load(k) {
-  tweens.length = 0; clearTimeout(holdTimer); phase = 'none'; revealLocal = -9;
+  tweens.length = 0; clearTimers(); phase = 'none'; revealLocal = -9;   // s109 (P2): every pending puzzle timer
   if (fallers) { fallers.removeFromParent(); fallers.material.dispose(); fallers.dispose(); fallers = null; } fallData = [];
   disposeMesh(lightBlock); lightBlock = null; disposeMesh(glow); glow = null; disposeMesh(word); word = null;
   orb.visible = true; $('bottom').style.visibility = '';
-  for (const L of ORDER) if (pieces[L]) { pieces[L].removeFromParent(); }
+  for (const L of ORDER) if (pieces[L]) { const u = pieces[L].userData; pieces[L].removeFromParent(); u.mat.dispose(); u.mesh.dispose(); }   // s109 (C2): voxGeo stays
   pieces = {}; design = k; D = DESIGNS[k]; stage = 0; busy = false; hintLevel = 0; lastProgress = performance.now();
   for (const L of ORDER) { pieces[L] = buildPiece(L, D.pieces[L]); puzzle.add(pieces[L]); }
   orb.removeFromParent(); puzzle.add(orb); orb.position.set(...D.core); orb.scale.setScalar(1); orbLight.intensity = 14;
-  orbHalo.material.opacity = 0.22;
+  orbHalo.material.opacity = PAL.haloOpacity;   // s109 (C4): the mask's halo (was P0's 0.22, which overwrote Paper's 0.16)
   hemi.intensity = 0.9; key.intensity = 2.2; scene.environmentIntensity = 0.55;
   $('design').textContent = 'Shape: ' + D.name; $('done').classList.remove('on'); $('showme').hidden = true;
   hintEl.textContent = 'Drag to turn it. Pull a letter out.'; hintEl.style.opacity = 1; arrowEl.style.opacity = 0;
@@ -383,6 +385,11 @@ const WHITE = new THREE.Color(PAL.flash), DIM_WHITE = new THREE.Color(PAL.settle
 const LIGHT = new THREE.Color(PAL.light), LIGHT_GLOW = new THREE.Color(PAL.lightEmissive);   // v4: the light settles in the mark's light colour
 const FONT = 'ui-sans-serif, system-ui, sans-serif';   // v3: the same stand-in, without named families (BRIEF §3 bans one)
 let phase = 'none', lightBlock = null, glow = null, word = null, fallers = null, fallData = [], holdTimer = null, revealLocal = -9, lastPip = 0;
+// s109 (P2): the timers that act on puzzle state (the hold, the rows, the curtain's wait) are tracked, so load() and
+// jumpToEnd() clear them all; the live region's, the site's warm-up and the curtain's own stay untracked
+const timers = new Set();
+function later(fn, ms) { const id = setTimeout(() => { timers.delete(id); fn(); }, ms); timers.add(id); return id; }
+function clearTimers() { timers.forEach(clearTimeout); timers.clear(); holdTimer = null; }
 const revealPlane = new THREE.Plane(new THREE.Vector3(0, -1, 0), -1e6);   // the word shows only below this height
 
 function gapLocal() {           // the stencil O's missing ring cell, in the O's own frame
@@ -391,7 +398,8 @@ function gapLocal() {           // the stencil O's missing ring cell, in the O's
     if ((r === 0 || r === 4 || i === 0 || i === 4) && !pix.has(i + ',' + r)) return new THREE.Vector3(i - 2, r - 2, 0);
   return new THREE.Vector3(0, -2, 0);
 }
-function disposeMesh(m) { if (!m) return; m.removeFromParent(); m.geometry?.dispose?.(); m.material?.map?.dispose?.(); m.material?.dispose?.(); }
+// s109 (C1): voxGeo is shared by every letter, the light block and the fallers, so it is never disposed here
+function disposeMesh(m) { if (!m) return; m.removeFromParent(); if (m.geometry !== voxGeo) m.geometry?.dispose?.(); m.material?.map?.dispose?.(); m.material?.dispose?.(); }
 function makeGlow() {           // a soft warm light behind the word, so the letters stand out against it
   const c = document.createElement('canvas'); c.width = c.height = 256;
   const g = c.getContext('2d');
@@ -485,11 +493,11 @@ function dimBack(instant) {     // the white dims slightly, the O's new block wi
 }
 function startHold(instant) {
   phase = 'hold';
-  holdTimer = setTimeout(() => startFall(false), instant ? 0 : (RM ? 1500 : HOLD_MS));
+  holdTimer = later(() => startFall(false), instant ? 0 : (RM ? 1500 : HOLD_MS));
 }
 function startFall(instant) {   // rows let go bottom first; every block shrinks into one line along the bottom
   if (phase !== 'hold') return;
-  phase = 'fall'; clearTimeout(holdTimer);
+  phase = 'fall'; clearTimeout(holdTimer); timers.delete(holdTimer);
   const blocks = [], m4 = new THREE.Matrix4(), loc = new THREE.Vector3(), wp = new THREE.Vector3(), wq = new THREE.Quaternion(), ws = new THREE.Vector3();
   scene.updateMatrixWorld(true);
   for (const L of ORDER) {
@@ -513,7 +521,7 @@ function startFall(instant) {   // rows let go bottom first; every block shrinks
   ORDER.forEach(L => { pieces[L].visible = false; });
   if (instant) { revealLocal = 2.6; updateFall(performance.now()); return; }
   tween(900, k => { hemi.intensity = 0.3 + 0.3 * k; key.intensity = 0.6 + 0.6 * k; });
-  for (let r = 0; r < 5; r++) setTimeout(() => {
+  for (let r = 0; r < 5; r++) later(() => {
     if (phase !== 'fall') return;
     sfx('row');
     const s0 = Math.max(revealLocal, -2.55), to = r - 2 + 0.52;
@@ -547,8 +555,8 @@ function updateFall(now) {
 }
 function finishUp() {
   phase = 'done'; revealLocal = 2.6;
-  if (SITE) { setTimeout(() => { if (phase === 'done') liftCurtain(); }, 650); return; }
-  setTimeout(() => { if (phase === 'done') { $('done').classList.add('on'); $('replay').focus({ preventScroll: true }); } }, 500);
+  if (SITE) { later(() => { if (phase === 'done') liftCurtain(); }, 650); return; }
+  later(() => { if (phase === 'done') { $('done').classList.add('on'); $('replay').focus({ preventScroll: true }); } }, 500);
 }
 // ---------- the curtain: the line is its hem; it rises and the current site is underneath ----------
 let siteReady = null, paused = false, rafId = 0;
@@ -611,7 +619,7 @@ function placeWord() {          // the word as a still image exactly over the 3D
 }
 addEventListener('pageshow', e => { if (e.persisted && (phase === 'site' || phase === 'lift')) location.reload(); });   // back from Home: a fresh puzzle
 function jumpToEnd() {          // Skip: straight to the finished state from anywhere
-  tweens.length = 0; clearTimeout(holdTimer);
+  tweens.length = 0; clearTimers();   // s109 (P2)
   for (let i = stage; i < 4; i++) {
     const p = pieces[ORDER[i]], u = p.userData; u.gone = true; u.breathe = 0;
     slots[i].attach(p); p.position.set(0, 0, 0); p.quaternion.identity(); p.scale.setScalar(1);
@@ -646,7 +654,7 @@ function showMe() {
   tween(RM ? 200 : 1100, k => { u.s = s0 + (u.total - s0) * easeIO(k); u.seg = segAt(u, u.s); applyS(p); }, () => { busy = false; complete(p); });
 }
 function skip() {
-  if (phase === 'done') return;
+  if (phase === 'done' || phase === 'lift' || phase === 'site') return;   // s109 (C10): not once the curtain is going up
   jumpToEnd(); say('Skipped to the end: M A Z O.');
 }
 $('skip').addEventListener('click', e => {   // v3: Skip intro is a link to Home; with the puzzle running it plays P0's skip
@@ -719,8 +727,11 @@ function frame(now) {
   renderer.render(scene, camera);
   rafId = requestAnimationFrame(frame);
 }
+let voxDisposed = 0; voxGeo.addEventListener('dispose', () => { voxDisposed++; });   // s109: for the check (C1)
 window.__mazo = {   // test hook: read-only state plus the same helpers the page uses
-  state: () => ({ stage, busy, design: D.name, s: stage < 4 ? pieces[ORDER[stage]].userData.s : null,
+  gpu: () => ({ geometries: renderer.info.memory.geometries, textures: renderer.info.memory.textures,   // s109: the lifecycle
+    calls: renderer.info.render.calls, triangles: renderer.info.render.triangles, voxDisposed }),
+  state: () => ({ halo: Math.round(orbHalo.material.opacity * 100) / 100, stage, busy, design: D.name, s: stage < 4 ? pieces[ORDER[stage]].userData.s : null,
     done: $('done').classList.contains('on'), phase, blocks: fallData.length, landed: fallData.filter(b => b.landed).length,
     reveal: Math.round(revealLocal * 100) / 100, sound: !!audio && audio.state, hasSite: !!SITE,
     lineColors: new Set(fallData.map(b => b.color.getHexString())).size,
