@@ -156,6 +156,8 @@ async function lifecycle(browser, origin, mask, out) {
   const ready = (page) => page.waitForFunction(() => window.__mazo && window.__mazo.state().stage === 0, null, { timeout: 30000 });
   let context = await themedContext(browser, mask);
   await context.addInitScript(PROBE);
+  // nothing here should open Home: if the curtain ever does, it is reported, and the page stays to be measured
+  await context.route('**/home/', (route) => (route.request().isNavigationRequest() ? (say('the curtain opened Home during the replays'), route.abort()) : route.continue()));
   let page = await context.newPage();
   watch(page);
   try {
@@ -190,12 +192,10 @@ async function lifecycle(browser, origin, mask, out) {
     const first = {}, seen = [];
     const start = await take(); first[start.shape] = start;
     for (let i = 0; i < 10; i++) {
-      // in the page, one frame apart: the frame draws the finished scene (so its objects reach the GPU), and the
-      // Replay or switch comes long before the curtain's 650 ms wait, however slow the machine
-      await page.evaluate((k) => new Promise((res) => {
-        document.getElementById('skip').click();
-        requestAnimationFrame(() => { document.getElementById(k % 2 ? 'design' : 'replay').click(); res(); });
-      }), i);
+      // in one task, so the curtain's 650 ms wait can never win on a slow machine (the Replay during the fall above
+      // already disposed a finale that was drawn, and the letters, the light block and the shared geometry are the
+      // same either way)
+      await page.evaluate((k) => { document.getElementById('skip').click(); document.getElementById(k % 2 ? 'design' : 'replay').click(); }, i);
       const m = await take();
       seen.push(m);
       if (!first[m.shape]) { first[m.shape] = m; continue; }
